@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <section class="z-[60] w-full h-screen relative">
+        <img class="z-0 absolute w-full h-full object-cover object-center image-slider active" src="{{ url_for('static', filename='images/pexels-baakya-14137273.jpg') }}" alt="rajgad fort">
+        <img class="z-0 absolute w-full h-full object-cover object-center image-slider" src="{{ url_for('static', filename='images/pratik-patil-Vl2MnqnBwqE-unsplash.jpg') }}" alt="">
+        <img class="z-0 absolute w-full h-full object-cover object-center image-slider" src="{{ url_for('static', filename='images/pexels-lucky-forever-2772146-33304433.jpg') }}" alt="">
+        
+        <div class="content z-50 text-background w-[80%] max-w-[900px] text-center hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 active ">
+            <h1>Rajgad Fort</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam aut earum.</p>
+            <a href="#">Read More</a>
+        </div>
+        <div class="content z-50 text-background w-[80%] max-w-[900px] text-center hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <h1>Raigad Fort</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam aut earum.</p>
+            <a href="#">Read More</a>
+        </div>
+        <div class="content z-50 text-background w-[80%] max-w-[900px] text-center hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <h1>Kalavantin durg</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam aut earum.</p>
+            <a href="#">Read More</a>
+        </div>
+        <div class="slider-navigation z-50 absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-6">
+            <div class="nav-btn w-4 h-4 cursor-pointer transition-all duration-300 ease-in bg-white rounded-lg"></div>
+            <div class="nav-btn w-4 h-4 cursor-pointer transition-all duration-300 ease-in bg-white rounded-lg"></div>
+            <div class="nav-btn w-4 h-4 cursor-pointer transition-all duration-300 ease-in bg-white rounded-lg"></div>
+        </div>
+    </section>
+
+    
+    <section class="features">
+        <div class="feature-section">
+            <div class="section-header">
+                <h1>Featured Treks</h1>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla vel voluptatem officiis temporibus possimus id.</p>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <div class="upper-half">
+                        <img src="{{ url_for('static', filename='images/rajgad_uppercard.webp') }}" alt="">
+                        <span>New</span>
+                    </div>
+                    <div class="lower-half">
+                        <div class="card-header">
+                            <h3>Rajgad Fort</h3>
+                            <span>Moderate</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
+                        <div class="card-icons">
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                <span>1 Day</span>
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                15 Km
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                5-20
+                            </span>
+                        </div>
+                        <div class="view-all-btn">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- card_two -->
+                 <div class="card">
+                    <div class="upper-half">
+                        <img src="{{ url_for('static', filename='images/kalsubai.jpg') }}" alt="">
+                        <span>New</span>
+                    </div>
+                    <div class="lower-half">
+                        <div class="card-header">
+                            <h3>kalsubai</h3>
+                            <span>Moderate</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
+                        <div class="card-icons">
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                <span>1 Day</span>
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                15 Km
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                5-20
+                            </span>
+                        </div>
+                        <div class="view-all-btn">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- card_three -->
+                <div class="card">
+                    <div class="upper-half">
+                        <img src="images/kalavantin_durg.jpg" alt="">
+                        <span>New</span>
+                    </div>
+                    <div class="lower-half">
+                        <div class="card-header">
+                            <h3>Kalavantin Durg</h3>
+                            <span>Moderate</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
+                        <div class="card-icons">
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                <span>1 Day</span>
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                15 Km
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                5-20
+                            </span>
+                        </div>
+                        <div class="view-all-btn">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- explore more button  -->
+            <div class="view-all-treks-btn">
+                View all Treks
+            </div>
+        </div>
+    </section>
+    
+    <!-- waterfall section -->
+
+    <section class="features waterfalls">
+        <div class="feature-section">
+
+            <div class="section-header">
+                <h1>Featured Waterfalls</h1>
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla vel voluptatem officiis temporibus possimus id.</p>
+            </div>
+
+            <div class="card-container">
+                <div class="card">
+                    <div class="upper-half">
+                        <img src="{{ url_for('static', filename='images/devkund-waterfall.jpg') }}" alt="">
+                        <span>New</span>
+                    </div>
+                    <div class="lower-half">
+                        <div class="card-header">
+                            <h3>Devkund Waterfall</h3>
+                            <span>Moderate</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
+                        <div class="card-icons">
+                            <span>
+                                <img src="{{ url_for('static', filename='images/devkund-waterfall.jpg') }}" alt="">
+                                <span>80-250 ft</span>
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
+                                June-August
+                            </span>
+                
+                        </div>
+                        <div class="view-all-btn">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- card-two -->
+                 <div class="card">
+                    <div class="upper-half">
+                        <img src="{{ url_for('static', filename='images/dabhosa-waterfall.jpg') }}" alt="">
+                        <span>New</span>
+                    </div>
+                    <div class="lower-half">
+                        <div class="card-header">
+                            <h3>Dabhosa Waterfall</h3>
+                            <span>Moderate</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
+                        <div class="card-icons">
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
+                                <span>300 ft</span>
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
+                                June-Sept
+                            </span>
+                
+                        </div>
+                        <div class="view-all-btn">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- card-three -->
+                <div class="card">
+                    <div class="upper-half">
+                        <img src="{{ url_for('static', filename='images/kalmandavi-waterfall.jpg') }}" alt="">
+                        <span>New</span>
+                    </div>
+                    <div class="lower-half">
+                        <div class="card-header">
+                            <h3>Kalmandavi Waterfall</h3>
+                            <span>Moderate</span>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
+                        <div class="card-icons">
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
+                                <span>720 ft</span>
+                            </span>
+                            <span>
+                                <img src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
+                                October to June
+                            </span>
+                
+                        </div>
+                        <div class="view-all-btn">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="view-all-treks-btn">
+                View all Waterfalls
+             </div>
+        </div>
+    </section>
+
+    <section class="packing-list">
+        <div class="packing">
+
+            <div class="section-header">
+                <h1>Packing Checklist Generator</h1>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod dolores id, molestias modi voluptatum illo quos repellat ipsam omnis, eaque maxime minus nemo velit soluta saepe labore ratione magni incidunt.</p>
+            </div>
+
+            <div class="trek-type-selector">
+
+                <div class="header">
+                    <img src="{{ url_for('static', filename='images/icons/note_alt_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
+                    <h3 class="checklist-title">Customize Your Checklist</h3>
+                </div>
+                <div>
+                    <button class="difficulty-btn ">Easy Trek</button>
+                    <button class="difficulty-btn active">Moderate Trek</button>
+                    <button class="difficulty-btn">Difficult Trek</button>
+                    <button class="difficulty-btn">Multi-day Trek</button>
+                </div>
+
+            </div>
+
+            <div class="checklist-container">
+
+                <div class="header">
+                    <div>
+                        <img src="{{ url_for('static', filename='images/icons/check_20dp_000000_FILL0_wght600_GRAD0_opsz20.svg') }}" alt="">
+                        <h3 class="checklist-title">Customize Your Checklist</h3>
+                    </div>
+
+                    <div class="action-icons">
+                        <img src="{{ url_for('static', filename='images/icons/print_20dp_000000_FILL0_wght600_GRAD0_opsz20.svg') }}" alt="print">
+                        <img src="{{ url_for('static', filename='images/icons/download_20dp_000000_FILL0_wght600_GRAD0_opsz20.svg') }}" alt="download">
+                    </div>
+                </div>
+
+                <div class="checklist-content">
+
+                    <div class="category">
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

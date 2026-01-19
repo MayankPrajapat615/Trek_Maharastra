@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{ 
+  :root {
+    --primary-color: #2D6B4D;      /* Forest Green - HSL(145, 40%, 30%) */
+    --secondary-color: #E68C32;    /* Amber Orange - HSL(28, 85%, 55%) */
+    --text-color: #1F4D33;         /* Dark Forest - HSL(150, 30%, 15%) */
+    --background-color: #FAF8F5;   /* Warm Cream - HSL(30, 20%, 98%) */
+    --hover-color: #234E38;        /* Dark Forest - HSL(145, 45%, 22%) */
+  }
+
+  body {
+    font-family: "Playfair", sans-serif;
+  }
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Playfair", sans-serif;
+}
+
+@layer components {
+  .nav-link {
+    @apply text-xl ml-7 font-medium transition-all duration-500 ease-in text-[#FAF8F5] relative no-underline;
+  }
+  
+  .nav-link::before {
+    content: '';
+    position: absolute;
+    background: var(--background-color);
+    width: 0;
+    height: 3px;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.5s ease;
+  }
+  
+  .nav-link:hover::before {
+    width: 100%;
+  }
+
+  .content {
+    display: none;
+  }
+
+  .content.active {
+    display: block !important;
+  }
+
+  .nav-btn{
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+  }
+
+  .nav-btn.active {
+    background: #2696e9;
+  }
+  
+  .nav-btn:hover {
+    transform: scale(1.2);
+  }
+  
+}

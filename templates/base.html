@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TREK_MAHARASHTRA{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <header class="z-50 w-full py-4 px-20 bg-[#2D6B4D] flex items-center justify-between align-center transition-all duration-300 ease">
+        <a href="#" class="text-3xl font-bold text-[#FAF8F5]">Trek Maharashtra</a>
+        <div class="text-4xl font-bold md:hidden text-[#FAF8F5] ">&#8801;</div>
+        <div class="hidden md:flex text-[#FAF8F5]">
+            <div class="navigation-item">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/treks">Treks</a>
+                <a class="nav-link" href="/waterfalls">Waterfalls</a>
+                <a class="nav-link" href="/gallery">Gallery</a>
+                <a class="nav-link" href="/contact">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <p class="{{ category }}">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        {% block content %}
+            <!-- home page only -->
+        {% endblock %}
+    </main>
+
+    <footer class="w-100% h-auto bg-[#2D6B4D]">
+        <div class="py-4 px-8 m-auto md:py-8 md:px-16">
+            <div class="flex-col md:text-left md:flex md:flex-row md:gap-16">
+                <div class="flex-1 min-w-0 mb-8">
+                    <h2 class="text-2xl mb-4 text-secondary">Trek Maharashtra</h2>
+                    <p class="break-all overflow-hidden text-background">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore odio tenetur corrupti repellendus vel impedit.</p>
+                    <div>
+                        <!-- this is for social meadia's -->
+                    </div>
+                </div>
+                <div class="flex-1 min-w-0 mb-8">
+                    <h2 class="text-2xl mb-4 text-background">Quicks Links</h2>
+                    <ul>
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Home</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Featured Treks</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Waterfalls</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                    </ul>
+                </div>
+                <div class="flex-1 min-w-0 mb-8">
+                    <h2 class="text-2xl mb-4 text-background">Popular Treks</h2>
+                    <ul>
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Rajgad Fort</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Kalsubai peak</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Torna Fort</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Sinhagad Fort</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >Harishchandragad</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                    </ul>
+                </div>  
+                <div class="flex-1 min-w-0 mb-8">
+                    <h2 class="text-2xl mb-4 text-background">Contact Us</h2>
+                    <ul>
+                        <li class="list-none text-background transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >contact@trekmaharashtra.com</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom text-center">
+                <p>© 2026 Maharashtra Treks. All rights reserved. Made with ❤️ for trekking enthusiasts.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='static/js/script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
