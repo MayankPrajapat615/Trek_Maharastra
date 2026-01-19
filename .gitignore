@@ -1,0 +1,10 @@
+node_modules/
+package-lock.json
+package.json
+postcss.config.js
+tailwind.config.js
+style.css
+__pycache__/
+instance/
+demo.html
+index.html
