@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    <section class="z-[60] w-full h-screen relative">
+    <section class="z-40 w-full h-screen relative">
         <img class="z-0 absolute w-full h-full object-cover object-center image-slider active" src="{{ url_for('static', filename='images/pexels-baakya-14137273.jpg') }}" alt="rajgad fort">
         <img class="z-0 absolute w-full h-full object-cover object-center image-slider" src="{{ url_for('static', filename='images/pratik-patil-Vl2MnqnBwqE-unsplash.jpg') }}" alt="">
         <img class="z-0 absolute w-full h-full object-cover object-center image-slider" src="{{ url_for('static', filename='images/pexels-lucky-forever-2772146-33304433.jpg') }}" alt="">
@@ -10,7 +10,7 @@
         <div class="content z-50 text-background w-[80%] max-w-[900px] h-auto text-center hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 active ">
             <h1 class="text-4xl mb-2">Rajgad Fort</h1>
             <p class="mb-8 text-base ">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam aut earum.</p>
-            <a href="#" class="bg-black py-4 px-10 mt-12 text-background no-underline font-semibold text-xl inline-block rounded-md">Read More</a>
+            <a href="#" class="bg-black py-4 px-10 text-background no-underline font-semibold text-xl inline-block rounded-md hover:bg-secondary">Read More</a>
         </div>
         <div class="content z-50 text-background w-[80%] max-w-[900px] text-center hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <h1>Raigad Fort</h1>
@@ -22,7 +22,7 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam aut earum.</p>
             <a href="#">Read More</a>
         </div>
-        <div class="slider-navigation z-50 absolute bottom-24 left-1/2 -translate-x-1/2 flex gap-6">
+        <div class="slider-navigation z-50 absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-6">
             <div class="nav-btn w-3 h-3 cursor-pointer transition-all duration-300 ease-in bg-white rounded-lg"></div>
             <div class="nav-btn w-3 h-3 cursor-pointer transition-all duration-300 ease-in bg-white rounded-lg"></div>
             <div class="nav-btn w-3 h-3 cursor-pointer transition-all duration-300 ease-in bg-white rounded-lg"></div>
@@ -30,262 +30,239 @@
     </section>
 
     
-    <section class="features">
-        <div class="feature-section">
+    <section id="treks" class="features w-full h-max py-16 bg-hover">
+        <div class="feature-section m-auto w-4/5 text-center px-5">
             <div class="section-header">
-                <h1>Featured Treks</h1>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla vel voluptatem officiis temporibus possimus id.</p>
+                <h1 class="mb-2 text-4xl text-background">Featured Treks</h1>
+                <p class="mb-12 text-base text-background">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla vel voluptatem officiis temporibus possimus id.</p>
             </div>
-            <div class="card-container">
-                <div class="card">
+            <div class="card-container flex justify-center gap-8 flex-wrap">
+                <div class="card h-[400px] rounded-2xl relative">
                     <div class="upper-half">
-                        <img src="{{ url_for('static', filename='images/rajgad_uppercard.webp') }}" alt="">
-                        <span>New</span>
+                        <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/rajgad_uppercard.webp') }}" alt="">
+                        <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                     </div>
-                    <div class="lower-half">
-                        <div class="card-header">
-                            <h3>Rajgad Fort</h3>
-                            <span>Moderate</span>
+                    <div class="lower-half p-4 bg-background h-[220px]">
+                        <div class="card-header flex align-middle justify-between mb-3 text-background">
+                            <h3 class="text-lg font-medium text-black">Rajgad Fort</h3>
+                            <span class="bg-secondary py-1 px-2 rounded-lg font-medium">Moderate</span>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
-                        <div class="card-icons">
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
-                                <span>1 Day</span>
+                        <div class="card-icons flex align-middle gap-4 text-xs font-medium">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                1 Day
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                                 15 Km
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                                 5-20
                             </span>
                         </div>
-                        <div class="view-all-btn">
+                        <div class="view-all-btn mt-4 text-center">
                             <a href="#">View Details</a>
                         </div>
                     </div>
                 </div>
                 <!-- card_two -->
-                 <div class="card">
+                <div class="card h-[400px] rounded-2xl relative">
                     <div class="upper-half">
-                        <img src="{{ url_for('static', filename='images/kalsubai.jpg') }}" alt="">
-                        <span>New</span>
+                        <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/pratik-patil-Vl2MnqnBwqE-unsplash.jpg') }}" alt="">
+                        <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                     </div>
-                    <div class="lower-half">
-                        <div class="card-header">
-                            <h3>kalsubai</h3>
-                            <span>Moderate</span>
+                    <div class="lower-half p-4 bg-background h-[220px]">
+                        <div class="card-header flex align-middle justify-between mb-3 text-background">
+                            <h3 class="text-lg font-medium text-black">Rajgad Fort</h3>
+                            <span class="bg-secondary py-1 px-2 rounded-lg font-medium">Moderate</span>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
-                        <div class="card-icons">
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
-                                <span>1 Day</span>
+                        <div class="card-icons flex align-middle gap-4 text-xs font-medium">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                1 Day
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                                 15 Km
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                                 5-20
                             </span>
                         </div>
-                        <div class="view-all-btn">
+                        <div class="view-all-btn mt-4 text-center">
                             <a href="#">View Details</a>
                         </div>
                     </div>
                 </div>
-                <!-- card_three -->
-                <div class="card">
+                <!-- card three -->
+                <div class="card h-[400px] rounded-2xl relative">
                     <div class="upper-half">
-                        <img src="images/kalavantin_durg.jpg" alt="">
-                        <span>New</span>
+                        <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/raigad_fort.avif') }}" alt="">
+                        <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                     </div>
-                    <div class="lower-half">
-                        <div class="card-header">
-                            <h3>Kalavantin Durg</h3>
-                            <span>Moderate</span>
+                    <div class="lower-half p-4 bg-background h-[220px]">
+                        <div class="card-header flex align-middle justify-between mb-3 text-background">
+                            <h3 class="text-lg font-medium text-black">Rajgad Fort</h3>
+                            <span class="bg-secondary py-1 px-2 rounded-lg font-medium">Moderate</span>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
-                        <div class="card-icons">
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
-                                <span>1 Day</span>
+                        <div class="card-icons flex align-middle gap-4 text-xs font-medium">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                                1 Day
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                                 15 Km
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                                 5-20
                             </span>
                         </div>
-                        <div class="view-all-btn">
+                        <div class="view-all-btn mt-4 text-center">
                             <a href="#">View Details</a>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- explore more button  -->
-            <div class="view-all-treks-btn">
-                View all Treks
-            </div>
+        </div>
+        <div class="view-all-treks-btn mt-8 py-2 px-5 rounded-xl text-base cursor-pointer text-background bg-primary inline-block">
+            View all Treks
         </div>
     </section>
     
     <!-- waterfall section -->
 
-    <section class="features waterfalls">
-        <div class="feature-section">
-
+    <section id="waterfalls" class="waterfalls features w-full h-max py-16 bg-primary">
+        <div class="feature-section m-auto w-4/5 text-center px-5">
             <div class="section-header">
-                <h1>Featured Waterfalls</h1>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla vel voluptatem officiis temporibus possimus id.</p>
+                <h1 class="mb-2 text-4xl text-background">Featured Waterfalls</h1>
+                <p class="mb-12 text-base text-background">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla vel voluptatem officiis temporibus possimus id.</p>
             </div>
 
-            <div class="card-container">
-                <div class="card">
+            <div class="card-container flex justify-center gap-8 flex-wrap">
+                <div class="card h-[400px] rounded-2xl relative">
                     <div class="upper-half">
-                        <img src="{{ url_for('static', filename='images/devkund-waterfall.jpg') }}" alt="">
-                        <span>New</span>
+                        <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/devkund-waterfall.png') }}" alt="">
+                        <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                     </div>
-                    <div class="lower-half">
-                        <div class="card-header">
-                            <h3>Devkund Waterfall</h3>
-                            <span>Moderate</span>
+                    <div class="lower-half p-4 bg-background h-[220px]">
+                        <div class="card-header flex align-middle justify-between mb-3 text-background">
+                            <h3 class="text-lg font-medium text-black">Devkund waterfall</h3>
+                            <span class="bg-secondary py-1 px-2 rounded-lg font-medium">Moderate</span>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
-                        <div class="card-icons">
-                            <span>
-                                <img src="{{ url_for('static', filename='images/devkund-waterfall.jpg') }}" alt="">
-                                <span>80-250 ft</span>
+                        <div class="card-icons flex align-middle gap-4 text-xs font-medium">
+                            <span class="flex items-center gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                                80-250 ft
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
-                                June-August
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                                june-august
                             </span>
-                
                         </div>
-                        <div class="view-all-btn">
+                        <div class="view-all-btn mt-4 text-center">
                             <a href="#">View Details</a>
                         </div>
                     </div>
                 </div>
-                <!-- card-two -->
-                 <div class="card">
+                <!-- card_two -->
+                <div class="card h-[400px] rounded-2xl relative">
                     <div class="upper-half">
-                        <img src="{{ url_for('static', filename='images/dabhosa-waterfall.jpg') }}" alt="">
-                        <span>New</span>
+                        <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/dabhosa-waterfall.jpg') }}" alt="">
+                        <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                     </div>
-                    <div class="lower-half">
-                        <div class="card-header">
-                            <h3>Dabhosa Waterfall</h3>
-                            <span>Moderate</span>
+                    <div class="lower-half p-4 bg-background h-[220px]">
+                        <div class="card-header flex align-middle justify-between mb-3 text-background">
+                            <h3 class="text-lg font-medium text-black">Dasobha waterfall</h3>
+                            <span class="bg-secondary py-1 px-2 rounded-lg font-medium">Moderate</span>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
-                        <div class="card-icons">
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
-                                <span>300 ft</span>
+                        <div class="card-icons flex align-middle gap-4 text-xs font-medium">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                                80-250 ft
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
-                                June-Sept
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                                june-august
                             </span>
-                
                         </div>
-                        <div class="view-all-btn">
+                        <div class="view-all-btn mt-4 text-center">
                             <a href="#">View Details</a>
                         </div>
                     </div>
                 </div>
-                <!-- card-three -->
-                <div class="card">
+                <!-- card three -->
+                <div class="card h-[400px] rounded-2xl relative">
                     <div class="upper-half">
-                        <img src="{{ url_for('static', filename='images/kalmandavi-waterfall.jpg') }}" alt="">
-                        <span>New</span>
+                        <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/kalmandavi-waterfall.jpg') }}" alt="">
+                        <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                     </div>
-                    <div class="lower-half">
-                        <div class="card-header">
-                            <h3>Kalmandavi Waterfall</h3>
-                            <span>Moderate</span>
+                    <div class="lower-half p-4 bg-background h-[220px]">
+                        <div class="card-header flex align-middle justify-between mb-3 text-background">
+                            <h3 class="text-lg font-medium text-black">Kalmandavi waterfall</h3>
+                            <span class="bg-secondary py-1 px-2 rounded-lg font-medium">Moderate</span>
                         </div>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, quasi laborum fuga alias provident facere.</p>
-                        <div class="card-icons">
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
-                                <span>720 ft</span>
+                        <div class="card-icons flex align-middle gap-4 text-xs font-medium">
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                                80-250 ft
                             </span>
-                            <span>
-                                <img src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
-                                October to June
+                            <span class="flex align-middle gap-1">
+                                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                                june-august
                             </span>
-                
                         </div>
-                        <div class="view-all-btn">
+                        <div class="view-all-btn mt-4 text-center">
                             <a href="#">View Details</a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="view-all-treks-btn">
-                View all Waterfalls
-             </div>
+                
+        </div>
+        <div class="view-all-treks-btn mt-8 py-2 px-5 rounded-xl text-base cursor-pointer text-background bg-primary inline-block">
+            View all Treks
         </div>
     </section>
 
-    <section class="packing-list">
-        <div class="packing">
-
-            <div class="section-header">
-                <h1>Packing Checklist Generator</h1>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod dolores id, molestias modi voluptatum illo quos repellat ipsam omnis, eaque maxime minus nemo velit soluta saepe labore ratione magni incidunt.</p>
+    <section class="w-full h-auto py-20 bg-hover">
+        <div class="px-20 m-auto text-center flex flex-col justify-center align-middle">
+            <div class="mb-10">
+                <h2 class="text-4xl capitalize text-background">why Maharashtra for treeking?</h2>
+                <p class="text-base text-background mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi quasi voluptatem quas, quo expedita necessitatibus.</p>
             </div>
-
-            <div class="trek-type-selector">
-
-                <div class="header">
-                    <img src="{{ url_for('static', filename='images/icons/note_alt_20dp_000000_FILL0_wght400_GRAD0_opsz20.svg') }}" alt="">
-                    <h3 class="checklist-title">Customize Your Checklist</h3>
-                </div>
-                <div>
-                    <button class="difficulty-btn ">Easy Trek</button>
-                    <button class="difficulty-btn active">Moderate Trek</button>
-                    <button class="difficulty-btn">Difficult Trek</button>
-                    <button class="difficulty-btn">Multi-day Trek</button>
-                </div>
-
-            </div>
-
-            <div class="checklist-container">
-
-                <div class="header">
-                    <div>
-                        <img src="{{ url_for('static', filename='images/icons/check_20dp_000000_FILL0_wght600_GRAD0_opsz20.svg') }}" alt="">
-                        <h3 class="checklist-title">Customize Your Checklist</h3>
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="p-6 text-center bg-white rounded-2xl">
+                    <div class="inline-flex p-4 rounded-2xl text-primary mb-6 bg-[#b8e7d1]">
+                        <img class="h-10 w-10 object-contain" src="{{ url_for('static', filename='images/icons/history_24dp_2D6B4D_FILL0_wght500_GRAD0_opsz24.svg') }}" alt="">
                     </div>
-
-                    <div class="action-icons">
-                        <img src="{{ url_for('static', filename='images/icons/print_20dp_000000_FILL0_wght600_GRAD0_opsz20.svg') }}" alt="print">
-                        <img src="{{ url_for('static', filename='images/icons/download_20dp_000000_FILL0_wght600_GRAD0_opsz20.svg') }}" alt="download">
-                    </div>
+                    <h2 class="text-xl font-semibold mb-3">Rich History</h2>
+                    <p class="text-base leading-relaxed">Explore centuries-old forts and trails that witnessed the rise of the Maratha Empire. Each trek is a journey through time.</p>
                 </div>
-
-                <div class="checklist-content">
-
-                    <div class="category">
-
+                <div class="p-6 text-center bg-white rounded-2xl">
+                    <div class="inline-flex p-4 rounded-2xl text-secondary mb-6 bg-[#ddb58d]">
+                        <img class="h-10 w-10 object-contain" src="{{ url_for('static', filename='images/icons/landscape_2_24dp_E68C32_FILL0_wght500_GRAD0_opsz24.svg') }}" alt="">
                     </div>
-
+                    <h2 class="text-xl font-semibold mb-3">Diverse Terrian</h2>
+                    <p class="text-base leading-relaxed">From easy hill walks to challenging cliff climbs, Maharashtra's Western Ghats offer trails for every skill level.</p>
                 </div>
-
+                <div class="p-6 text-center bg-white rounded-2xl">
+                    <div class="inline-flex p-4 rounded-2xl text-primary mb-6 bg-[#b8e7d1]">
+                        <img class="h-10 w-10 object-contain" src="{{ url_for('static', filename='images/icons/static/images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                    </div>
+                    <h2 class="text-xl font-semibold mb-3">Vibrant Community</h2>
+                    <p class="text-base leading-relaxed">Join a passionate community of trekkers sharing knowledge and experiences. Perfect for beginners and experts alike.</p>
+                </div>
             </div>
         </div>
+
     </section>
 
 {% endblock %}
