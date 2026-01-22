@@ -12,13 +12,13 @@
 
 </head>
 <body>
-    <header class="z-50 w-full py-4 px-20 bg-[#2D6B4D] flex items-center justify-between align-center transition-all duration-300 ease fixed">
+    <header class="z-50 w-full h-20 py-4 px-20 bg-[#2D6B4D] flex items-center justify-between align-center transition-all duration-300 ease fixed">
         <a href="#" class="text-3xl font-bold text-[#FAF8F5]">Trek Maharashtra</a>
         <div class="text-4xl font-bold md:hidden text-[#FAF8F5] ">&#8801;</div>
         <div class="hidden md:flex text-[#FAF8F5]">
             <div class="navigation-item">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/#treks">Treks</a>
+                <a class="nav-link" href="/treks">Treks</a>
                 <a class="nav-link" href="/#waterfalls">Waterfalls</a>
                 <a class="nav-link" href="/gallery">Gallery</a>
                 <a class="nav-link" href="/contact">Contact</a>
@@ -26,7 +26,7 @@
         </div>
     </header>
 
-    <main>
+    <main class="pt-20">
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
