@@ -12,21 +12,25 @@
 
 </head>
 <body>
-    <header class="z-50 w-full h-20 py-4 px-20 bg-[#2D6B4D] flex items-center justify-between align-center transition-all duration-300 ease fixed">
+    <header class="z-50 w-full h-16 py-4 px-20 bg-[#2D6B4D] flex items-center justify-between align-center transition-all duration-300 ease fixed">
         <a href="#" class="text-3xl font-bold text-[#FAF8F5]">Trek Maharashtra</a>
         <div class="text-4xl font-bold md:hidden text-[#FAF8F5] ">&#8801;</div>
         <div class="hidden md:flex text-[#FAF8F5]">
+            <form action="/search">
+                <input class="hidden" type="text" placeholder="Search..">
+                <img src="{{ url_for('static', filename='images/icons/search_25dp_FAF8F5_FILL0_wght600_GRAD0_opsz24.svg') }}" alt="">
+            </form>
             <div class="navigation-item">
                 <a class="nav-link" href="/">Home</a>
                 <a class="nav-link" href="/treks">Treks</a>
-                <a class="nav-link" href="/#waterfalls">Waterfalls</a>
+                <a class="nav-link" href="/waterfalls">Waterfalls</a>
                 <a class="nav-link" href="/gallery">Gallery</a>
                 <a class="nav-link" href="/contact">Contact</a>
             </div>
         </div>
     </header>
 
-    <main class="pt-20">
+    <main class="pt-16">
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <section class="relative w-full">
+        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename='images/' + trek.image) }}" alt="{{ trek.name }} image">
+        <div class="absolute p-6 md:p-16 bottom-0 left-0 right-0">
+            <div class="mx-auto">
+                <a class="text-background flex items-center gap-2 mb-2 text-lg" href="/treks">
+                    <img class="h-4 w-4" src="{{ url_for('static', filename='images/icons/arrow_back_ios_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                    Back to Treks
+                </a>
+                <div class="flex flex-wrap items-center gap-3 mb-2">
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-background">{{ trek.title }}</h1>
+                    <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ trek.difficulty }}</span>
+                </div>
+                <div class="flex items-center gap-2 text-lg">
+                    <img class="h-4 w-4" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                    <span class="text-background">Western Ghats • Pune, Maharashtra</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="py-10 bg-muted w-full">
+        <div class="px-6 mx-auto">
+            <div class="flex flex-wrap gap-6 md:flex-row justify-evenly">
+                <div class="flex flex-1 min-w-[200px] p-6 gap-2 items-center bg-background shadow-sm rounded-lg">
+                    <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                    <div>
+                        <p class="text-sm text-primary">Duration</p>
+                        <p class="text-lg font-bold">{{ trek.duration }}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-1 min-w-[200px] p-6 gap-2 items-center bg-background shadow-sm rounded-lg">
+                    <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                    <div>
+                        <p class="text-sm text-primary">Distance</p>
+                        <p class="text-lg font-bold">{{ trek.distance }}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-1 min-w-[200px] p-6 gap-2 items-center bg-background shadow-sm rounded-lg">
+                    <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
+                    <div>
+                        <p class="text-sm text-primary">Group Size</p>
+                        <p class="text-lg font-bold">{{ trek.group_size }}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-1 min-w-[200px] p-6 gap-2 items-center bg-background shadow-sm rounded-lg">
+                    <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                    <div>
+                        <p class="text-sm text-primary">Best Season</p>
+                        <p class="text-lg font-bold">{{ trek.duration }}</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-1 min-w-[200px] p-6 gap-2 items-center bg-background shadow-sm rounded-lg">
+                    <img class="h-6 w-6 text-background" src="{{ url_for('static', filename='images/icons/landscape_2_24dp_E68C32_FILL0_wght500_GRAD0_opsz24.svg') }}" alt="">
+                    <div>
+                        <p class="text-sm text-primary">Altitude</p>
+                        <p class="text-lg font-bold">{{ trek.altitude }}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-background py-12">
+        <div class="mx-auto px-6">
+            <div class="flex flex-col md:flex-row gap-10">
+
+                <div>
+                    <div>
+                        <h2 class="text-3xl mb-3 font-extrabold">About This Trek</h2>
+                        <p class="text-base text-slate-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero quae voluptatibus, quisquam nam hic soluta doloremque enim, amet molestias rem corporis rerum aliquid consectetur, sapiente ad!</p>
+                    </div>
+                    <div class="">
+                        <h2 class="text-3xl mt-8 mb-4 font-extrabold">Highlights<h2>
+                        <div class="flex flex-wrap gap-3 justify-center">
+                            <div class="flex min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
+                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                                <span class="text-lg">Padmavati Lake</span>
+                            </div>
+                            <div class="flex min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
+                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                                <span class="text-lg">Padmavati Lake</span>
+                            </div>
+                            <div class="flex  min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
+                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                                <span class="text-lg">Padmavati Lake</span>
+                            </div>
+                            <div class="flex  min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
+                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                                <span class="text-lg">Padmavati Lake</span>
+                            </div>
+                            <div class="flex min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
+                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                                <span class="text-lg">Padmavati Lake</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 flex-col align-middle">
+                    <div class="p-6 shadow-lg rounded-md">
+                        <h3 class="text-xl font-extrabold mb-3">Book This Trek</h3>
+                        <p class="text-lg text-primary mb-2">Join our experienced guides for an unforgettable adventure.</p>
+                        <button class="w-full py-2 text-lg bg-primary text-background rounded-lg mb-2 font-bold hover:bg-textColor">Book Now</button><br>
+                        <button class="w-full text-lg text-center hover:scale-110">Contact Guide</button>
+                    </div>
+                    <div class="p-6 bg-muted shadow-md rounded-md mt-6">
+                        <h3 class="text-xl font-extrabold mb-3">What to Bring</h3>
+                        <ul class="space-y-2 text-sm">
+                            <li>•  Sturdy trekking shoes</li>
+                            <li>•  2-3 liters of water</li>
+                            <li>•  Light snacks and energy bars</li>
+                            <li>•  Rain gear (monsoon season)</li>
+                            <li>•  Sunscreen and cap</li>
+                            <li>•  First aid kit</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>  
+
+
+{% endblock %}

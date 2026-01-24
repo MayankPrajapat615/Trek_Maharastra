@@ -125,6 +125,100 @@ treks = [
     }
 ]
 
+waterfalls = [
+    {
+        "title": "Devkund Waterfall",
+        "slug": "devkund-waterfall",
+        "difficulty": "Easy",
+        "height": "80 ft",
+        "image": "devkund-waterfall.jpg",
+        "BTTVisit": "June-September",
+        "description": "Crystal clear turquoise pool surrounded by lush greenery, perfect for monsoon photography and nature lovers."
+    },
+    {
+        "title": "Kune Waterfall",
+        "slug": "kune-waterfall",
+        "difficulty": "Easy",
+        "height": "200 ft",
+        "image": "kune.webp",
+        "BTTVisit": "June-October",
+        "description": "Three-tiered cascade near Lonavala visible from highway, stunning views during monsoon season with easy accessibility."
+    },
+    {
+        "title": "Lingmala Waterfall",
+        "slug": "lingmala-waterfall",
+        "difficulty": "Easy",
+        "height": "500 ft",
+        "image": "lingmala.webp",
+        "BTTVisit": "June-September",
+        "description": "Mahabaleshwar's tallest waterfall plunging into Venna Valley, spectacular monsoon views with misty surroundings and rainbows."
+    },
+    {
+        "title": "Thoseghar Waterfall",
+        "slug": "thoseghar-waterfall",
+        "difficulty": "Easy",
+        "height": "500 ft",
+        "image": "thoseghar.webp",
+        "BTTVisit": "June-October",
+        "description": "Series of waterfalls near Satara with breathtaking valley views, monsoon paradise for photographers and adventure seekers."
+    },
+    {
+        "title": "Randha Waterfall",
+        "slug": "randha-waterfall",
+        "difficulty": "Moderate",
+        "height": "170 ft",
+        "image": "randha.webp",
+        "BTTVisit": "July-September",
+        "description": "Bhandardara's powerful cascade formed by Pravara River, spectacular force during monsoon with surrounding mountain scenery."
+    },
+    {
+        "title": "Dabhosa Waterfall",
+        "slug": "dabhosa-waterfall",
+        "difficulty": "Moderate",
+        "height": "300 ft",
+        "image": "dabhosa-waterfall.jpg",
+        "BTTVisit": "June-September",
+        "description": "Majestic waterfall in Jawhar requiring short trek through dense forest, rewarding with pristine pool and natural beauty."
+    },
+    {
+        "title": "Someshwar Waterfall",
+        "slug": "someshwar-waterfall",
+        "difficulty": "Easy",
+        "height": "50 ft",
+        "image": "someshwar.webp",
+        "BTTVisit": "June-October",
+        "description": "Cascading beauty near Bhayandar with ancient Someshwar temple, peaceful spot for picnics and spiritual connection."
+    },
+    {
+        "title": "Zenith Waterfall",
+        "slug": "zenith-waterfall",
+        "difficulty": "Moderate",
+        "height": "300 ft",
+        "image": "zenith.webp",
+        "BTTVisit": "June-September",
+        "description": "Hidden gem near Khopoli requiring moderate trek, serene atmosphere with crystal clear water and lush surroundings."
+    },
+    {
+        "title": "Kalmandavi Waterfall",
+        "slug": "kalmandavi-waterfall",
+        "difficulty": "Moderate",
+        "height": "720 ft",
+        "image": "kalmandavi-waterfall.jpg",
+        "BTTVisit": "October-June",
+        "description": "Maharashtra's tallest waterfall in Bhandardara region, spectacular views during post-monsoon season with scenic trekking route."
+    },
+    {
+        "title": "Pandavkada Waterfall",
+        "slug": "pandavkada-waterfall",
+        "difficulty": "Moderate",
+        "height": "107 ft",
+        "image": "pandavkada.webp",
+        "BTTVisit": "July-September",
+        "description": "Beautiful falls near Kharghar with mythological significance, popular monsoon destination with easy accessibility from Mumbai."
+    }
+]
+
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -133,6 +227,17 @@ def home():
 @app.route('/treks')
 def treks_page():
     return render_template('treks.html', treks=treks)
+
+@app.route('/waterfalls')
+def waterfalls_page():
+    return render_template('waterfalls.html', waterfalls=waterfalls)
+
+@app.route('/treks/<slug>')
+def trek_details(slug):
+    trek = next((t for t in treks if t["slug"] == slug), None)
+    if not trek:
+        return "Trek not found", 404
+    return render_template('trek_details.html', trek=trek)
 
 
 if __name__ == '__main__':
