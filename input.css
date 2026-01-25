@@ -25,12 +25,34 @@
 }
 
 @layer components {
-
-
-
+  
+  /* collapsed state (default) */
+  .search-box {
+    width: 2.5rem; /* 40px */
+  }
+  
+  /* expanded state */
+  .search-box.active {
+    width: 12rem; /* 192px */
+    padding: 2px;
+  }
+  
+  .search-input {
+    width: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .search-box.active .search-input {
+    width: 8rem;
+    opacity: 1;
+    padding-left: 2px;
+  }
+  
+  
   .nav-link {
     @apply text-xl ml-7 font-medium transition-all duration-500 ease-in text-[#FAF8F5] relative no-underline;
-  }
+  } 
   
   .nav-link::before {
     content: '';
