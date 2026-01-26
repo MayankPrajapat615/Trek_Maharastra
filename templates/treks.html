@@ -14,27 +14,27 @@
  
             <div class="card h-[400px] rounded-2xl relative">
                 <div class="upper-half">
-                    <img class="h-[180px] w-full object-cover block object-bottom" src="/static/images/bhimshankar.jpg" alt="">
+                    <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/' + trek.image) }}" alt="">
                     <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                 </div>
                 <div class="lower-half p-4 bg-background h-[220px]">
                     <div class="card-header flex align-middle justify-between mb-3 text-background">
-                        <h3 class="text-lg font-medium text-black">{{ trek.title }}</h3>
+                        <h3 class="text-lg font-medium text-black">{{ trek.name }}</h3>
                         <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ trek.difficulty }}</span>
                     </div>
                     <p class="line-clamp-3 mb-3">{{ trek.description }}</p>
                     <div class="card-icons flex align-middle gap-4 text-xs font-medium">
                         <span class="flex align-middle gap-1">
                             <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
-                            {{ trek.duration }}
+                            {{ trek.duration_hours }} hrs
                         </span>
                         <span class="flex align-middle gap-1">
                             <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
-                            {{ trek.distance }}
+                            {{ trek.distance_km }} km
                         </span>
                         <span class="flex align-middle gap-1">
                             <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
-                            {{ trek.group_size }}
+                            {{ trek.group_size_min }}-{{ trek.group_size_max }}
                         </span>
                     </div>
                     <div class="view-all-btn mt-4 text-center">
