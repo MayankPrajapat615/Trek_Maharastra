@@ -796,6 +796,10 @@ body {
   top: 0.5rem;
 }
 
+.top-full {
+  top: 100%;
+}
+
 .z-0 {
   z-index: 0;
 }
@@ -810,6 +814,10 @@ body {
 
 .m-auto {
   margin: auto;
+}
+
+.m-1 {
+  margin: 0.25rem;
 }
 
 .mx-auto {
@@ -1010,6 +1018,10 @@ body {
   max-height: fit-content;
 }
 
+.max-h-60 {
+  max-height: 15rem;
+}
+
 .w-10 {
   width: 2.5rem;
 }
@@ -1182,8 +1194,18 @@ body {
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .scroll-smooth {
@@ -1377,6 +1399,18 @@ body {
   padding: 2rem;
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
 .px-10 {
   padding-left: 2.5rem;
   padding-right: 2.5rem;
@@ -1460,6 +1494,11 @@ body {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 
 .pb-6 {
@@ -1602,12 +1641,24 @@ body {
   color: rgb(255 255 255 / 0.8);
 }
 
+.text-muted {
+  color: #fffefcc3;
+}
+
 .underline {
   text-decoration-line: underline;
 }
 
 .no-underline {
   text-decoration-line: none;
+}
+
+.opacity-60 {
+  opacity: 0.6;
+}
+
+.opacity-70 {
+  opacity: 0.7;
 }
 
 .shadow-lg {
@@ -1645,6 +1696,12 @@ body {
 
 .transition-all {
   transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -1695,6 +1752,10 @@ body {
   background-color: rgb(255 255 255 / 0.2);
 }
 
+.hover\:bg-primary\/10:hover {
+  background-color: rgb(45 107 77 / 0.1);
+}
+
 .hover\:font-bold:hover {
   font-weight: 700;
 }
@@ -1734,6 +1795,10 @@ body {
 
   .md\:h-screen {
     height: 100vh;
+  }
+
+  .md\:w-3\/5 {
+    width: 60%;
   }
 
   .md\:w-72 {

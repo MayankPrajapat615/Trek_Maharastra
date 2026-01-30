@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -15,10 +15,33 @@ def create_app():
     from models.locations import Location
     from models.treks import Trek
     from models.waterfalls import Waterfall
+    from models.highlights import Highlight
 
     @app.route('/')
     def home():
         return render_template('home.html')
+    
+    @app.route('/search')
+    def search():
+        query = request.args.get("q", "").strip()
+
+        if not query:
+            return render_template("treks.html", treks=[])
+        
+        treks = (
+            db.session.query(Trek)
+            .join(Location)
+            .filter(
+                db.or_(
+                    Trek.name.ilike(f"%{query}%"),
+                    Location.district.ilike(f"%{query}%"),
+                    Location.region.ilike(f"%{query}%")
+                )
+            )
+            .all()
+        )
+    
+        return render_template("treks.html", treks=treks, query=query)
 
     @app.route('/treks')
     def treks_page():

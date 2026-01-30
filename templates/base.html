@@ -48,15 +48,17 @@
     <div class="flex items-center gap-2 text-background">
 
         <!-- Search -->
-        <form action="/search" method="post" class="relative flex items-center">
+        <form action="/search" method="get" class="relative flex items-center">
             <div id="searchBox"
                 class="search-box flex items-center overflow-hidden bg-secondary border border-primary rounded-lg transition-all duration-300">
 
                 <input
                     id="searchInput"
                     type="text"
-                    placeholder="Search"
-                    class="search-input bg-transparent outline-none text-sm text-background "
+                    name="q"
+                    placeholder="Search treks, districts, regions"
+                    value="{{ query or '' }}"
+                    class="search-input bg-transparent outline-none text-sm text-white"
                 />
 
                 <button
@@ -71,6 +73,32 @@
                 </button>
             </div>
         </form>
+
+        <!-- search result -->
+        {% if treks is defined %}
+            {% if treks|length > 0 %}
+                <div class="space-y-3">
+                    {% for trek in treks %}
+                        <a href="/trek/{{ trek.slug }}"
+                           class="block p-3 border border-primary rounded-lg hover:bg-secondary transition">
+                
+                            <h3 class="text-sm font-semibold">
+                                {{ trek.name }}
+                            </h3>
+                        
+                            <p class="text-xs opacity-70">
+                                {{ trek.location.district }} · {{ trek.location.region }}
+                            </p>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="mt-4 text-sm opacity-60">
+                    No treks found.
+                </p>
+            {% endif %}
+        {% endif %}
+
 
 
         <!-- Burger (mobile only) -->

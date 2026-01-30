@@ -9,6 +9,7 @@ class Waterfall(db.Model):
     slug = db.Column(db.String(150), unique=True, nullable=False)
 
     location_id = db.Column(db.Integer, db.ForeignKey("locations.id"), nullable=False)
+    
     height_m = db.Column(db.Integer)
     is_seasonal = db.Column(db.Boolean, default=True)
     best_season = db.Column(db.String(100))

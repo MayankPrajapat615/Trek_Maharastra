@@ -11,12 +11,12 @@
                     Back to Treks
                 </a>
                 <div class="flex flex-wrap items-center gap-3 mb-2">
-                    <h1 class="text-3xl md:text-5xl font-extrabold text-background">{{ trek.title }}</h1>
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-background">{{ trek.name }}</h1>
                     <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ trek.difficulty }}</span>
                 </div>
                 <div class="flex items-center gap-2 text-lg">
                     <img class="h-4 w-4" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
-                    <span class="text-background">Western Ghats • Pune, Maharashtra</span>
+                    <span class="text-background">{{ trek.location.region }} • {{ trek.location.district}}, {{ trek.location.state }}</span>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
                     <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Duration</p>
-                        <p class="text-lg font-bold">{{ trek.duration }}</p>
+                        <p class="text-lg font-bold">{{ trek.duration_hours }} Hours</p>
                     </div>
                 </div>
 
@@ -36,7 +36,7 @@
                     <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/trending_up_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Distance</p>
-                        <p class="text-lg font-bold">{{ trek.distance }}</p>
+                        <p class="text-lg font-bold">{{ trek.distance_km }} km</p>
                     </div>
                 </div>
 
@@ -44,7 +44,7 @@
                     <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Group Size</p>
-                        <p class="text-lg font-bold">{{ trek.group_size }}</p>
+                        <p class="text-lg font-bold">{{ trek.group_size_min }}-{{ trek.group_size_max }}</p>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                     <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Best Season</p>
-                        <p class="text-lg font-bold">{{ trek.duration }}</p>
+                        <p class="text-lg font-bold">{{ trek.best_season }}</p>
                     </div>
                 </div>
 
@@ -60,7 +60,7 @@
                     <img class="h-6 w-6 text-background" src="{{ url_for('static', filename='images/icons/landscape_2_24dp_E68C32_FILL0_wght500_GRAD0_opsz24.svg') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Altitude</p>
-                        <p class="text-lg font-bold">{{ trek.altitude }}</p>
+                        <p class="text-lg font-bold">{{ trek.elevation_m }} m</p>
                     </div>
                 </div>
 
@@ -72,10 +72,10 @@
         <div class="mx-auto px-6">
             <div class="flex flex-col md:flex-row gap-10">
 
-                <div>
+                <div class="md:w-3/5">
                     <div>
                         <h2 class="text-3xl mb-3 font-extrabold">About This Trek</h2>
-                        <p class="text-base text-slate-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero quae voluptatibus, quisquam nam hic soluta doloremque enim, amet molestias rem corporis rerum aliquid consectetur, sapiente ad!</p>
+                        <p class="text-base text-slate-400">{{ trek.description }}</p>
                     </div>
                     <div class="">
                         <h2 class="text-3xl mt-8 mb-4 font-extrabold">Highlights<h2>
