@@ -3,7 +3,7 @@
 {% block content %}
 
     <section class="relative w-full">
-        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename='images/' + (trek.image_url or 'placeholder.jpg')) }}" alt="{{ trek.name }} image">
+        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename='images/' + (trek.image or 'placeholder.jpg')) }}" alt="{{ trek.name }} image">
         <div class="absolute p-6 md:p-16 bottom-0 left-0 right-0">
             <div class="mx-auto">
                 <a class="text-background flex items-center gap-2 mb-2 text-lg" href="/treks">
@@ -44,7 +44,7 @@
                     <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/group_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Group Size</p>
-                        <p class="text-lg font-bold">{{ trek.group_size_min }}-{{ trek.group_size_max }}</p>
+                        <p class="text-lg font-bold">4-{{ trek.group_size }}</p>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                     <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Best Season</p>
-                        <p class="text-lg font-bold">{{ trek.best_season }}</p>
+                        <p class="text-lg font-bold">{{ trek.best_season | join(', ') }}</p>
                     </div>
                 </div>
 
@@ -60,7 +60,7 @@
                     <img class="h-6 w-6 text-background" src="{{ url_for('static', filename='images/icons/landscape_2_24dp_E68C32_FILL0_wght500_GRAD0_opsz24.svg') }}" alt="">
                     <div>
                         <p class="text-sm text-primary">Altitude</p>
-                        <p class="text-lg font-bold">{{ trek.elevation_m }} m</p>
+                        <p class="text-lg font-bold">{{ trek.height }} m</p>
                     </div>
                 </div>
 
@@ -80,26 +80,13 @@
                     <div class="">
                         <h2 class="text-3xl mt-8 mb-4 font-extrabold">Highlights<h2>
                         <div class="flex flex-wrap gap-3 justify-center">
-                            <div class="flex min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
-                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
-                                <span class="text-lg">Padmavati Lake</span>
-                            </div>
-                            <div class="flex min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
-                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
-                                <span class="text-lg">Padmavati Lake</span>
-                            </div>
-                            <div class="flex  min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
-                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
-                                <span class="text-lg">Padmavati Lake</span>
-                            </div>
-                            <div class="flex  min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
-                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
-                                <span class="text-lg">Padmavati Lake</span>
-                            </div>
-                            <div class="flex min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
-                                <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
-                                <span class="text-lg">Padmavati Lake</span>
-                            </div>
+                            
+                            {% for highlight in trek.highlights %}
+                                <div class="flex min-w-[200px] flex-1 items-center gap-2 p-4 bg-primary/5 rounded-lg border-2 border-hover-400">
+                                    <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                                    <span class="text-lg">{{ highlight.name }}</span>
+                                </div>
+                            {% endfor %}
                             
                         </div>
                     </div>

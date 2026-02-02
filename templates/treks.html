@@ -14,7 +14,7 @@
  
             <div class="card h-[400px] rounded-2xl relative">
                 <div class="upper-half">
-                    <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/' + (trek.image_url or 'placeholder.jpg')) }}" alt="">
+                    <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename='images/' + (trek.image or 'placeholder.jpg')) }}" alt="">
                     <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                 </div>
                 <div class="lower-half p-4 bg-background h-[220px]">

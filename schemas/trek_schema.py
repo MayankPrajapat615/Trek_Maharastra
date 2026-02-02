@@ -15,7 +15,8 @@ TREK_SCHEMA = {
 
     "location": {
         "district": str,
-        "region": str
+        "region": str,
+        "state":str
     },
 
     "type": "trek"              # enforced internally
