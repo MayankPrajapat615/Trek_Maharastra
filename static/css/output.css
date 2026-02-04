@@ -1005,6 +1005,10 @@ body {
   height: 100vh;
 }
 
+.max-h-80 {
+  max-height: 20rem;
+}
+
 .max-h-fit {
   max-height: -moz-fit-content;
   max-height: fit-content;
@@ -1192,6 +1196,10 @@ body {
   overflow: hidden;
 }
 
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
 .scroll-smooth {
   scroll-behavior: smooth;
 }
@@ -1243,6 +1251,11 @@ body {
 .border-primary {
   --tw-border-opacity: 1;
   border-color: rgb(45 107 77 / var(--tw-border-opacity, 1));
+}
+
+.border-secondary {
+  --tw-border-opacity: 1;
+  border-color: rgb(230 140 50 / var(--tw-border-opacity, 1));
 }
 
 .border-white {

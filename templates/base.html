@@ -53,7 +53,7 @@
                 class="search-box flex items-center overflow-hidden bg-secondary border border-primary rounded-lg transition-all duration-300">
 
                 <input
-                    id="searchInput"
+                    id="search-input"
                     type="text"
                     name="q"
                     placeholder="Search treks, districts, regions"
@@ -187,7 +187,13 @@
           e.stopPropagation();
           box.classList.toggle("active");
         
-          box.classList.contains("active") ? input.focus() : input.blur();
+          box.classList.contains("active")
+
+           if (box.classList.contains("active")) {
+            input.focus();
+            const len = input.value.length;
+            input.setSelectionRange(len, len);
+          }
         });
 
         box.addEventListener("click", (e) => e.stopPropagation());
@@ -197,6 +203,14 @@
           input.blur();
         });
 
+        const searchInput = document.getElementById("search-input");
+
+        if (searchInput) {
+          searchInput.addEventListener("focus", () => {
+            const len = searchInput.value.length;
+            searchInput.setSelectionRange(len, len);
+          });
+        }
     </script>
 
 </body>
