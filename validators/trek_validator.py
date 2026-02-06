@@ -22,6 +22,7 @@ def validate_trek(data: dict):
             for subkey, subtype in expected.items():
                 if subkey not in data[key]:
                     raise ValueError(f"Missing location field: {subkey}")
+                
         elif isinstance(expected, type):
             if not isinstance(data[key], expected):
                 raise ValueError(f"Invalid type for {key}")

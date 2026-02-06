@@ -12,111 +12,54 @@
 
 </head>
 <body>
-    <!-- <header class="z-50 w-full h-16 py-4 px-20 bg-[#2D6B4D] flex items-center justify-between align-center transition-all duration-300 ease fixed">
-        <a href="#" class="text-3xl font-bold text-[#FAF8F5]">Trek Maharashtra</a>
 
-        <div class="flex items-center gap-3 align-middle">
-            <div class="">
-                <form action="/search">
-                    <input class="hidden" type="text" placeholder="Search..">
-                    <img src="{{ url_for('static', filename='images/icons/search_25dp_FAF8F5_FILL0_wght600_GRAD0_opsz24.svg') }}" alt="">
-                </form>
+    <header class="fixed top-0 z-50 w-full h-16 px-6 md:px-20 bg-primary flex items-center justify-between">
+
+        <!-- LEFT: Brand -->
+        <a href="/" class="text-2xl md:text-3xl font-bold text-background">
+            TREK Maharashtra
+        </a>
+
+        <!-- RIGHT: Search + Menu -->
+        <div class="flex items-center gap-2 text-background">
+
+            <div class="relative">
+                <button id="searchBtn" class="p-2">
+                    <img src="static/images/icons/search_24dp_EFEFEF_FILL0_wght500_GRAD0_opsz24.svg" alt="">
+                </button>
+
+                <div id="searchBox"
+                     class="hidden absolute right-0 top-12 w-80 bg-white border rounded-lg shadow p-3 z-50">
+
+                  <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Search treks & waterfalls..."
+                    class="w-full border p-2 rounded text-black"
+                  />
+
+                    <div id="results" class="mt-3 max-h-64 overflow-y-auto">
+
+                    </div>
+                </div>
             </div>
-    
-            <div class="text-4xl font-bold md:hidden text-[#FAF8F5] ">&#8801;</div>
-        </div>
-        <div class="hidden md:flex text-[#FAF8F5]">
-            <div class="navigation-item">
+
+            <!-- Burger (mobile only) -->
+            <button class="text-4xl leading-none md:hidden">
+                &#8801;
+            </button>
+
+            <!-- Nav (desktop only) -->
+            <nav class="hidden md:flex items-center gap-6 font-medium">
                 <a class="nav-link" href="/">Home</a>
                 <a class="nav-link" href="/treks">Treks</a>
                 <a class="nav-link" href="/waterfalls">Waterfalls</a>
                 <a class="nav-link" href="/gallery">Gallery</a>
                 <a class="nav-link" href="/contact">Contact</a>
-            </div>
+            </nav>
+
         </div>
-    </header> -->
-
-
-    <header class="fixed top-0 z-50 w-full h-16 px-6 md:px-20 bg-primary flex items-center justify-between">
-
-    <!-- LEFT: Brand -->
-    <a href="/" class="text-2xl md:text-3xl font-bold text-background">
-        TREK Maharashtra
-    </a>
-
-    <!-- RIGHT: Search + Menu -->
-    <div class="flex items-center gap-2 text-background">
-
-        <!-- Search -->
-        <form action="/search" method="get" class="relative flex items-center">
-            <div id="searchBox"
-                class="search-box flex items-center overflow-hidden bg-secondary border border-primary rounded-lg transition-all duration-300">
-
-                <input
-                    id="search-input"
-                    type="text"
-                    name="q"
-                    placeholder="Search treks, districts, regions"
-                    value="{{ query or '' }}"
-                    class="search-input bg-transparent outline-none text-sm text-white"
-                />
-
-                <button
-                    type="button"
-                    id="searchToggle"
-                    class="flex items-center justify-center w-10 h-10">
-                    <img
-                        class="w-5 h-5"
-                        src="{{ url_for('static', filename='images/icons/search_25dp_FAF8F5_FILL0_wght600_GRAD0_opsz24.svg') }}"
-                        alt="Search"
-                    />
-                </button>
-            </div>
-        </form>
-
-        <!-- search result -->
-        {% if treks is defined %}
-            {% if treks|length > 0 %}
-                <div class="space-y-3">
-                    {% for trek in treks %}
-                        <a href="/trek/{{ trek.slug }}"
-                           class="block p-3 border border-primary rounded-lg hover:bg-secondary transition">
-                
-                            <h3 class="text-sm font-semibold">
-                                {{ trek.name }}
-                            </h3>
-                        
-                            <p class="text-xs opacity-70">
-                                {{ trek.location.district }} · {{ trek.location.region }}
-                            </p>
-                        </a>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p class="mt-4 text-sm opacity-60">
-                    No treks found.
-                </p>
-            {% endif %}
-        {% endif %}
-
-
-
-        <!-- Burger (mobile only) -->
-        <button class="text-4xl leading-none md:hidden">
-            &#8801;
-        </button>
-
-        <!-- Nav (desktop only) -->
-        <nav class="hidden md:flex items-center gap-6 font-medium">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/treks">Treks</a>
-            <a class="nav-link" href="/waterfalls">Waterfalls</a>
-            <a class="nav-link" href="/gallery">Gallery</a>
-            <a class="nav-link" href="/contact">Contact</a>
-        </nav>
-
-    </div>
-</header>
+    </header>
 
 
     <main class="pt-16">
@@ -178,39 +121,88 @@
     </footer>
 
     <script>
+        const treks = ["Rajgad", "Kalavantin Durg", "Sinhagad"];
+        const waterfalls = ["Thoseghar", "Lingmala"];
 
-        const toggle = document.getElementById("searchToggle");
-        const box = document.getElementById("searchBox");
-        const input = document.getElementById("searchInput");
+        const searchBtn = document.getElementById("searchBtn");
+        const searchBox = document.getElementById("searchBox");
+        const searchInput = document.getElementById("searchInput");
+        const resultsDiv = document.getElementById("results");
 
-        toggle.addEventListener("click", (e) => {
-          e.stopPropagation();
-          box.classList.toggle("active");
+        // 🔍 Toggle search box
+        searchBtn.addEventListener("click", (e) => {
+            e.stopPropagation(); // prevent document click
+            searchBox.classList.toggle("hidden");
+            searchInput.focus();
+        });
+    
+        // ❌ Close when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!searchBox.contains(e.target) && !searchBtn.contains(e.target)) {
+                searchBox.classList.add("hidden");
+            }
+        });
+    
+        // ⌨️ Search logic
+        searchInput.addEventListener("input", async () => {
+            const q = searchInput.value.trim();
+            resultsDiv.innerHTML = "";
+
+            if (!q) return;
+
+            const res = await fetch(`/search?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+
+            /* ---------- TREKS SECTION ---------- */
+            if (data.treks && data.treks.length > 0) {
+              const trekHeading = document.createElement("p");
+              trekHeading.textContent = "TREKS";
+              trekHeading.className =
+                "text-xs font-semibold uppercase text-black px-2 mt-2 mb-1 cursor-default";
+              resultsDiv.appendChild(trekHeading);
+            
+              data.treks.forEach(trek => {
+                const item = document.createElement("a");
+                item.href = `/treks/${trek.slug}`;
+                item.className =
+                  "block px-3 py-2 rounded-md text-sm hover:bg-muted cursor-pointer text-black";
+                
+                item.innerHTML = `
+                  <div class="font-medium">${trek.name}</div>
+                  <div class="text-xs opacity-60">
+                    ${trek.location.district}, ${trek.location.region}
+                  </div>
+                `;
+              
+                resultsDiv.appendChild(item);
+              });
+            }
         
-          box.classList.contains("active")
-
-           if (box.classList.contains("active")) {
-            input.focus();
-            const len = input.value.length;
-            input.setSelectionRange(len, len);
-          }
+            /* ---------- WATERFALLS SECTION ---------- */
+            if (data.waterfalls && data.waterfalls.length > 0) {
+              const wfHeading = document.createElement("p");
+              wfHeading.textContent = "WATERFALLS";
+              wfHeading.className =
+                "text-xs font-semibold uppercase text-black px-2 mt-3 mb-1 cursor-default";
+              resultsDiv.appendChild(wfHeading);
+            
+              data.waterfalls.forEach(wf => {
+                const item = document.createElement("a");
+                item.href = `/waterfalls/${wf.slug}`;
+                item.className =
+                  "block px-3 py-2 rounded-md text-sm hover:bg-muted cursor-pointer";
+                
+                item.innerHTML = `
+                  <div class="font-medium">${wf.name}</div>
+                  <div class="text-xs opacity-60">
+                    ${wf.location.district}, ${wf.location.region}
+                  </div>
+                `;
+              
+                resultsDiv.appendChild(item);
+              });
+            }
         });
-
-        box.addEventListener("click", (e) => e.stopPropagation());
-
-        document.addEventListener("click", () => {
-          box.classList.remove("active");
-          input.blur();
-        });
-
-        const searchInput = document.getElementById("search-input");
-
-        if (searchInput) {
-          searchInput.addEventListener("focus", () => {
-            const len = searchInput.value.length;
-            searchInput.setSelectionRange(len, len);
-          });
-        }
     </script>
 
 </body>

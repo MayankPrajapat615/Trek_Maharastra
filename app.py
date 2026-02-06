@@ -1,9 +1,11 @@
-from xmlrpc import client
-from flask import Flask, render_template, request, abort
+from flask import Flask, render_template, request, abort, jsonify
+#DTABASE IMPORTS 
 from pymongo import MongoClient
+from xmlrpc import client
 from pymongo.errors import DuplicateKeyError
 from validators.trek_validator import validate_trek
 from db import treks_collection, waterfalls_collection
+from flask_cors import CORS
 
 
 def create_app():
@@ -16,15 +18,16 @@ def create_app():
             treks_collection.insert_one(data)
         except DuplicateKeyError:
             raise ValueError("Slug already exists")
-
-    @app.route('/')
-    def home():
-        return render_template('home.html')
     
-    @app.route("/test-route")
-    def test_route():
-        return "OK"
-
+    @app.route("/ping")
+    def ping():
+        return jsonify({'status': "ok"})
+    
+    @app.route('/test-db')
+    def test_db():
+        count = treks_collection.count_documents({})
+        return jsonify({"Treks": count})
+    
     @app.route("/__health")
     def health():
         try:
@@ -32,17 +35,38 @@ def create_app():
             return {"status": "ok", "db": "connected"}
         except Exception as e:
             return {"status": "fail", "error": str(e)}, 500
+
+    
+    @app.route('/')
+    def home():
+        return render_template('home.html')
+
     
     #SEARCH ROUTE
     @app.route('/search')
     def search():
         query = request.args.get("q", "").strip()
-        
+
         if not query:
-            return render_template("treks.html", treks=[])
+            return jsonify([])
+
+        regex = {"$regex": query, "$options": "i"}
 
         treks = list(
             treks_collection.find(
+                {
+                    "$or": [
+                        {"name": regex},
+                        {"location.district": regex},
+                        {"location.region": regex}
+                    ]
+                },
+                {"_id":0}
+            )
+        )
+
+        waterfalls = list(
+            waterfalls_collection.find(
                 {
                     "$or": [
                         {"name": {"$regex": query, "$options": "i"}},
@@ -54,7 +78,17 @@ def create_app():
             )
         )
 
-        return render_template("treks.html", treks=treks, query=query)
+        return jsonify({
+            "treks": treks,
+            "waterfalls": waterfalls
+        })
+
+        
+    @app.route('/api/treks')
+    def get_treks():
+        treks = list(treks_collection.find({}, {"_id": 0}))
+        return jsonify(treks)
+
 
     #TREK ROUTE 
     @app.route('/treks')
