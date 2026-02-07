@@ -3,7 +3,7 @@
 {% block content %}
 
     <section class="relative w-full">
-        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename='images/' + (trek.image or 'placeholder.jpg')) }}" alt="{{ trek.name }} image">
+        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename=trek.image) }}" alt="{{ trek.name }} image">
         <div class="absolute p-6 md:p-16 bottom-0 left-0 right-0">
             <div class="mx-auto">
                 <a class="text-background flex items-center gap-2 mb-2 text-lg" href="/treks">
@@ -12,7 +12,7 @@
                 </a>
                 <div class="flex flex-wrap items-center gap-3 mb-2">
                     <h1 class="text-3xl md:text-5xl font-extrabold text-background">{{ trek.name }}</h1>
-                    <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ trek.difficulty }}</span>
+                    <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ trek.difficulty | capitalize}}</span>
                 </div>
                 <div class="flex items-center gap-2 text-lg">
                     <img class="h-4 w-4" src="{{ url_for('static', filename='images/icons/location_on_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
@@ -22,7 +22,7 @@
         </div>
     </section>
     <section class="py-10 bg-muted w-full">
-        <div class="px-6 mx-auto">
+        <div class="px-20 mx-auto">
             <div class="flex flex-wrap gap-6 md:flex-row justify-evenly">
                 <div class="flex flex-1 min-w-[200px] p-6 gap-2 items-center bg-background shadow-sm rounded-lg">
                     <img class="h-6 w-6" src="{{ url_for('static', filename='images/icons/anchor_18dp_000000_FILL0_wght500_GRAD200_opsz20.svg') }}" alt="">
@@ -69,7 +69,7 @@
     </section>
 
     <section class="bg-background py-12">
-        <div class="mx-auto px-6">
+        <div class="mx-auto px-20">
             <div class="flex flex-col md:flex-row gap-10">
 
                 <div class="md:w-3/5">

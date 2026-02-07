@@ -21,7 +21,7 @@
                 <div class="lower-half p-4 bg-background h-[220px]">
                     <div class="card-header flex align-middle justify-between mb-3 text-background">
                         <h3 class="text-lg font-medium text-black">{{ waterfall.name }}</h3>
-                        <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ waterfall.difficulty }}</span>
+                        <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ waterfall.difficulty | capitalize }}</span>
                     </div>
                     <p class="line-clamp-3 mb-3">{{ waterfall.description }}</p>
                     <div class="card-icons flex align-middle gap-4 text-xs font-medium">
@@ -31,7 +31,7 @@
                         </span>
                         <span class="flex align-middle gap-1">
                             <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
-                            {{ waterfall.best_season | join(', ') }}
+                            {{ waterfall.best_season | join(', ') | capitalize }}
                         </span>
                     </div>
                     <div class="view-all-btn mt-4 text-center">
