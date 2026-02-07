@@ -4,20 +4,18 @@ from pymongo import MongoClient
 from xmlrpc import client
 from pymongo.errors import DuplicateKeyError
 from validators.trek_validator import validate_trek
+from validators.waterfall_validator import validate_waterfall
 from db import treks_collection, waterfalls_collection
 from flask_cors import CORS
+from admin import admin_treks, admin_waterfalls
 
 
 def create_app():
 
     app = Flask(__name__)
 
-    def insert_trek(data):
-        validate_trek(data)
-        try:
-            treks_collection.insert_one(data)
-        except DuplicateKeyError:
-            raise ValueError("Slug already exists")
+    app.register_blueprint(admin_waterfalls, url_prefix="/admin")
+    app.register_blueprint(admin_treks, url_prefix="/admin")
     
     @app.route("/ping")
     def ping():
@@ -109,24 +107,6 @@ def create_app():
         if not trek:
             abort(404)
         return render_template('trek_details.html', trek=trek)
-    
-    #ADMIN ROUTE TO ADD TREKS
-    @app.route("/admin/treks", methods=["POST"])
-    def create_trek():
-        if not request.is_json:
-            return {"error": "JSON body required"}, 400
-
-        data = request.get_json()
-
-        try:
-            insert_trek(data)
-        except ValueError as e:
-            return {"error": str(e)}, 400
-        except Exception as e:
-            return {"error": "Internal server error"}, 500
-
-        return {"status": "created"}, 201
-
 
     return app
 
