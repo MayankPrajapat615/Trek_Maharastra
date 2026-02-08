@@ -46,4 +46,10 @@ def validate_trek(data: dict):
     # Enforce internal field
     data["type"] = "trek"
 
+    #SAFE DEFAULTS
+    data["image"] = str(data.get("image", "")).strip()
+    data["is_active"] = bool(data.get("is_active", True))
+    data["is_featured"] = bool(data.get("is_featured", True))
+    data["featured_rank"] = int(data.get("featured_rank", 1))
+    
     return True

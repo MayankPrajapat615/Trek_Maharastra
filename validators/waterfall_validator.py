@@ -55,8 +55,10 @@ def validate_waterfall(data: dict) -> dict:
         data["best_season"] = []
 
     # ---------- SAFE DEFAULTS ----------
-    data["image_url"] = str(data.get("image_url", "")).strip()
+    data["image"] = str(data.get("image", "")).strip()
     data["is_active"] = bool(data.get("is_active", True))
+    data["is_featured"] = bool(data.get("is_featured", True))
+    data["featured_rank"] = int(data.get("featured_rank", 1))
     data["type"] = "waterfall"
 
     return data

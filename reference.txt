@@ -1,0 +1,5 @@
+is_active = visibility
+
+is_featured = promotion #the true satisfield treks/waterfalls participate for the display
+
+featured_rank = this decides the order 

@@ -41,12 +41,16 @@ def create_app():
         treks = list(
             treks_collection.find( 
                 {"is_active":True, "is_featured":True}, 
-                {"_id":0} ).limit(3)
+                {"_id":0} ).sort("featured_rank", 1).limit(3)
         )
+
         waterfalls = list(
-            waterfalls_collection.find({"is_active":True, "is_featured":True}, {"_id":0}).limit(3)
+            waterfalls_collection.find(
+                {"is_active":True, "is_featured":True},
+                {"_id":0}).sort("featured_rank", 1).limit(3)
         )
         return render_template('home.html', treks=treks, waterfalls=waterfalls)
+    
 
     #<-------------SEARCH ROUTE----------------->
     @app.route('/search')
