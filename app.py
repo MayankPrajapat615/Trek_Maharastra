@@ -17,6 +17,8 @@ def create_app():
     app.register_blueprint(admin_waterfalls, url_prefix="/admin")
     app.register_blueprint(admin_treks, url_prefix="/admin")
     
+
+    #<------------TEST ROUTES---------------->
     @app.route("/ping")
     def ping():
         return jsonify({'status': "ok"})
@@ -34,13 +36,19 @@ def create_app():
         except Exception as e:
             return {"status": "fail", "error": str(e)}, 500
 
-    
     @app.route('/')
     def home():
-        return render_template('home.html')
+        treks = list(
+            treks_collection.find( 
+                {"is_active":True, "is_featured":True}, 
+                {"_id":0} ).limit(3)
+        )
+        waterfalls = list(
+            waterfalls_collection.find({"is_active":True, "is_featured":True}, {"_id":0}).limit(3)
+        )
+        return render_template('home.html', treks=treks, waterfalls=waterfalls)
 
-    
-    #SEARCH ROUTE
+    #<-------------SEARCH ROUTE----------------->
     @app.route('/search')
     def search():
         query = request.args.get("q", "").strip()
@@ -81,32 +89,39 @@ def create_app():
             "waterfalls": waterfalls
         })
 
-        
+
     @app.route('/api/treks')
     def get_treks():
         treks = list(treks_collection.find({}, {"_id": 0}))
         return jsonify(treks)
+    
 
-
-    #TREK ROUTE 
+    #<----------------ROUTES FOR THE TREKS AND WATERFALL PAGES----------------->
     @app.route('/treks')
     def treks_page():
         treks = list(treks_collection.find( {}, {"_id": 0} ))
         return render_template('treks.html', treks=treks)
 
-    #WATERFALLS ROUTE 
     @app.route('/waterfalls')
     def waterfalls_page():
         waterfalls = list(waterfalls_collection.find({}, {"_id": 0}))
         return render_template('waterfalls.html', waterfalls=waterfalls)
+    
 
-    #TREK SLUG ROUTE 
+    #<-----------------SLUG ROUTES FOR TREKS AND WATERFALLS--------------------->
     @app.route('/treks/<slug>')
     def trek_details(slug):
         trek = treks_collection.find_one( {"slug": slug}, {"_id":0} )
         if not trek:
             abort(404)
         return render_template('trek_details.html', trek=trek)
+    
+    @app.route('/waterfalls/<slug>')
+    def waterfall_deatil(slug):
+        waterfall = waterfalls_collection.find_one( {"slug":slug}, {"_id":0} )
+        if not waterfall:
+            abort(404)
+        return render_template("waterfall_details.html", waterfall=waterfall)
 
     return app
 
