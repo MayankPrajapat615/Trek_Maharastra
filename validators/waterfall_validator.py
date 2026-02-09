@@ -45,20 +45,25 @@ def validate_waterfall(data: dict) -> dict:
 
     # ---------- SEASONS (NO CRASHING) ----------
     if "best_season" in data and isinstance(data["best_season"], list):
-        normalized = []
-        for season in data["best_season"]:
-            season = str(season).strip().lower()
-            if season in SEASONS:
-                normalized.append(season)
-        data["best_season"] = normalized
+        data["best_season"] = [s.strip().lower() for s in data["best_season"]]
     else:
         data["best_season"] = []
 
+    #highlights
+    if "highlights" in data and not isinstance(data["highlights"], list):
+        raise ValueError("highlights must be a list")
+
     # ---------- SAFE DEFAULTS ----------
+    data["type"] = "waterfall"
+
     data["image"] = str(data.get("image", "")).strip()
     data["is_active"] = bool(data.get("is_active", True))
-    data["is_featured"] = bool(data.get("is_featured", True))
-    data["featured_rank"] = int(data.get("featured_rank", 1))
-    data["type"] = "waterfall"
+    data["is_featured"] = bool(data.get("is_featured", False))
+
+    if data["is_featured"]:
+        data["featured_rank"] = int(data.get("featured_rank", 0))
+    else:
+        data["featured_rank"] = None
+        
 
     return data

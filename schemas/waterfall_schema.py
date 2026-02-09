@@ -7,9 +7,7 @@ WATERFALL_SCHEMA = {
     "height" : int,
 
     "best_season" : list,
-    "image_url" : str,
-
-    "is_active": bool,
+    "image" : str,
 
     "location": {
         "district" : str,
@@ -17,19 +15,31 @@ WATERFALL_SCHEMA = {
         "state" : str
     },
 
-    "type" : "waterfall" 
+    "highlights": [
+      {
+        "name": str,
+        "type": str,
+        "description": str
+      }
+    ],
+
+    "type" : "waterfall",
+    "is_active": bool,
+    "is_featured": bool,
+    "featured_rank": int 
 
 }
 
-WATERFALL_REQUIRED_FIELDS = [
+WATERFALL_REQUIRED_FIELDS = {
     "name",
     "slug",
     "difficulty",
-    "location"
-]
+    "location",
+    "image"
+}
 
-DIFFICULTY_LEVELS = {"easy", "medium", "hard"}
-SEASONS = {"summer", "monsoon", "winter"}
+DIFFICULTY_LEVELS = {"Easy", "Moderate", "Hard"}
+SEASONS = {"Summer", "Monsoon", "Winter"}
 
 LOCATION_REQUIRED_FIELDS = [
     "district",

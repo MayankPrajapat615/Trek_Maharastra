@@ -9,7 +9,7 @@ TREK_SCHEMA = {
     "height": int,
 
     "best_season": list,        # list[str]
-    "image_url": str,
+    "image": str,
 
     "group_size": int,
 
@@ -19,17 +19,29 @@ TREK_SCHEMA = {
         "state":str
     },
 
-    "type": "trek"              # enforced internally
+    "highlights": [
+      {
+        "name": str,
+        "type": str,
+        "description": str
+      }
+    ],
+
+    "type": "trek",             # enforced internally
+    "is_active": bool,
+    "is_featured": bool,
+    "featured_rank": int
 }
 
 
-TREK_REQUIRED_FIELDS = [
+TREK_REQUIRED_FIELDS = {
     "name",
     "slug",
     "difficulty",
-    "location"
-]
+    "location",
+    "image"
+}
 
-DIFFICULTY_LEVELS = {"Easy", "Medium", "Hard"}
+DIFFICULTY_LEVELS = {"Easy", "Moderate", "Hard"}
 SEASONS = {"Summer", "Monsoon", "Winter"}
 

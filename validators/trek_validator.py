@@ -42,6 +42,9 @@ def validate_trek(data: dict):
     if "slug" in data:
         data["slug"] = data["slug"].strip().lower()
 
+    #HIGHLIGHTS
+    if "highlights" in data and not isinstance(data["highlights"], list):
+        raise ValueError("highlights must be a list")
 
     # Enforce internal field
     data["type"] = "trek"
@@ -49,7 +52,11 @@ def validate_trek(data: dict):
     #SAFE DEFAULTS
     data["image"] = str(data.get("image", "")).strip()
     data["is_active"] = bool(data.get("is_active", True))
-    data["is_featured"] = bool(data.get("is_featured", True))
-    data["featured_rank"] = int(data.get("featured_rank", 1))
+    data["is_featured"] = bool(data.get("is_featured", False))  
     
+    if data["is_featured"]:
+        data["featured_rank"] = int(data.get("featured_rank", 0))
+    else:
+        data["featured_rank"] = None
+
     return True
