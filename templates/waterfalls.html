@@ -15,7 +15,7 @@
  
             <div class="card h-[400px] rounded-2xl relative">
                 <div class="upper-half">
-                    <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename=waterfall.image_url) }}" alt="">
+                    <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename=waterfall.image) }}" alt="">
                     <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
                 </div>
                 <div class="lower-half p-4 bg-background h-[220px]">
@@ -23,11 +23,11 @@
                         <h3 class="text-lg font-medium text-black">{{ waterfall.name }}</h3>
                         <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ waterfall.difficulty | capitalize }}</span>
                     </div>
-                    <p class="line-clamp-3 mb-3">{{ waterfall.description }}</p>
+                    <p class="line-clamp-3 mb-3">{{ waterfall.description | striptags }}</p>
                     <div class="card-icons flex align-middle gap-4 text-xs font-medium">
                         <span class="flex align-middle gap-1">
                             <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
-                            {{ waterfall.height }} m
+                            {{ waterfall.height }} Ft
                         </span>
                         <span class="flex align-middle gap-1">
                             <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">

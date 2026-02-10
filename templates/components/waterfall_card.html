@@ -8,7 +8,7 @@
             <h3 class="text-lg font-medium text-black">{{ waterfall.name }}</h3>
             <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ waterfall.difficulty | capitalize }}</span>
         </div>
-        <p class="line-clamp-3 mb-3">{{ waterfall.description | safe}}</p>
+        <p class="line-clamp-3 mb-3">{{ waterfall.description | striptags }}</p>
         <div class="card-icons flex align-middle gap-4 text-xs font-medium">
             <span class="flex items-center gap-1">
                 <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">

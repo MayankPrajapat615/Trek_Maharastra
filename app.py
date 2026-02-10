@@ -101,10 +101,21 @@ def create_app():
     
 
     #<----------------ROUTES FOR THE TREKS AND WATERFALL PAGES----------------->
-    @app.route('/treks')
+    @app.route('/treks' , methods=["GET"])
     def treks_page():
-        treks = list(treks_collection.find( {}, {"_id": 0} ))
-        return render_template('treks.html', treks=treks)
+        difficulty = request.args.get("difficulty")
+        
+        query = {}
+
+        if difficulty:
+            query["difficulty"] = {
+                "$regex": f"^{difficulty}$",
+                "$options": "i"
+            }
+
+        treks = list(treks_collection.find(query, {"_id": 0}))
+
+        return render_template('treks.html', treks=treks, active_difficulty=difficulty)
 
     @app.route('/waterfalls')
     def waterfalls_page():

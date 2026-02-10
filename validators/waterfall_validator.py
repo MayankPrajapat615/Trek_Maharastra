@@ -44,8 +44,14 @@ def validate_waterfall(data: dict) -> dict:
             del data["height"]
 
     # ---------- SEASONS (NO CRASHING) ----------
-    if "best_season" in data and isinstance(data["best_season"], list):
-        data["best_season"] = [s.strip().lower() for s in data["best_season"]]
+    if "best_season" in data:
+        if not isinstance(data["best_season"], list):
+            raise ValueError("best_season must be a list")
+        data["best_season"] = [
+            str(s).strip().lower()
+            for s in data["best_season"]
+            if str(s).strip()
+        ]
     else:
         data["best_season"] = []
 

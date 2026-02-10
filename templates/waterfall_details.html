@@ -3,7 +3,7 @@
 {% block content %}
 
     <section class="relative w-full">
-        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename=waterfall.image_url) }}" alt="{{ waterfall.name }} image">
+        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename=waterfall.image) }}" alt="{{ waterfall.name }} image">
         <div class="absolute p-6 md:p-16 bottom-0 left-0 right-0">
             <div class="mx-auto">
                 <a class="text-background flex items-center gap-2 mb-2 text-lg hover:text-gray-400" href="/waterfalls">
@@ -59,8 +59,8 @@
                 <div class="flex flex-1 min-w-[200px] p-6 gap-2 items-center bg-background shadow-sm rounded-lg">
                     <img class="h-6 w-6 text-background" src="{{ url_for('static', filename='images/icons/landscape_2_24dp_E68C32_FILL0_wght500_GRAD0_opsz24.svg') }}" alt="">
                     <div>
-                        <p class="text-sm text-primary">Altitude</p>
-                        <p class="text-lg font-bold">{{ waterfall.height }} m</p>
+                        <p class="text-sm text-primary">Height</p>
+                        <p class="text-lg font-bold">{{ waterfall.height }} ft</p>
                     </div>
                 </div>
 
@@ -70,12 +70,12 @@
 
     <section class="bg-background py-12">
         <div class="mx-auto px-20">
-            <div class="flex flex-col md:flex-row gap-10">
+            <div class="flex flex-col md:flex-row gap-12">
 
                 <div class="md:w-3/5">
                     <div>
                         <h2 class="text-3xl mb-3 font-extrabold">About This Trek</h2>
-                        <p class="text-base text-slate-400">{{ waterfall.description | safe }}</p>
+                        <p class="text-base ">{{ waterfall.description | safe }}</p>
                     </div>
                     <div class="">
                         <h2 class="text-3xl mt-8 mb-4 font-extrabold">Highlights<h2>
