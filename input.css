@@ -141,4 +141,18 @@
   .view-all-treks-btn:hover{
     background: var(--hover-color);
   }
+
+  .difficulty-btn{
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .difficulty-btn.active {
+    background-color: var(--primary-color);
+    color: var(--background-color); 
+  }
 }

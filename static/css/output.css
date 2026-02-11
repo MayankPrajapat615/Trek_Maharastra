@@ -725,6 +725,20 @@ body {
   background: var(--hover-color);
 }
 
+.difficulty-btn{
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.difficulty-btn.active {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+}
+
 .static {
   position: static;
 }
@@ -1257,11 +1271,6 @@ body {
   padding-bottom: 0.25rem;
 }
 
-.py-1\.5 {
-  padding-top: 0.375rem;
-  padding-bottom: 0.375rem;
-}
-
 .py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
@@ -1406,11 +1415,6 @@ body {
   color: rgb(148 163 184 / var(--tw-text-opacity, 1));
 }
 
-.text-textColor {
-  --tw-text-opacity: 1;
-  color: rgb(31 77 51 / var(--tw-text-opacity, 1));
-}
-
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
@@ -1506,24 +1510,6 @@ body {
 .hover\:text-secondary:hover {
   --tw-text-opacity: 1;
   color: rgb(230 140 50 / var(--tw-text-opacity, 1));
-}
-
-.hover\:text-primary:hover {
-  --tw-text-opacity: 1;
-  color: rgb(45 107 77 / var(--tw-text-opacity, 1));
-}
-
-.hover\:text-hover:hover {
-  --tw-text-opacity: 1;
-  color: rgb(35 78 56 / var(--tw-text-opacity, 1));
-}
-
-.hover\:text-muted:hover {
-  color: #fffefcc3;
-}
-
-.active\:text-muted:active {
-  color: #fffefcc3;
 }
 
 @media (min-width: 768px) {

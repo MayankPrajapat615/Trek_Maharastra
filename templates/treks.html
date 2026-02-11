@@ -12,20 +12,23 @@
         <div class="px-8 flex gap-2 items-center">
             <span class="text-base font-medium">Difficulty:</span>
             <div class="bg-background gap-1 rounded-md p-1 flex">
-                <a href="/treks" 
-                    class="px-3 py-1.5 rounded-md text-sm font-medium bg-primary text-textColor">
+                <a href="/treks"
+                   class="difficulty-btn {% if not active_difficulty %}active{% endif %}">
                     All
                 </a>
-                <a href="/treks?difficulty=Easy" 
-                    class="px-3 py-1.5 rounded-md text-sm font-medium text-textColor">
+            
+                <a href="/treks?difficulty=Easy"
+                   class="difficulty-btn {% if active_difficulty == 'Easy' %}active{% endif %}">
                     Easy
                 </a>
-                <a href="/treks?difficulty=Moderate" 
-                    class="px-3 py-1.5 rounded-md text-sm font-medium text-textColor">
+            
+                <a href="/treks?difficulty=Moderate"
+                   class="difficulty-btn {% if active_difficulty == 'Moderate' %}active{% endif %}">
                     Moderate
                 </a>
-                <a href="/treks?difficulty=Hard" 
-                    class="px-3 py-1.5 rounded-md text-sm font-medium text-textColor">
+            
+                <a href="/treks?difficulty=Hard"
+                   class="difficulty-btn {% if active_difficulty == 'Hard' %}active{% endif %}">
                     Hard
                 </a>
             </div>
@@ -70,6 +73,22 @@
         {% endfor %}
 
     </div>
+
+    <script>
+        const buttons = document.querySelectorAll(".difficulty-btn");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", function () {
+            
+                // Remove active from all
+                buttons.forEach(btn => btn.classList.remove("active"));
+            
+                // Add active to clicked one
+                this.classList.add("active");
+            
+            });
+        });
+    </script>
 
 
 {% endblock %}
