@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="text-center mt-4 ">
+        <h2 class="text-xl">Search Results for "{{ query }}"</h2>
+
+            {% if treks|length == 0 and waterfalls|length == 0 %}
+                <div class="mt-4 p-4">
+                    <h3>No results found</h3>
+                    <p class="mb-8">Try searching something else.</p>
+                    <a href="/" class="text-blue-500 font-medium text-base hover:underline">Go back home</a>
+                </div>
+            {% endif %}
+
+            {% if treks|length > 0 %}
+                <h3>Treks</h3>
+                <ul>
+                    {% for trek in treks %}
+                        <li>
+                            <a href="/treks/{{ trek.slug }}">
+                                {{ trek.name }} - {{ trek.location.district }}, {{ trek.location.region }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if waterfalls|length > 0 %}
+                <h3>Waterfalls</h3>
+                <ul>
+                    {% for wf in waterfalls %}
+                        <li>
+                            <a href="/waterfalls/{{ wf.slug }}">
+                                {{ wf.name }} - {{ wf.location.district }}, {{ wf.location.region }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+    </div>
+{% endblock %}

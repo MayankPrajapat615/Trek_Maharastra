@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, abort, jsonify
+import time
+
 #DTABASE IMPORTS 
 from pymongo import MongoClient
 from xmlrpc import client
@@ -55,6 +57,7 @@ def create_app():
     #<-------------SEARCH ROUTE----------------->
     @app.route('/search')
     def search():
+        # time.sleep(2)  // added just to check wheather the loading stats was working or not
         query = request.args.get("q", "").strip()
 
         if not query:
@@ -94,6 +97,49 @@ def create_app():
         })
 
 
+    @app.route("/search-page")
+    def search_page():
+        query = request.args.get("q", "").strip()
+
+        if not query:
+            return render_template("search_results.html", treks=[], waterfalls=[], query=query)
+
+        regex = {"$regex": query, "$options": "i"}
+
+        treks = list(
+            treks_collection.find(
+                {
+                    "$or": [
+                        {"name": regex},
+                        {"location.district": regex},
+                        {"location.region": regex}
+                    ]
+                },
+                {"_id": 0}
+            )
+        )
+
+        waterfalls = list(
+            waterfalls_collection.find(
+                {
+                    "$or": [
+                        {"name": regex},
+                        {"location.district": regex},
+                        {"location.region": regex}
+                    ]
+                },
+                {"_id": 0}
+            )
+        )
+
+        return render_template(
+            "search_results.html",
+            treks=treks,
+            waterfalls=waterfalls,
+            query=query
+        )
+
+
     @app.route('/api/treks')
     def get_treks():
         treks = list(treks_collection.find({}, {"_id": 0}))
@@ -126,6 +172,7 @@ def create_app():
     #<-----------------SLUG ROUTES FOR TREKS AND WATERFALLS--------------------->
     @app.route('/treks/<slug>')
     def trek_details(slug):
+        time.sleep(4)
         trek = treks_collection.find_one( {"slug": slug}, {"_id":0} )
         if not trek:
             abort(404)

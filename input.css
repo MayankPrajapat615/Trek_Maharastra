@@ -155,4 +155,10 @@
     background-color: var(--primary-color);
     color: var(--background-color); 
   }
+  .active-result{
+    background-color: rgb(202, 202, 202);
+  }
+
+  /* #pageLoader {
+  } */
 }

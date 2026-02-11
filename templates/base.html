@@ -120,6 +120,14 @@
         </div>
     </footer>
 
+    <!-- loader status -->
+    <div id="pageLoader" class="fixed inset-0 bg-white flex items-center justify-center z-[9999]">
+        <video id="loaderVideo" preload="auto" muted class="w-72">
+            <source src="{{ url_for('static', filename='videos/loader.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+
+
     <script>
         const treks = ["Rajgad", "Kalavantin Durg", "Sinhagad"];
         const waterfalls = ["Thoseghar", "Lingmala"];
@@ -145,13 +153,30 @@
     
         // ⌨️ Search logic
         searchInput.addEventListener("input", async () => {
+
             const q = searchInput.value.trim();
             resultsDiv.innerHTML = "";
+
+            // loading state
+            if (!q) {
+              resultsDiv.innerHTML = "";
+              return;
+            }
+
+            resultsDiv.innerHTML = `
+                <div class="px-3 py-2 text-sm text-gray-500">
+                Searching...
+                </div>
+            `;
+
+            currentIndex = -1;
 
             if (!q) return;
 
             const res = await fetch(`/search?q=${encodeURIComponent(q)}`);
             const data = await res.json();
+
+            resultsDiv.innerHTML = ""; // ← CLEAR "Searching..."
 
             /* ---------- TREKS SECTION ---------- */
             if (data.treks && data.treks.length > 0) {
@@ -203,6 +228,120 @@
               });
             }
         });
+
+        searchInput.addEventListener("keydown", (e) => {
+            if (e.key ==="Enter"){
+                e.preventDefault();  // IMPORTANT
+
+                const items = resultsDiv.querySelectorAll("a");
+
+                if (currentIndex >= 0 && items.length > 0) {
+                    window.location.href = items[currentIndex].href;
+                } else {
+                    const q = searchInput.value.trim();
+                    if (q !== ""){
+                        window.location.href = `/search-page?q=${encodeURIComponent(q)}`
+                }
+                }
+            }
+        });
+
+        // #Keyboardnavigation for the search bar
+        let currentIndex = -1;
+        searchInput.addEventListener("keydown", (e) =>{
+            if (e.key === "ArrowDown"){
+                e.preventDefault();
+
+                const items = resultsDiv.querySelectorAll("a");
+                    if (items.length === 0 )
+                        return;
+                    currentIndex++;
+
+                    if (currentIndex >= items.length){
+                        currentIndex = 0;
+                    }
+
+                    items.forEach(item => item.classList.remove("active-result"));
+
+                    items[currentIndex].classList.add("active-result")
+
+                    items[currentIndex].scrollIntoView({
+                        block: "nearest"
+                    });
+            }
+        });
+        searchInput.addEventListener("keydown", (e) =>{
+            if (e.key ==="ArrowUp"){
+                e.preventDefault();
+
+                const items = resultsDiv.querySelectorAll("a");
+                    if (items.length === 0)
+                        return;
+                    currentIndex--;
+
+                    if (currentIndex < 0 ){
+                        currentIndex = items.length - 1;
+                    }
+
+                    items.forEach(item => item.classList.remove("active-result"));
+
+                    items[currentIndex].classList.add("active-result")
+
+                    items[currentIndex].scrollIntoView({
+                        block: "nearest"
+                    });
+            }
+        });
+
+
+    //-------loader status-----------
+
+    const loader = document.getElementById("pageLoader");
+    const loaderVideo = document.getElementById("loaderVideo");
+
+    // ✅ Preload video when page loads
+    window.addEventListener("load", () => {
+        loaderVideo.load(); // Force video to preload
+        loader.classList.add("hidden");
+    });
+
+    // Show loader on any internal link click
+    document.addEventListener("click", function (e) {
+      const link = e.target.closest("a");
+    
+      if (link && link.href && !link.target) {
+        const url = new URL(link.href);
+
+        // Only for internal navigation (same domain)
+        if (url.origin === window.location.origin && !link.href.includes('#')) {
+          loader.classList.remove("hidden");
+          loaderVideo.currentTime = 0; // Reset to start
+          loaderVideo.play(); // Play video
+        }
+      }
+    });
+
+    // Hide loader when new page loads
+    window.addEventListener("load", () => {
+        setTimeout(() => {
+            loader.classList.add("hidden");
+            loaderVideo.pause(); // Stop video
+        }, 1000); // Minimum 1 second display
+    });
+
+    // Fix back button issue
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) {
+            loader.classList.add("hidden");
+            loaderVideo.pause();
+        }
+    });
+
+    // Failsafe
+    setTimeout(() => {
+        loader.classList.add("hidden");
+        loaderVideo.pause();
+    }, 3000);
     </script>
 
 </body>
