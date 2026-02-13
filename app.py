@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, abort, jsonify
-import time
+from  datetime import datetime, timedelta, timezone
 
 #DTABASE IMPORTS 
 from pymongo import MongoClient
@@ -45,14 +45,18 @@ def create_app():
                 {"is_active":True, "is_featured":True}, 
                 {"_id":0} ).sort("featured_rank", 1).limit(3)
         )
+        treks = [add_new_flag(t) for t in treks]
 
         waterfalls = list(
             waterfalls_collection.find(
                 {"is_active":True, "is_featured":True},
                 {"_id":0}).sort("featured_rank", 1).limit(3)
         )
+        waterfalls = [add_new_flag(w) for w in waterfalls]
+
         return render_template('home.html', treks=treks, waterfalls=waterfalls)
     
+
 
     #<-------------SEARCH ROUTE----------------->
     @app.route('/search')
@@ -160,19 +164,22 @@ def create_app():
             }
 
         treks = list(treks_collection.find(query, {"_id": 0}))
+        treks = [add_new_flag(t) for t in treks]
 
         return render_template('treks.html', treks=treks, active_difficulty=difficulty)
 
     @app.route('/waterfalls')
     def waterfalls_page():
         waterfalls = list(waterfalls_collection.find({}, {"_id": 0}))
+        waterfalls = [add_new_flag(w) for w in waterfalls]
+
         return render_template('waterfalls.html', waterfalls=waterfalls)
     
 
     #<-----------------SLUG ROUTES FOR TREKS AND WATERFALLS--------------------->
     @app.route('/treks/<slug>')
     def trek_details(slug):
-        time.sleep(4)
+        # time.sleep(4)
         trek = treks_collection.find_one( {"slug": slug}, {"_id":0} )
         if not trek:
             abort(404)
@@ -184,6 +191,27 @@ def create_app():
         if not waterfall:
             abort(404)
         return render_template("waterfall_details.html", waterfall=waterfall)
+    
+
+    # <--------------------IS_FEATURED ROUTE FOR TREKS AND WATERFALLS-------------------->
+    def add_new_flag(item):
+        now = datetime.now(timezone.utc)
+        threshold = now - timedelta(hours=48)
+
+        created_at = item.get("created_at")
+
+
+        if created_at:
+            # Convert naive to UTC-aware
+            if created_at.tzinfo is None:
+                created_at = created_at.replace(tzinfo=timezone.utc)
+
+            item["is_new"] = created_at >= threshold
+        else:
+            item["is_new"] = False
+
+        return item
+
 
     return app
 

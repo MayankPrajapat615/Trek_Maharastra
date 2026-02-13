@@ -1,26 +1,28 @@
-<div class="card h-[400px] rounded-2xl relative">
+<div class="card w-full max-w-[350px] md:w-[320px] lg:w-[350px] min-h-[400px] rounded-2xl relative">
     <div class="upper-half">
-        <img class="h-[180px] w-full object-cover block object-bottom" src="{{ url_for('static', filename=waterfall.image) }}" alt="">
+        <img class="h-[180px] w-full object-cover block object-bottom filter brightness-[0.85] contrast-[1.15] saturate-[1.05] transition-all duration-300 hover:brightness-[0.95] hover:scale-105" src="{{ url_for('static', filename=waterfall.image) }}" alt="">
+        {% if waterfall.is_new %}
         <span class="absolute top-2 left-2 py-1 px-2 text-background bg-secondary rounded-xl">New</span>
+        {% endif %}
     </div>
-    <div class="lower-half p-4 bg-background h-[220px]">
-        <div class="card-header flex align-middle justify-between mb-3 text-background">
+    <div class="lower-half p-4 bg-background flex flex-col flex-1">
+        <div class="card-header flex items-center justify-between mb-3 text-background">
             <h3 class="text-lg font-medium text-black">{{ waterfall.name }}</h3>
-            <span class="bg-secondary py-1 px-2 rounded-lg font-medium">{{ waterfall.difficulty | capitalize }}</span>
+            <span class="bg-secondary py-1 px-2 rounded-lg font-medium whitespace-nowrap">{{ waterfall.difficulty | capitalize }}</span>
         </div>
         <p class="line-clamp-3 mb-3">{{ waterfall.description | striptags }}</p>
-        <div class="card-icons flex align-middle gap-4 text-xs font-medium">
+        <div class="card-icons flex items-center gap-4 text-xs font-medium">
             <span class="flex items-center gap-1">
-                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
-                {{ waterfall.height }} ft
+                <img class="h-4 w-4" src="{{ url_for('static', filename='images/icons/height_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                {{ waterfall.height }} Ft
             </span>
-            <span class="flex align-middle gap-1">
-                <img class="h-4 w-4 align-middle" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
-                {{ waterfall.best_season | join(', ') | title}}
+            <span class="flex items-center gap-1">
+                <img class="h-4 w-4" src="{{ url_for('static', filename='images/icons/calendar_month_18dp_000000_FILL0_wght400_GRAD0_opsz20.png') }}" alt="">
+                {{ waterfall.best_season | join(', ') | capitalize }}
             </span>
         </div>
-        <div class="view-all-btn mt-4 text-center">
-            <a href="/waterfalls/{{ waterfall.slug }}">View Details</a>
+        <div class="view-all-btn text-center mt-4 pt-3">
+                <a href="/waterfalls/{{ waterfall.slug }}">View Details</a>
         </div>
     </div>
 </div>

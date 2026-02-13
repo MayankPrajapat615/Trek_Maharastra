@@ -13,56 +13,142 @@
 </head>
 <body>
 
-    <header class="fixed top-0 z-50 w-full h-16 px-6 md:px-20 bg-primary flex items-center justify-between">
+    <!-- <header class="fixed top-0 left-0 right-0 z-50 w-full bg-primary">
 
-        <!-- LEFT: Brand -->
-        <a href="/" class="text-2xl md:text-3xl font-bold text-background">
-            TREK Maharashtra
-        </a>
+        <div class="h-16 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex items-center justify-between">
 
-        <!-- RIGHT: Search + Menu -->
-        <div class="flex items-center gap-2 text-background">
 
-            <div class="relative">
-                <button id="searchBtn" class="p-2">
-                    <img src="static/images/icons/search_24dp_EFEFEF_FILL0_wght500_GRAD0_opsz24.svg" alt="">
+            <a href="/" class="text-2xl md:text-3xl font-bold text-background">
+                TREK Maharashtra
+            </a>
+
+         
+            <div class="flex items-center gap-2 text-background min-w-0">
+
+                <div class="md:block relative">
+
+                    <button id="searchBtn" class="p-2 flex items-center justify-center">
+                        <img class="w-5 h-5 sm:w-6 sm:h-6" 
+                             src="{{ url_for('static', filename='images/icons/search_24dp_EFEFEF_FILL0_wght500_GRAD0_opsz24.svg') }}" 
+                             alt="Search">
+                    </button>
+
+                    
+              
+                    <div id="searchBox"
+                         class="hidden absolute top-14 left-1/2 -translate-x-1/2 w-[90vw] max-w-sm
+                                md:left-auto md:right-0 md:translate-x-0 md:top-12 md:w-80  
+                                bg-white border rounded-lg shadow p-3 z-50">
+
+                        <input
+                            id="searchInput"
+                            type="text"
+                            placeholder="Search treks & waterfalls..."
+                            class="w-full h-10 px-3 py-2 border rounded-md text-black text-base md:text-sm
+                                   placeholder:text-gray-400
+                                   focus-visible:outline-none focus-visible:ring-2"
+                        />
+
+                        <div id="results" class="mt-3 max-h-64 overflow-y-auto"></div>
+                    </div>
+
+                </div>
+
+                
+                <button class="text-4xl leading-none md:hidden">
+                    &#8801;
                 </button>
 
-                <div id="searchBox"
-                     class="hidden absolute right-0 top-12 w-80 bg-white border rounded-lg shadow p-3 z-50">
+            
+                <nav class="hidden md:flex items-center gap-6 font-medium">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/treks">Treks</a>
+                    <a class="nav-link" href="/waterfalls">Waterfalls</a>
+                    <a class="nav-link" href="/gallery">Gallery</a>
+                    <a class="nav-link" href="/contact">Contact</a>
+                </nav>
 
-                  <input
-                    id="searchInput"
-                    type="text"
-                    placeholder="Search treks & waterfalls..."
-                    class="w-full border p-2 rounded text-black"
-                  />
 
-                    <div id="results" class="mt-3 max-h-64 overflow-y-auto">
-
-                    </div>
-                </div>
             </div>
-
-            <!-- Burger (mobile only) -->
-            <button class="text-4xl leading-none md:hidden">
-                &#8801;
-            </button>
-
-            <!-- Nav (desktop only) -->
-            <nav class="hidden md:flex items-center gap-6 font-medium">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/treks">Treks</a>
-                <a class="nav-link" href="/waterfalls">Waterfalls</a>
-                <a class="nav-link" href="/gallery">Gallery</a>
-                <a class="nav-link" href="/contact">Contact</a>
-            </nav>
-
         </div>
-    </header>
+        
+        
+    </header> -->
+    <!-- ========== NAVBAR ========== -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+
+          <!-- Logo -->
+          <a href="/" class="flex items-center gap-2 text-primary-foreground font-serif text-xl font-semibold">
+            🏔️ Trek Maharashtra
+          </a>
+
+          <!-- Desktop Nav + Search -->
+          <div class="hidden md:flex items-center gap-8">
+            <a href="/" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm font-medium">Home</a>
+            <a href="/treks" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm font-medium">Treks</a>
+            <a href="/waterfalls" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm font-medium">Waterfalls</a>
+
+            <!-- Desktop Search -->
+            <div class="relative" id="desktopSearchRef">
+              <button onclick="toggleSearch()" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors p-2" aria-label="Search">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              </button>
+
+              <!-- Desktop Dropdown -->
+              <div id="desktopDropdown" class="hidden absolute right-0 top-12 w-80 bg-background rounded-lg shadow-lg border border-border p-3">
+                <input
+                  id="desktopInput"
+                  type="text"
+                  placeholder="Search treks & waterfalls..."
+                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  oninput="onSearchInput(this.value)"
+                  onkeydown="handleKeyDown(event)"
+                />
+                <div id="desktopResults" class="mt-3 max-h-64 overflow-y-auto hidden"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Search + Hamburger -->
+          <div class="flex items-center gap-2 md:hidden">
+            <button onclick="toggleSearch()" class="text-primary-foreground p-2" aria-label="Search">
+              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </button>
+            <button onclick="toggleMenu()" class="text-primary-foreground" id="menuBtn">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Search Panel -->
+        <div id="mobileSearch" class="hidden md:hidden pb-4">
+          <input
+            id="mobileInput"
+            type="text"
+            placeholder="Search treks & waterfalls..."
+            class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+            oninput="onSearchInput(this.value)"
+            onkeydown="handleKeyDown(event)"
+          />
+          <div id="mobileResults" class="mt-3 max-h-64 overflow-y-auto bg-background rounded-lg p-3 hidden"></div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobileMenu" class="hidden md:hidden pb-4">
+          <a href="/" class="block py-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">Home</a>
+          <a href="/treks" class="block py-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">Treks</a>
+          <a href="/waterfalls" class="block py-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">Waterfalls</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Spacer for fixed navbar -->
+    <!-- <div class="h-16"></div> -->
 
 
-    <main class="pt-16">
+    <main class="pt-16 w-full">
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
@@ -77,8 +163,8 @@
         {% endblock %}
     </main>
 
-    <footer class="w-100% h-auto bg-[#2D6B4D]">
-        <div class="py-4 px-8 m-auto md:py-8 md:px-16">
+    <footer class="w-full h-auto bg-primary">
+        <div class="py-4 px-8 m-auto md:py-8 md:px-8 lg:px-16">
             <div class="flex-col md:text-left md:flex md:flex-row md:gap-16">
                 <div class="flex-1 min-w-0 mb-8">
                     <h2 class="text-2xl mb-4 text-secondary">Trek Maharashtra</h2>
@@ -108,7 +194,7 @@
                 <div class="flex-1 min-w-0 mb-8">
                     <h2 class="text-2xl mb-4 text-background">Contact Us</h2>
                     <ul>
-                        <li class="list-none text-background transition-all duration-300 ease-in hover:text-secondary cursor-pointer" >contact@trekmaharashtra.com</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background transition-all duration-300 ease-in hover:text-secondary cursor-pointer break-all overflow-hidden">contact@trekmaharashtra.com</li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
                     </ul>
                 </div>
             </div>
@@ -121,25 +207,22 @@
     </footer>
 
     <!-- loader status -->
-    <div id="pageLoader" class="fixed inset-0 bg-white flex items-center justify-center z-[9999]">
-        <video id="loaderVideo" preload="auto" muted class="w-72">
-            <source src="{{ url_for('static', filename='videos/loader.mp4') }}" type="video/mp4">
+    <!-- <div id="pageLoader" class="fixed inset-0 bg-white flex items-center justify-center z-[9999]">
+        <video loop autoplay id="loaderVideo" preload="auto" muted class="w-18 h-16 object-cover">
+            <source src="{{ url_for('static', filename='videos/mountains-animation.mp4') }}" type="video/mp4">
         </video>
-    </div>
+    </div> -->
 
 
     <script>
-        const treks = ["Rajgad", "Kalavantin Durg", "Sinhagad"];
-        const waterfalls = ["Thoseghar", "Lingmala"];
-
         const searchBtn = document.getElementById("searchBtn");
         const searchBox = document.getElementById("searchBox");
         const searchInput = document.getElementById("searchInput");
         const resultsDiv = document.getElementById("results");
-
+        
         // 🔍 Toggle search box
         searchBtn.addEventListener("click", (e) => {
-            e.stopPropagation(); // prevent document click
+            e.stopPropagation();
             searchBox.classList.toggle("hidden");
             searchInput.focus();
         });
@@ -152,196 +235,152 @@
         });
     
         // ⌨️ Search logic
+        let currentIndex = -1;
+        
         searchInput.addEventListener("input", async () => {
-
             const q = searchInput.value.trim();
             resultsDiv.innerHTML = "";
-
-            // loading state
+        
             if (!q) {
-              resultsDiv.innerHTML = "";
-              return;
+                resultsDiv.innerHTML = "";
+                return;
             }
-
+        
             resultsDiv.innerHTML = `
                 <div class="px-3 py-2 text-sm text-gray-500">
-                Searching...
+                    Searching...
                 </div>
             `;
-
+            
             currentIndex = -1;
-
-            if (!q) return;
-
+            
             const res = await fetch(`/search?q=${encodeURIComponent(q)}`);
             const data = await res.json();
-
-            resultsDiv.innerHTML = ""; // ← CLEAR "Searching..."
-
+            
+            resultsDiv.innerHTML = "";
+            
             /* ---------- TREKS SECTION ---------- */
             if (data.treks && data.treks.length > 0) {
-              const trekHeading = document.createElement("p");
-              trekHeading.textContent = "TREKS";
-              trekHeading.className =
-                "text-xs font-semibold uppercase text-black px-2 mt-2 mb-1 cursor-default";
-              resultsDiv.appendChild(trekHeading);
+                const trekHeading = document.createElement("p");
+                trekHeading.textContent = "TREKS";
+                trekHeading.className = "text-xs font-semibold uppercase text-black px-2 mt-2 mb-1 cursor-default";
+                resultsDiv.appendChild(trekHeading);
             
-              data.treks.forEach(trek => {
-                const item = document.createElement("a");
-                item.href = `/treks/${trek.slug}`;
-                item.className =
-                  "block px-3 py-2 rounded-md text-sm hover:bg-muted cursor-pointer text-black";
-                
-                item.innerHTML = `
-                  <div class="font-medium">${trek.name}</div>
-                  <div class="text-xs opacity-60">
-                    ${trek.location.district}, ${trek.location.region}
-                  </div>
-                `;
-              
-                resultsDiv.appendChild(item);
-              });
+                data.treks.forEach(trek => {
+                    const item = document.createElement("a");
+                    item.href = `/treks/${trek.slug}`;
+                    item.className = "block px-3 py-2 rounded-md text-sm hover:bg-muted cursor-pointer text-black";
+                    item.innerHTML = `
+                        <div class="font-medium">${trek.name}</div>
+                        <div class="text-xs opacity-60">
+                            ${trek.location.district}, ${trek.location.region}
+                        </div>
+                    `;
+                    resultsDiv.appendChild(item);
+                });
             }
         
             /* ---------- WATERFALLS SECTION ---------- */
             if (data.waterfalls && data.waterfalls.length > 0) {
-              const wfHeading = document.createElement("p");
-              wfHeading.textContent = "WATERFALLS";
-              wfHeading.className =
-                "text-xs font-semibold uppercase text-black px-2 mt-3 mb-1 cursor-default";
-              resultsDiv.appendChild(wfHeading);
+                const wfHeading = document.createElement("p");
+                wfHeading.textContent = "WATERFALLS";
+                wfHeading.className = "text-xs font-semibold uppercase text-black px-2 mt-3 mb-1 cursor-default";
+                resultsDiv.appendChild(wfHeading);
             
-              data.waterfalls.forEach(wf => {
-                const item = document.createElement("a");
-                item.href = `/waterfalls/${wf.slug}`;
-                item.className =
-                  "block px-3 py-2 text-black rounded-md text-sm hover:bg-muted cursor-pointer";
-                
-                item.innerHTML = `
-                  <div class="font-medium">${wf.name}</div>
-                  <div class="text-xs opacity-60">
-                    ${wf.location.district}, ${wf.location.region}
-                  </div>
-                `;
-              
-                resultsDiv.appendChild(item);
-              });
+                data.waterfalls.forEach(wf => {
+                    const item = document.createElement("a");
+                    item.href = `/waterfalls/${wf.slug}`;
+                    item.className = "block px-3 py-2 text-black rounded-md text-sm hover:bg-muted cursor-pointer";
+                    item.innerHTML = `
+                        <div class="font-medium">${wf.name}</div>
+                        <div class="text-xs opacity-60">
+                            ${wf.location.district}, ${wf.location.region}
+                        </div>
+                    `;
+                    resultsDiv.appendChild(item);
+                });
             }
         });
-
+    
+        // Enter key handling
         searchInput.addEventListener("keydown", (e) => {
-            if (e.key ==="Enter"){
-                e.preventDefault();  // IMPORTANT
-
+            if (e.key === "Enter") {
+                e.preventDefault();
                 const items = resultsDiv.querySelectorAll("a");
-
+            
                 if (currentIndex >= 0 && items.length > 0) {
                     window.location.href = items[currentIndex].href;
                 } else {
                     const q = searchInput.value.trim();
-                    if (q !== ""){
-                        window.location.href = `/search-page?q=${encodeURIComponent(q)}`
-                }
-                }
-            }
-        });
-
-        // #Keyboardnavigation for the search bar
-        let currentIndex = -1;
-        searchInput.addEventListener("keydown", (e) =>{
-            if (e.key === "ArrowDown"){
-                e.preventDefault();
-
-                const items = resultsDiv.querySelectorAll("a");
-                    if (items.length === 0 )
-                        return;
-                    currentIndex++;
-
-                    if (currentIndex >= items.length){
-                        currentIndex = 0;
+                    if (q !== "") {
+                        window.location.href = `/search-page?q=${encodeURIComponent(q)}`;
                     }
-
-                    items.forEach(item => item.classList.remove("active-result"));
-
-                    items[currentIndex].classList.add("active-result")
-
-                    items[currentIndex].scrollIntoView({
-                        block: "nearest"
-                    });
+                }
             }
         });
-        searchInput.addEventListener("keydown", (e) =>{
-            if (e.key ==="ArrowUp"){
-                e.preventDefault();
-
-                const items = resultsDiv.querySelectorAll("a");
-                    if (items.length === 0)
-                        return;
-                    currentIndex--;
-
-                    if (currentIndex < 0 ){
-                        currentIndex = items.length - 1;
-                    }
-
-                    items.forEach(item => item.classList.remove("active-result"));
-
-                    items[currentIndex].classList.add("active-result")
-
-                    items[currentIndex].scrollIntoView({
-                        block: "nearest"
-                    });
-            }
-        });
-
-
-    //-------loader status-----------
-
-    const loader = document.getElementById("pageLoader");
-    const loaderVideo = document.getElementById("loaderVideo");
-
-    // ✅ Preload video when page loads
-    window.addEventListener("load", () => {
-        loaderVideo.load(); // Force video to preload
-        loader.classList.add("hidden");
-    });
-
-    // Show loader on any internal link click
-    document.addEventListener("click", function (e) {
-      const link = e.target.closest("a");
     
-      if (link && link.href && !link.target) {
-        const url = new URL(link.href);
+        // Keyboard navigation
+        searchInput.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                const items = resultsDiv.querySelectorAll("a");
+                if (items.length === 0) return;
+                
+                currentIndex++;
+                if (currentIndex >= items.length) {
+                    currentIndex = 0;
+                }
+            
+                items.forEach(item => item.classList.remove("active-result"));
+                items[currentIndex].classList.add("active-result");
+                items[currentIndex].scrollIntoView({ block: "nearest" });
+            }
+            
+            if (e.key === "ArrowUp") {
+                e.preventDefault();
+                const items = resultsDiv.querySelectorAll("a");
+                if (items.length === 0) return;
+                
+                currentIndex--;
+                if (currentIndex < 0) {
+                    currentIndex = items.length - 1;
+                }
+            
+                items.forEach(item => item.classList.remove("active-result"));
+                items[currentIndex].classList.add("active-result");
+                items[currentIndex].scrollIntoView({ block: "nearest" });
+            }
+        });
+    
+        //-------loader status-----------
+        // const loader = document.getElementById("pageLoader");
+        // const loaderVideo = document.getElementById("loaderVideo");
 
-        // Only for internal navigation (same domain)
-        if (url.origin === window.location.origin && !link.href.includes('#')) {
-          loader.classList.remove("hidden");
-          loaderVideo.currentTime = 0; // Reset to start
-          loaderVideo.play(); // Play video
-        }
-      }
-    });
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     loader.classList.add("hidden");
+        //     loaderVideo.pause();
+        // });
 
-    // Hide loader when new page loads
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            loader.classList.add("hidden");
-            loaderVideo.pause(); // Stop video
-        }, 1000); // Minimum 1 second display
-    });
+        // document.addEventListener("click", function (e) {
+        //     const link = e.target.closest("a");
+        //     if (!link) return;
+        
+        //     if (link.origin !== window.location.origin) return;
+        //     if (link.hash) return;
+        //     if (link.target === "_blank") return;
+        
+        //     loader.classList.remove("hidden");
+        //     loaderVideo.currentTime = 0;
+        //     loaderVideo.play().catch(() => {});
+        // });
 
-    // Fix back button issue
-    window.addEventListener("pageshow", (event) => {
-        if (event.persisted) {
-            loader.classList.add("hidden");
-            loaderVideo.pause();
-        }
-    });
+        // window.addEventListener("pageshow", (event) => {
+        //     if (event.persisted) {
+        //         loader.classList.add("hidden");
+        //         loaderVideo.pause();
+        //     }
+        // });
 
-    // Failsafe
-    setTimeout(() => {
-        loader.classList.add("hidden");
-        loaderVideo.pause();
-    }, 3000);
     </script>
 
 </body>
