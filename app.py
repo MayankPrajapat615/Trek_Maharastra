@@ -170,10 +170,20 @@ def create_app():
 
     @app.route('/waterfalls')
     def waterfalls_page():
-        waterfalls = list(waterfalls_collection.find({}, {"_id": 0}))
+        difficulty = request.args.get("difficulty")
+
+        query = {}
+
+        if difficulty:
+            query["difficulty"] = {
+                "$regex" : f"^{difficulty}$",
+                "$options" : "i"
+            }
+
+        waterfalls = list(waterfalls_collection.find(query, {"_id": 0}))
         waterfalls = [add_new_flag(w) for w in waterfalls]
 
-        return render_template('waterfalls.html', waterfalls=waterfalls)
+        return render_template('waterfalls.html', waterfalls=waterfalls, active_difficulty=difficulty)
     
 
     #<-----------------SLUG ROUTES FOR TREKS AND WATERFALLS--------------------->
@@ -190,6 +200,7 @@ def create_app():
         waterfall = waterfalls_collection.find_one( {"slug":slug}, {"_id":0} )
         if not waterfall:
             abort(404)
+
         return render_template("waterfall_details.html", waterfall=waterfall)
     
 
