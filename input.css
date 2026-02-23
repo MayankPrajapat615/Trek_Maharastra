@@ -25,35 +25,22 @@
 }
 
 @layer components {
-  
-  /* collapsed state (default) */
-  .search-box {
-    width: 2.5rem; /* 40px */
-  }
-  
-  /* expanded state */
-  .search-box.active {
-    width: 12rem; /* 192px */
-    padding: 2px;
-  }
-  
-  .search-input {
-    width: 0;
-    opacity: 0;
-    transition: all 0.3s ease;
-  }
-  
-  .search-box.active .search-input {
-    width: 8rem;
-    opacity: 1;
-    padding-left: 2px;
-  }
-  
-  
+
   .nav-link {
     @apply text-xl ml-7 font-medium transition-all duration-500 ease-in text-[#FAF8F5] relative no-underline;
-  } 
-  
+  }
+  .search-container{
+    border-radius: 0.5rem;
+  }
+  .search-container.has-results{
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    /* overflow: hidden; */
+  }
+  #results{
+    border-radius: 0 0 0.5rem 0.5rem;
+    border: 1px solid #E68C32; /* match container border */
+    border-top: 0; /* no gap between input and results */
+  }
   .nav-link::before {
     content: '';
     position: absolute;
@@ -65,11 +52,9 @@
     transform: translateX(-50%);
     transition: width 0.5s ease;
   }
-  
   .nav-link:hover::before {
     width: 100%;
   }
-
   .content {
     display: none;
   }
@@ -82,16 +67,14 @@
     transition: 0.3s ease;
   }
 
-  .nav-btn{
-    box-shadow: 0 0 2px rgba(255, 255, 255, 0.5);
+  .swiper-button-next, .swiper-button-prev {
+      color: #E68C32 !important;
+      padding: 2rem;
+      transition: transform 0.2s ease;
   }
-
-  .nav-btn.active {
-    background: #2696e9;
-  }
-  
-  .nav-btn:hover {
-    transform: scale(1.2);
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+      transform: scale(1.2);
   }
 
   .card{
@@ -159,6 +142,4 @@
     background-color: rgb(202, 202, 202);
   }
 
-  /* #pageLoader {
-  } */
 }

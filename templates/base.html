@@ -9,146 +9,68 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
-
+    <!-- swiper cdn -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
 
-    <!-- <header class="fixed top-0 left-0 right-0 z-50 w-full bg-primary">
+    <header class="fixed top-0 left-0 right-0 z-50 w-full px-3 sm:px-6 md:16px h-16 bg-primary/90 backdrop-blur-md shadow-md">
 
-        <div class="h-16 max-w-7xl mx-auto px-4 sm:px-6 md:px-8 flex items-center justify-between">
-
-
-            <a href="/" class="text-2xl md:text-3xl font-bold text-background">
-                TREK Maharashtra
-            </a>
-
-         
-            <div class="flex items-center gap-2 text-background min-w-0">
-
-                <div class="md:block relative">
-
-                    <button id="searchBtn" class="p-2 flex items-center justify-center">
-                        <img class="w-5 h-5 sm:w-6 sm:h-6" 
-                             src="{{ url_for('static', filename='images/icons/search_24dp_EFEFEF_FILL0_wght500_GRAD0_opsz24.svg') }}" 
-                             alt="Search">
+        <nav class="flex justify-between items-center gap-5 px-4 h-full">
+            <div class="logo text-xl font-semibold md:text-3xl md:font-medium uppercase nav-link">Trek Maharashtra</div>
+            
+            <div class="flex items-center gap-3">
+                
+                <ul class="hidden md:flex md:flex-row md:space-y-0 md:space-x-6 text-center cursor-pointer">
+                    <li class="capitalize nav-link"><a href="/">Home</a></li>
+                    <li class="capitalize nav-link"><a href="/treks">treks</a></li>
+                    <li class="capitalize nav-link"><a href="/waterfalls">waterfalls</a></li>
+                    <li class="capitalize nav-link"><a href="/rentals">rentals</a></li>
+                    <li class="capitalize nav-link"><a href="/about-us">about us</a></li>
+                </ul>
+                
+                <div class="search-container relative w-40 md:w-72 flex items-center border border-secondary bg-background rounded-md px-2">
+                    <form class="flex justify-between w-full" action="/search-page" method="get">
+                        <input
+                            id="search-input" 
+                            type="text"
+                            name="q"
+                            placeholder="Search Treks & Waterfalls..."
+                            autocomplete="off"
+                            autocorrect="off"
+                            class="flex-1 px-2 py-1.5 outline-none bg-transparent w-32"
+                            />
+                            <button type="submit">
+                                <img class="h-6 w-6 mr-2" src="{{ url_for('static', filename='images/icons/search_25dp_E68C32_FILL0_wght500_GRAD0_opsz24.svg') }}" alt="">
+                            </button>
+                        </form>
+                        <ul id="results" class="absolute left-[-1px] top-full pt-2 w-[calc(100%+2px)] max-h-60 overflow-y-auto bg-background shadow-md hidden border-b border-secondary z-50"></ul>
+                    </div>
+                    <button class="burger md:hidden">
+                        <span class="close-icon text-xl font-semibold">☰</span>
+                        <span class="open-icon hidden text-xl font-semibold">✖</span>
                     </button>
 
-                    
-              
-                    <div id="searchBox"
-                         class="hidden absolute top-14 left-1/2 -translate-x-1/2 w-[90vw] max-w-sm
-                                md:left-auto md:right-0 md:translate-x-0 md:top-12 md:w-80  
-                                bg-white border rounded-lg shadow p-3 z-50">
-
-                        <input
-                            id="searchInput"
-                            type="text"
-                            placeholder="Search treks & waterfalls..."
-                            class="w-full h-10 px-3 py-2 border rounded-md text-black text-base md:text-sm
-                                   placeholder:text-gray-400
-                                   focus-visible:outline-none focus-visible:ring-2"
-                        />
-
-                        <div id="results" class="mt-3 max-h-64 overflow-y-auto"></div>
-                    </div>
-
+                <div class="hidden md:block px-3 py-1.5 bg-secondary rounded-md cursor-pointer">
+                    <a class="text-center font-medium text-base capitalize" href="/plan-your-trek">plan your trek</a>
                 </div>
-
-                
-                <button class="text-4xl leading-none md:hidden">
-                    &#8801;
-                </button>
-
-            
-                <nav class="hidden md:flex items-center gap-6 font-medium">
-                    <a class="nav-link" href="/">Home</a>
-                    <a class="nav-link" href="/treks">Treks</a>
-                    <a class="nav-link" href="/waterfalls">Waterfalls</a>
-                    <a class="nav-link" href="/gallery">Gallery</a>
-                    <a class="nav-link" href="/contact">Contact</a>
-                </nav>
-
-
             </div>
-        </div>
-        
-        
-    </header> -->
-    <!-- ========== NAVBAR ========== -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-sm">
-      <div class="max-w-7xl mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
+        </nav>
 
-          <!-- Logo -->
-          <a href="/" class="flex items-center gap-2 text-primary-foreground font-serif text-xl font-semibold">
-            🏔️ Trek Maharashtra
-          </a>
-
-          <!-- Desktop Nav + Search -->
-          <div class="hidden md:flex items-center gap-8">
-            <a href="/" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm font-medium">Home</a>
-            <a href="/treks" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm font-medium">Treks</a>
-            <a href="/waterfalls" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors text-sm font-medium">Waterfalls</a>
-
-            <!-- Desktop Search -->
-            <div class="relative" id="desktopSearchRef">
-              <button onclick="toggleSearch()" class="text-primary-foreground/80 hover:text-primary-foreground transition-colors p-2" aria-label="Search">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              </button>
-
-              <!-- Desktop Dropdown -->
-              <div id="desktopDropdown" class="hidden absolute right-0 top-12 w-80 bg-background rounded-lg shadow-lg border border-border p-3">
-                <input
-                  id="desktopInput"
-                  type="text"
-                  placeholder="Search treks & waterfalls..."
-                  class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                  oninput="onSearchInput(this.value)"
-                  onkeydown="handleKeyDown(event)"
-                />
-                <div id="desktopResults" class="mt-3 max-h-64 overflow-y-auto hidden"></div>
-              </div>
+        <ul class="menu hidden fixed top-16 left-0 right-0 bg-primary z-40 flex-col px-4 py-4 space-y-3 text-center shadow-lg text-muted">
+            <li class="capitalize"><a href="/">Home</a></li>
+            <li class="capitalize"><a href="/treks">treks</a></li>
+            <li class="capitalize"><a href="/waterfalls">waterfalls</a></li>
+            <li class="capitalize"><a href="/rentals">rentals</a></li>
+            <li class="capitalize"><a href="/about-us">about us</a></li>
+            <div class="px-3 py-1 bg-secondary rounded-md cursor-pointer">
+                <a class="text-center font-medium text-base capitalize" href="/plan-your-trek">plan your trek</a>
             </div>
-          </div>
+        </ul>
 
-          <!-- Mobile Search + Hamburger -->
-          <div class="flex items-center gap-2 md:hidden">
-            <button onclick="toggleSearch()" class="text-primary-foreground p-2" aria-label="Search">
-              <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            </button>
-            <button onclick="toggleMenu()" class="text-primary-foreground" id="menuBtn">
-              <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
-          </div>
-        </div>
+    </header>
 
-        <!-- Mobile Search Panel -->
-        <div id="mobileSearch" class="hidden md:hidden pb-4">
-          <input
-            id="mobileInput"
-            type="text"
-            placeholder="Search treks & waterfalls..."
-            class="flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-            oninput="onSearchInput(this.value)"
-            onkeydown="handleKeyDown(event)"
-          />
-          <div id="mobileResults" class="mt-3 max-h-64 overflow-y-auto bg-background rounded-lg p-3 hidden"></div>
-        </div>
-
-        <!-- Mobile Nav Menu -->
-        <div id="mobileMenu" class="hidden md:hidden pb-4">
-          <a href="/" class="block py-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">Home</a>
-          <a href="/treks" class="block py-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">Treks</a>
-          <a href="/waterfalls" class="block py-2 text-primary-foreground/80 hover:text-primary-foreground transition-colors">Waterfalls</a>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Spacer for fixed navbar -->
-    <!-- <div class="h-16"></div> -->
-
-
-    <main class="pt-16 w-full">
+    <main class="z-40 w-full pt-16">
         <div class="container">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
@@ -176,7 +98,7 @@
                 <div class="flex-1 min-w-0 mb-8">
                     <h2 class="text-2xl mb-4 text-background">Quicks Links</h2>
                     <ul>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" ><a href="/">Featured Treks</a></li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
+                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" ><a href="/">Home</a></li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
                         <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" ><a href="/treks">Featured Treks</a></li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
                         <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer" ><a href="/waterfalls">Featured Waterfalls</a></li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-[#FAF8F5] cursor-pointer" >
                     </ul>
@@ -207,181 +129,15 @@
     </footer>
 
     <!-- loader status -->
-    <!-- <div id="pageLoader" class="fixed inset-0 bg-white flex items-center justify-center z-[9999]">
+    <div id="pageLoader" class="fixed inset-0 bg-white flex items-center justify-center z-[9999]">
         <video loop autoplay id="loaderVideo" preload="auto" muted class="w-18 h-16 object-cover">
             <source src="{{ url_for('static', filename='videos/mountains-animation.mp4') }}" type="video/mp4">
         </video>
-    </div> -->
+    </div>
+    <div class="hidden bg-gray-200 bg-red-400"></div>
 
-
-    <script>
-        const searchBtn = document.getElementById("searchBtn");
-        const searchBox = document.getElementById("searchBox");
-        const searchInput = document.getElementById("searchInput");
-        const resultsDiv = document.getElementById("results");
-        
-        // 🔍 Toggle search box
-        searchBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            searchBox.classList.toggle("hidden");
-            searchInput.focus();
-        });
+    <script defer src="{{ url_for('static', filename='js/header.js') }}"></script>
     
-        // ❌ Close when clicking outside
-        document.addEventListener("click", (e) => {
-            if (!searchBox.contains(e.target) && !searchBtn.contains(e.target)) {
-                searchBox.classList.add("hidden");
-            }
-        });
-    
-        // ⌨️ Search logic
-        let currentIndex = -1;
-        
-        searchInput.addEventListener("input", async () => {
-            const q = searchInput.value.trim();
-            resultsDiv.innerHTML = "";
-        
-            if (!q) {
-                resultsDiv.innerHTML = "";
-                return;
-            }
-        
-            resultsDiv.innerHTML = `
-                <div class="px-3 py-2 text-sm text-gray-500">
-                    Searching...
-                </div>
-            `;
-            
-            currentIndex = -1;
-            
-            const res = await fetch(`/search?q=${encodeURIComponent(q)}`);
-            const data = await res.json();
-            
-            resultsDiv.innerHTML = "";
-            
-            /* ---------- TREKS SECTION ---------- */
-            if (data.treks && data.treks.length > 0) {
-                const trekHeading = document.createElement("p");
-                trekHeading.textContent = "TREKS";
-                trekHeading.className = "text-xs font-semibold uppercase text-black px-2 mt-2 mb-1 cursor-default";
-                resultsDiv.appendChild(trekHeading);
-            
-                data.treks.forEach(trek => {
-                    const item = document.createElement("a");
-                    item.href = `/treks/${trek.slug}`;
-                    item.className = "block px-3 py-2 rounded-md text-sm hover:bg-muted cursor-pointer text-black";
-                    item.innerHTML = `
-                        <div class="font-medium">${trek.name}</div>
-                        <div class="text-xs opacity-60">
-                            ${trek.location.district}, ${trek.location.region}
-                        </div>
-                    `;
-                    resultsDiv.appendChild(item);
-                });
-            }
-        
-            /* ---------- WATERFALLS SECTION ---------- */
-            if (data.waterfalls && data.waterfalls.length > 0) {
-                const wfHeading = document.createElement("p");
-                wfHeading.textContent = "WATERFALLS";
-                wfHeading.className = "text-xs font-semibold uppercase text-black px-2 mt-3 mb-1 cursor-default";
-                resultsDiv.appendChild(wfHeading);
-            
-                data.waterfalls.forEach(wf => {
-                    const item = document.createElement("a");
-                    item.href = `/waterfalls/${wf.slug}`;
-                    item.className = "block px-3 py-2 text-black rounded-md text-sm hover:bg-muted cursor-pointer";
-                    item.innerHTML = `
-                        <div class="font-medium">${wf.name}</div>
-                        <div class="text-xs opacity-60">
-                            ${wf.location.district}, ${wf.location.region}
-                        </div>
-                    `;
-                    resultsDiv.appendChild(item);
-                });
-            }
-        });
-    
-        // Enter key handling
-        searchInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                const items = resultsDiv.querySelectorAll("a");
-            
-                if (currentIndex >= 0 && items.length > 0) {
-                    window.location.href = items[currentIndex].href;
-                } else {
-                    const q = searchInput.value.trim();
-                    if (q !== "") {
-                        window.location.href = `/search-page?q=${encodeURIComponent(q)}`;
-                    }
-                }
-            }
-        });
-    
-        // Keyboard navigation
-        searchInput.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowDown") {
-                e.preventDefault();
-                const items = resultsDiv.querySelectorAll("a");
-                if (items.length === 0) return;
-                
-                currentIndex++;
-                if (currentIndex >= items.length) {
-                    currentIndex = 0;
-                }
-            
-                items.forEach(item => item.classList.remove("active-result"));
-                items[currentIndex].classList.add("active-result");
-                items[currentIndex].scrollIntoView({ block: "nearest" });
-            }
-            
-            if (e.key === "ArrowUp") {
-                e.preventDefault();
-                const items = resultsDiv.querySelectorAll("a");
-                if (items.length === 0) return;
-                
-                currentIndex--;
-                if (currentIndex < 0) {
-                    currentIndex = items.length - 1;
-                }
-            
-                items.forEach(item => item.classList.remove("active-result"));
-                items[currentIndex].classList.add("active-result");
-                items[currentIndex].scrollIntoView({ block: "nearest" });
-            }
-        });
-    
-        //-------loader status-----------
-        // const loader = document.getElementById("pageLoader");
-        // const loaderVideo = document.getElementById("loaderVideo");
-
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     loader.classList.add("hidden");
-        //     loaderVideo.pause();
-        // });
-
-        // document.addEventListener("click", function (e) {
-        //     const link = e.target.closest("a");
-        //     if (!link) return;
-        
-        //     if (link.origin !== window.location.origin) return;
-        //     if (link.hash) return;
-        //     if (link.target === "_blank") return;
-        
-        //     loader.classList.remove("hidden");
-        //     loaderVideo.currentTime = 0;
-        //     loaderVideo.play().catch(() => {});
-        // });
-
-        // window.addEventListener("pageshow", (event) => {
-        //     if (event.persisted) {
-        //         loader.classList.add("hidden");
-        //         loaderVideo.pause();
-        //     }
-        // });
-
-    </script>
 
 </body>
 </html>

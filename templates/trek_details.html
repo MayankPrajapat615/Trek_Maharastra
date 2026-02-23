@@ -3,7 +3,7 @@
 {% block content %}
 
     <section class="relative w-full">
-        <img  class="w-full h-96 object-cover" src="{{ url_for('static', filename=trek.image) }}" alt="{{ trek.name }} image">
+        <img  class="w-full h-[500px] object-cover" src="{{ url_for('static', filename=trek.image) }}" alt="{{ trek.name }} image">
         <div class="absolute p-4 md:p-16 bottom-0 left-0 right-0">
             <div class="mx-auto">
                 <a class="text-background flex items-center gap-2 mb-1 md:mb-2 text-lg" href="/treks">

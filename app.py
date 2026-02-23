@@ -40,22 +40,50 @@ def create_app():
 
     @app.route('/')
     def home():
+
         treks = list(
-            treks_collection.find( 
-                {"is_active":True, "is_featured":True}, 
-                {"_id":0} ).sort("featured_rank", 1).limit(3)
+            treks_collection.find(
+                {"is_active": True, "is_featured": True},
+                {"_id": 0}
+            ).sort("featured_rank", 1).limit(3)
         )
         treks = [add_new_flag(t) for t in treks]
 
         waterfalls = list(
             waterfalls_collection.find(
-                {"is_active":True, "is_featured":True},
-                {"_id":0}).sort("featured_rank", 1).limit(3)
+                {"is_active": True, "is_featured": True},
+                {"_id": 0}
+            ).sort("featured_rank", 1).limit(3)
         )
         waterfalls = [add_new_flag(w) for w in waterfalls]
 
-        return render_template('home.html', treks=treks, waterfalls=waterfalls)
-    
+        # 🔥 Build hero from these
+        hero_items = []
+
+        for trek in treks:
+            hero_items.append({
+                "type": "trek",
+                "name": trek["name"],
+                "image": trek["image"],
+            })
+
+        for waterfall in waterfalls:
+            hero_items.append({
+                "type": "waterfall",
+                "name": waterfall["name"],
+                "image": waterfall["image"],
+            })
+
+        print("TREKS COUNT:", len(treks))
+        print("WATERFALLS COUNT:", len(waterfalls))
+
+        return render_template(
+            "home.html",
+            treks=treks,
+            waterfalls=waterfalls,
+            hero_items=hero_items
+        )
+
 
 
     #<-------------SEARCH ROUTE----------------->
@@ -184,6 +212,11 @@ def create_app():
         waterfalls = [add_new_flag(w) for w in waterfalls]
 
         return render_template('waterfalls.html', waterfalls=waterfalls, active_difficulty=difficulty)
+    
+    @app.route('/about-us')
+    def about_us():
+        return render_template('about-us.html')
+
     
 
     #<-----------------SLUG ROUTES FOR TREKS AND WATERFALLS--------------------->
