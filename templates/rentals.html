@@ -1,0 +1,570 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+    :root {
+        --primary: #2D6B4D;
+        --secondary: #E68C32;
+        --text: #1F4D33;
+        --bg: #FAF8F5;
+        --muted: #fffefcc3;
+        --hover: #234E38;
+    }
+
+    .rentals-page {
+        font-family: 'DM Sans', sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+    }
+
+    .rental-hero {
+        position: relative;
+        height: 60vh;
+        min-height: 420px;
+        background: linear-gradient(135deg, var(--hover) 0%, var(--primary) 60%, #3a8a62 100%);
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .rental-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M40 0L80 40L40 80L0 40z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        background-size: 60px 60px;
+    }
+
+    .rental-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: var(--bg);
+        clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    .hero-badge {
+        display: inline-block;
+        background: rgba(230, 140, 50, 0.2);
+        border: 1px solid rgba(230, 140, 50, 0.5);
+        color: #f5b571;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        padding: 6px 16px;
+        border-radius: 100px;
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        font-weight: 700;
+        line-height: 1.1;
+        color: #fff;
+        text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    }
+
+    .hero-title span {
+        color: var(--secondary);
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 8px 40px rgba(45, 107, 77, 0.12);
+        padding: 20px 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-top: -30px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .filter-btn {
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1.5px solid #e2e8e4;
+        background: transparent;
+        color: var(--text);
+        transition: all 0.2s ease;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+    }
+
+    .filter-btn.active-orange {
+        background: var(--secondary);
+        color: #fff;
+        border-color: var(--secondary);
+    }
+
+    /* Rental Cards */
+    .rental-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(45, 107, 77, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rental-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 48px rgba(45, 107, 77, 0.16);
+    }
+
+    .rental-card-img {
+        position: relative;
+        height: 220px;
+        background: #e8f0ec;
+        overflow: hidden;
+    }
+
+    .rental-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .rental-card:hover .rental-card-img img {
+        transform: scale(1.06);
+    }
+
+    .rental-badge {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: var(--secondary);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 100px;
+    }
+
+    .availability-dot {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #4ade80;
+        box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3);
+    }
+
+    .availability-dot.unavailable {
+        background: #f87171;
+        box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.3);
+    }
+
+    .rental-card-body {
+        padding: 20px 22px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rental-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 6px;
+    }
+
+    .rental-meta {
+        font-size: 0.8rem;
+        color: #7a9a88;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+
+    .rental-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .feature-tag {
+        background: #f0f7f3;
+        color: var(--primary);
+        font-size: 0.73rem;
+        font-weight: 500;
+        padding: 4px 11px;
+        border-radius: 8px;
+    }
+
+    .rental-footer {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 14px;
+        border-top: 1px solid #f0f0ec;
+    }
+
+    .rental-price {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .rental-price span {
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: #7a9a88;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .rent-btn {
+        background: var(--primary);
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 9px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .rent-btn:hover {
+        background: var(--hover);
+        color: #fff;
+    }
+
+    /* Info Strip */
+    .info-strip {
+        background: var(--primary);
+        color: var(--muted);
+    }
+
+    .info-strip-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 28px 20px;
+        gap: 6px;
+    }
+
+    .info-strip-item .num {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1;
+    }
+
+    .info-strip-item .label {
+        font-size: 0.8rem;
+        letter-spacing: 0.06em;
+        color: rgba(255,255,255,0.65);
+        text-transform: uppercase;
+    }
+
+    /* How it works */
+    .step-circle {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0 auto 14px;
+        background: var(--primary);
+        color: #fff;
+        position: relative;
+        z-index: 1;
+    }
+
+    .step-line {
+        position: absolute;
+        top: 28px;
+        left: calc(50% + 28px);
+        right: calc(-50% + 28px);
+        height: 2px;
+        background: #d8ece2;
+        z-index: 0;
+    }
+
+    /* CTA Banner */
+    .cta-banner {
+        background: linear-gradient(135deg, var(--secondary) 0%, #c97020 100%);
+        border-radius: 24px;
+        padding: 48px 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-banner::before {
+        content: '';
+        position: absolute;
+        top: -40px;
+        right: -40px;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+    }
+
+    .cta-banner::after {
+        content: '';
+        position: absolute;
+        bottom: -60px;
+        left: 20%;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+    }
+</style>
+
+<div class="rentals-page">
+
+    <!-- Hero -->
+    <section class="rental-hero">
+        <div class="text-center relative z-10 px-6">
+            <div class="hero-badge">Gear up for the wild</div>
+            <h1 class="hero-title">Trek <span>Rentals</span><br>& Equipment</h1>
+            <p class="text-base mt-4" style="color: rgba(255,255,255,0.72); max-width: 500px; margin-inline: auto; font-family: 'DM Sans', sans-serif;">
+                Everything you need for Maharashtra's trails — tents, poles, boots and beyond. Quality gear, daily rates.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="filter-bar">
+            <span style="font-size:0.8rem; font-weight:500; color:#7a9a88; text-transform:uppercase; letter-spacing:0.08em; margin-right:4px;">Filter:</span>
+            <button class="filter-btn active" onclick="filterRentals('all', this)">All Gear</button>
+            <button class="filter-btn" onclick="filterRentals('shelter', this)">Shelter</button>
+            <button class="filter-btn" onclick="filterRentals('clothing', this)">Clothing</button>
+            <button class="filter-btn" onclick="filterRentals('navigation', this)">Navigation</button>
+            <button class="filter-btn" onclick="filterRentals('safety', this)">Safety</button>
+            <button class="filter-btn" onclick="filterRentals('footwear', this)">Footwear</button>
+            <div style="margin-left:auto; display:flex; align-items:center; gap:6px;">
+                <span style="width:9px;height:9px;border-radius:50%;background:#4ade80;display:inline-block;"></span>
+                <span style="font-size:0.78rem; color:#7a9a88;">Available</span>
+                <span style="width:9px;height:9px;border-radius:50%;background:#f87171;display:inline-block; margin-left:8px;"></span>
+                <span style="font-size:0.78rem; color:#7a9a88;">Unavailable</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rentals Grid -->
+    <section class="max-w-6xl mx-auto px-6 py-16">
+        <div class="mb-10">
+            <h2 style="font-family:'Playfair Display',serif; font-size:2rem; color: var(--text); font-weight:700;">Available Equipment</h2>
+            <p style="color:#7a9a88; margin-top:4px; font-size:0.9rem;">
+                {% if rentals %}{{ rentals|length }} items available{% else %}Showing all rental items{% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="rentals-grid">
+
+            {% if rentals %}
+                {% for rental in rentals %}
+                <div class="rental-card" data-category="{{ rental.category }}">
+                    <div class="rental-card-img">
+                        <img src="{{ url_for('static', filename=rental.image) }}" alt="{{ rental.name }}" />
+                        <div class="rental-badge">{{ rental.category }}</div>
+                        <div class="availability-dot {% if not rental.available %}unavailable{% endif %}"></div>
+                    </div>
+                    <div class="rental-card-body">
+                        <h3 class="rental-name">{{ rental.name }}</h3>
+                        <div class="rental-meta">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            {{ rental.suitable_for | default("All Trek Levels") }}
+                        </div>
+                        <div class="rental-features">
+                            {% for feature in rental.features %}
+                                <span class="feature-tag">{{ feature }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="rental-footer">
+                            <div class="rental-price">
+                                ₹{{ rental.price_per_day }}<span>/day</span>
+                            </div>
+                            {% if rental.available %}
+                                <a href="/rentals/book/{{ rental.id }}" class="rent-btn">Book Now</a>
+                            {% else %}
+                                <span style="font-size:0.82rem; color:#f87171; font-weight:500;">Unavailable</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            {% else %}
+                <!-- Placeholder cards when no data -->
+                {% set placeholder_items = [
+                    {"name": "2-Person Dome Tent", "category": "shelter", "price": 350, "features": ["Waterproof", "Lightweight", "Easy Setup"], "available": true},
+                    {"name": "Trekking Poles (Pair)", "category": "navigation", "price": 120, "features": ["Adjustable", "Aluminium", "Anti-shock"], "available": true},
+                    {"name": "Hiking Boots (Size 6–12)", "category": "footwear", "price": 200, "features": ["Grip Sole", "Ankle Support", "Waterproof"], "available": true},
+                    {"name": "Sleeping Bag (15°C)", "category": "shelter", "price": 180, "features": ["Compact", "Mummy Shape", "Carry Bag"], "available": false},
+                    {"name": "Rain Poncho & Jacket", "category": "clothing", "price": 90, "features": ["Windproof", "Packable", "Unisex"], "available": true},
+                    {"name": "First Aid Kit", "category": "safety", "price": 80, "features": ["20+ Items", "Snakebite", "Blister Care"], "available": true},
+                    {"name": "Headlamp + Batteries", "category": "navigation", "price": 60, "features": ["300 Lumen", "USB Charge", "Red Mode"], "available": true},
+                    {"name": "Carabiner Set (x4)", "category": "safety", "price": 100, "features": ["25kN rated", "Locking Gate", "Lightweight"], "available": false},
+                    {"name": "Rucksack 50L", "category": "shelter", "price": 250, "features": ["Rain Cover", "Hip Belt", "Ventilated"], "available": true}
+                ] %}
+
+                {% for item in placeholder_items %}
+                <div class="rental-card" data-category="{{ item.category }}">
+                    <div class="rental-card-img" style="background: linear-gradient(135deg, #d8ece2, #c2e0d0);">
+                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#2D6B4D" stroke-width="1" stroke-opacity="0.4"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                        </div>
+                        <div class="rental-badge">{{ item.category }}</div>
+                        <div class="availability-dot {% if not item.available %}unavailable{% endif %}"></div>
+                    </div>
+                    <div class="rental-card-body">
+                        <h3 class="rental-name">{{ item.name }}</h3>
+                        <div class="rental-meta">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            All Trek Levels
+                        </div>
+                        <div class="rental-features">
+                            {% for f in item.features %}
+                                <span class="feature-tag">{{ f }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="rental-footer">
+                            <div class="rental-price">
+                                ₹{{ item.price }}<span>/day</span>
+                            </div>
+                            {% if item.available %}
+                                <a href="#" class="rent-btn">Book Now</a>
+                            {% else %}
+                                <span style="font-size:0.82rem; color:#f87171; font-weight:500;">Unavailable</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+        </div>
+    </section>
+
+    <!-- Stats Strip -->
+    <section class="info-strip">
+        <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-white divide-opacity-10">
+            <div class="info-strip-item">
+                <span class="num">50+</span>
+                <span class="label">Gear Items</span>
+            </div>
+            <div class="info-strip-item">
+                <span class="num">₹60</span>
+                <span class="label">Starting / Day</span>
+            </div>
+            <div class="info-strip-item">
+                <span class="num">1-Day</span>
+                <span class="label">Pickup Ready</span>
+            </div>
+            <div class="info-strip-item">
+                <span class="num">4.9★</span>
+                <span class="label">Trekker Rating</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20" style="background: var(--bg);">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <h2 style="font-family:'Playfair Display',serif; font-size:2.25rem; font-weight:700; color:var(--text); margin-bottom:8px;">How Rentals Work</h2>
+            <p style="color:#7a9a88; font-size:0.9rem; max-width:480px; margin:0 auto 52px;">Simple, quick and hassle-free. Pick up your gear the day before, return it after your trek.</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                <div class="relative">
+                    <div class="step-circle">1
+                        <span class="step-line hidden md:block"></span>
+                    </div>
+                    <h3 style="font-weight:600; font-size:1rem; margin-bottom:6px; color:var(--text);">Browse Gear</h3>
+                    <p style="font-size:0.83rem; color:#7a9a88; line-height:1.6;">Filter by category and check availability for your trek date.</p>
+                </div>
+                <div class="relative">
+                    <div class="step-circle">2
+                        <span class="step-line hidden md:block"></span>
+                    </div>
+                    <h3 style="font-weight:600; font-size:1rem; margin-bottom:6px; color:var(--text);">Book Online</h3>
+                    <p style="font-size:0.83rem; color:#7a9a88; line-height:1.6;">Select dates, confirm your booking and pay a small deposit.</p>
+                </div>
+                <div class="relative">
+                    <div class="step-circle">3
+                        <span class="step-line hidden md:block"></span>
+                    </div>
+                    <h3 style="font-weight:600; font-size:1rem; margin-bottom:6px; color:var(--text);">Collect Gear</h3>
+                    <p style="font-size:0.83rem; color:#7a9a88; line-height:1.6;">Pick up from our Pune or Mumbai pickup points, 1 day prior.</p>
+                </div>
+                <div>
+                    <div class="step-circle" style="background: var(--secondary);">4</div>
+                    <h3 style="font-weight:600; font-size:1rem; margin-bottom:6px; color:var(--text);">Return & Done</h3>
+                    <p style="font-size:0.83rem; color:#7a9a88; line-height:1.6;">Drop off within 24hrs of your trek completion. Simple as that.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="max-w-5xl mx-auto px-6 pb-20">
+        <div class="cta-banner">
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h2 style="font-family:'Playfair Display',serif; font-size:1.85rem; font-weight:700; color:#fff; margin-bottom:8px;">Not sure what to bring?</h2>
+                    <p style="color:rgba(255,255,255,0.78); font-size:0.9rem;">Tell us your trek and we'll build a custom gear pack for you.</p>
+                </div>
+                <a href="/contact" style="white-space:nowrap; background:#fff; color:var(--secondary); font-weight:600; font-size:0.9rem; padding:14px 28px; border-radius:14px; text-decoration:none; font-family:'DM Sans',sans-serif; transition: opacity 0.2s;">
+                    Get a Gear Pack →
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    function filterRentals(category, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.rental-card').forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+{% endblock %}

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, abort, jsonify
-from  datetime import datetime, timedelta, timezone
+from  datetime import datetime, time, timedelta, timezone
 
 #DTABASE IMPORTS 
 from pymongo import MongoClient
@@ -216,13 +216,20 @@ def create_app():
     @app.route('/about-us')
     def about_us():
         return render_template('about-us.html')
-
+    
+    @app.route('/rentals')
+    def rentals():
+        return render_template('rentals.html')
+    
+    @app.route('/plan-your-trek')
+    def plan_your_trek():
+        return render_template('plan-your-trek.html')
     
 
     #<-----------------SLUG ROUTES FOR TREKS AND WATERFALLS--------------------->
     @app.route('/treks/<slug>')
     def trek_details(slug):
-        # time.sleep(4)
+        # time  
         trek = treks_collection.find_one( {"slug": slug}, {"_id":0} )
         if not trek:
             abort(404)

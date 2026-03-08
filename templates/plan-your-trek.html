@@ -1,0 +1,911 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+
+    :root {
+        --primary: #2D6B4D;
+        --secondary: #E68C32;
+        --text: #1F4D33;
+        --bg: #FAF8F5;
+        --hover: #234E38;
+    }
+
+    body { font-family: 'Outfit', sans-serif; }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.65s ease both; }
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.25s; }
+    .d3 { animation-delay: 0.4s; }
+
+    /* ── Trek Card ── */
+    .trek-operator-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid #e8f0ec;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .trek-operator-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 52px rgba(45,107,77,0.13);
+    }
+
+    /* ── Star Rating ── */
+    .stars { color: #f5a623; letter-spacing: 1px; }
+
+    /* ── Price badge ── */
+    .price-badge {
+        background: linear-gradient(135deg, #2D6B4D, #3a8a62);
+        color: #fff;
+        border-radius: 12px;
+        padding: 8px 16px;
+        display: inline-block;
+    }
+
+    /* ── Filter pill ── */
+    .pill {
+        padding: 8px 18px;
+        border-radius: 100px;
+        border: 1.5px solid #cde3d7;
+        background: transparent;
+        color: #2D6B4D;
+        font-size: 0.82rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s, border-color 0.2s;
+        font-family: 'Outfit', sans-serif;
+    }
+    .pill:hover, .pill.active {
+        background: #2D6B4D;
+        color: #fff;
+        border-color: #2D6B4D;
+    }
+    .pill.active-orange {
+        background: #E68C32;
+        color: #fff;
+        border-color: #E68C32;
+    }
+
+    /* ── Operator logo placeholder ── */
+    .op-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Lora', serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    /* ── Difficulty Badge ── */
+    .diff-easy    { background: #d1fae5; color: #065f46; }
+    .diff-moderate{ background: #fef3c7; color: #92400e; }
+    .diff-hard    { background: #fee2e2; color: #991b1b; }
+
+    /* ── Hero bg topographic pattern ── */
+    .hero-topo {
+        background-color: #234E38;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cpath d='M0,300 Q150,150 300,300 T600,300' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3Cpath d='M0,280 Q150,130 300,280 T600,280' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3Cpath d='M0,320 Q150,170 300,320 T600,320' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3Cpath d='M0,260 Q150,110 300,260 T600,260' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3Cpath d='M0,340 Q150,190 300,340 T600,340' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3Cpath d='M0,240 Q150,90 300,240 T600,240' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3Cpath d='M0,360 Q150,210 300,360 T600,360' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3C/svg%3E");
+        background-size: 600px 600px;
+    }
+
+    /* ── Search input ── */
+    .search-box {
+        border: 1.5px solid #cde3d7;
+        border-radius: 14px;
+        padding: 12px 18px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.9rem;
+        color: #1F4D33;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background: #fff;
+    }
+    .search-box:focus {
+        border-color: #2D6B4D;
+        box-shadow: 0 0 0 3px rgba(45,107,77,0.1);
+    }
+
+    /* ── Accordion ── */
+    .accordion-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+    .accordion-body.open {
+        max-height: 600px;
+    }
+    .accordion-icon {
+        transition: transform 0.3s ease;
+    }
+    .accordion-icon.rotated {
+        transform: rotate(180deg);
+    }
+
+    /* ── Book button ── */
+    .book-btn {
+        background: #2D6B4D;
+        color: #fff;
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s;
+        display: inline-block;
+        font-family: 'Outfit', sans-serif;
+    }
+    .book-btn:hover { background: #234E38; color: #fff; }
+
+    .book-btn-outline {
+        border: 1.5px solid #2D6B4D;
+        color: #2D6B4D;
+        border-radius: 12px;
+        padding: 10px 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        display: inline-block;
+        font-family: 'Outfit', sans-serif;
+    }
+    .book-btn-outline:hover { background: #2D6B4D; color: #fff; }
+
+    /* ── Compare strip ── */
+    .compare-strip {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: #1F4D33;
+        color: #fff;
+        border-radius: 18px;
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+        z-index: 999;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        font-family: 'Outfit', sans-serif;
+        white-space: nowrap;
+    }
+    .compare-strip.visible {
+        transform: translateX(-50%) translateY(0);
+    }
+</style>
+
+<div class="font-['Outfit',sans-serif] bg-[#FAF8F5] text-[#1F4D33]">
+
+    <!-- ══════════════════════════════
+         HERO
+    ══════════════════════════════ -->
+    <section class="hero-topo relative min-h-[62vh] flex items-center justify-center overflow-hidden px-6">
+
+        <!-- radial glow -->
+        <div class="absolute inset-0 pointer-events-none"
+             style="background: radial-gradient(ellipse at 30% 60%, rgba(45,107,77,0.5) 0%, transparent 65%), radial-gradient(ellipse at 75% 25%, rgba(230,140,50,0.08) 0%, transparent 50%);">
+        </div>
+        <!-- wave cutout bottom -->
+        <div class="absolute bottom-0 left-0 right-0 h-16 bg-[#FAF8F5]"
+             style="clip-path: ellipse(55% 100% at 50% 100%);"></div>
+
+        <div class="relative z-10 text-center max-w-3xl mx-auto fade-up">
+            <span class="inline-flex items-center gap-2 text-[0.72rem] font-semibold tracking-[0.18em] uppercase text-[#E68C32] mb-5">
+                <span class="w-6 h-[2px] bg-[#E68C32] inline-block"></span>
+                Find Your Guide
+                <span class="w-6 h-[2px] bg-[#E68C32] inline-block"></span>
+            </span>
+            <h1 class="fade-up d1 text-white mb-5"
+                style="font-family:'Lora',serif; font-size: clamp(2.6rem,6vw,4.2rem); font-weight:700; line-height:1.15;">
+                Plan Your <em class="text-[#E68C32]">Perfect</em><br>Maharashtra Trek
+            </h1>
+            <p class="fade-up d2 text-[rgba(255,255,255,0.65)] text-base leading-relaxed max-w-xl mx-auto mb-8">
+                Compare trusted trek operators, read real ratings, check prices — and book your next adventure without spending hours on research.
+            </p>
+
+            <!-- search bar -->
+            <div class="fade-up d3 flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
+                <input id="heroSearch" type="text" placeholder="Search a trek or place…"
+                       class="search-box flex-1 w-full"
+                       oninput="liveSearch(this.value)" />
+                <button onclick="liveSearch(document.getElementById('heroSearch').value)"
+                        class="bg-[#E68C32] hover:bg-[#c97020] text-white font-semibold text-sm px-6 py-3 rounded-[14px] transition-colors duration-200 whitespace-nowrap">
+                    Search Treks
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════
+         FILTER BAR
+    ══════════════════════════════ -->
+    <div class="max-w-6xl mx-auto px-6 -mt-1 pb-4 relative z-10">
+        <div class="bg-white rounded-2xl shadow-[0_8px_40px_rgba(45,107,77,0.1)] px-7 py-5 flex flex-wrap gap-3 items-center">
+            <span class="text-[0.72rem] font-semibold tracking-widest uppercase text-[#7a9a88] mr-2">Difficulty:</span>
+            <button class="pill active" onclick="filterTreks('all',this)">All</button>
+            <button class="pill" onclick="filterTreks('easy',this)">Easy</button>
+            <button class="pill" onclick="filterTreks('moderate',this)">Moderate</button>
+            <button class="pill" onclick="filterTreks('hard',this)">Hard</button>
+
+            <div class="w-px h-6 bg-[#e2e8e4] mx-2 hidden sm:block"></div>
+
+            <span class="text-[0.72rem] font-semibold tracking-widest uppercase text-[#7a9a88] mr-1">Sort:</span>
+            <button class="pill" onclick="sortTreks('rating',this)">⭐ Top Rated</button>
+            <button class="pill" onclick="sortTreks('price',this)">💰 Lowest Price</button>
+            <button class="pill" onclick="sortTreks('duration',this)">⏱ Shortest</button>
+
+            <div class="ml-auto flex items-center gap-2">
+                <span class="text-[0.78rem] text-[#7a9a88]">
+                    <span id="result-count">—</span> operators found
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════
+         TREK LISTING
+    ══════════════════════════════ -->
+    <section class="max-w-6xl mx-auto px-6 py-12" id="trek-section">
+
+        <!-- ── TREK GROUP: Rajgad Fort ── -->
+        <div class="trek-group mb-16" data-trek="rajgad" data-difficulty="moderate">
+            <!-- Trek Header -->
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                <div>
+                    <span class="inline-block text-[0.7rem] font-semibold tracking-[0.12em] uppercase text-[#E68C32] mb-2">Featured Trek</span>
+                    <h2 style="font-family:'Lora',serif;" class="text-3xl font-bold text-[#1F4D33] leading-tight">Rajgad Fort Trek</h2>
+                    <div class="flex flex-wrap items-center gap-3 mt-2 text-sm text-[#7a9a88]">
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Pune District
+                        </span>
+                        <span>•</span>
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            2–3 Days
+                        </span>
+                        <span>•</span>
+                        <span class="flex items-center gap-1">📏 1394m altitude</span>
+                        <span class="diff-moderate text-[0.72rem] font-semibold px-3 py-1 rounded-full">Moderate</span>
+                    </div>
+                </div>
+                <a href="#" class="text-sm font-semibold text-[#2D6B4D] underline underline-offset-2 whitespace-nowrap">View Trek Details →</a>
+            </div>
+
+            <!-- Operators Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Operator 1 -->
+                <div class="trek-operator-card operator-card" data-difficulty="moderate" data-rating="4.8" data-price="1800" data-duration="2">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#1a3d2b,#2D6B4D);">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">🏔️</div>
+                                <span class="text-white text-xs opacity-60 tracking-widest uppercase">Rajgad Trek</span>
+                            </div>
+                        </div>
+                        <span class="absolute top-3 left-3 bg-[#E68C32] text-white text-[0.65rem] font-bold uppercase tracking-wide px-3 py-1 rounded-full">Best Seller</span>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span>
+                            <span class="text-[0.75rem] font-bold text-[#1F4D33]">4.8</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#2D6B4D,#3a8a62);">T</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm leading-tight">TrailBlaze Maharashtra</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2016 · 1,200+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★★ <span class="text-[#7a9a88] font-normal text-xs">(148 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Meals included</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Camping gear</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Expert guide</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Per person</p>
+                                <p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹1,800</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'TrailBlaze Maharashtra','₹1,800')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operator 2 -->
+                <div class="trek-operator-card operator-card" data-difficulty="moderate" data-rating="4.5" data-price="1500" data-duration="2">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#2a4a20,#4a7c35);">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">⛺</div>
+                                <span class="text-white text-xs opacity-60 tracking-widest uppercase">Rajgad Trek</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span>
+                            <span class="text-[0.75rem] font-bold text-[#1F4D33]">4.5</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#E68C32,#c97020);">G</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm leading-tight">GhatVentures</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2019 · 600+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★½ <span class="text-[#7a9a88] font-normal text-xs">(92 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Budget friendly</span>
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Small groups</span>
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Local guide</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Per person</p>
+                                <p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹1,500</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'GhatVentures','₹1,500')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operator 3 -->
+                <div class="trek-operator-card operator-card" data-difficulty="moderate" data-rating="4.6" data-price="2200" data-duration="3">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#1c3a4a,#2a6075);">
+                            <div class="text-center">
+                                <div class="text-4xl mb-2">🌿</div>
+                                <span class="text-white text-xs opacity-60 tracking-widest uppercase">Rajgad Trek</span>
+                            </div>
+                        </div>
+                        <span class="absolute top-3 left-3 bg-[#2D6B4D] text-white text-[0.65rem] font-bold uppercase tracking-wide px-3 py-1 rounded-full">Premium</span>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span>
+                            <span class="text-[0.75rem] font-bold text-[#1F4D33]">4.6</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#1c3a4a,#2a6075);">S</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm leading-tight">SahyadriSoul Expeditions</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2013 · 2,400+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★★ <span class="text-[#7a9a88] font-normal text-xs">(203 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Photographer guide</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Full kit</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Insurance</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Per person</p>
+                                <p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹2,200</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'SahyadriSoul','₹2,200')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- ── TREK GROUP: Harishchandragad ── -->
+        <div class="trek-group mb-16" data-trek="harishchandragad" data-difficulty="hard">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                <div>
+                    <span class="inline-block text-[0.7rem] font-semibold tracking-[0.12em] uppercase text-[#7a9a88] mb-2">Popular Trek</span>
+                    <h2 style="font-family:'Lora',serif;" class="text-3xl font-bold text-[#1F4D33]">Harishchandragad</h2>
+                    <div class="flex flex-wrap items-center gap-3 mt-2 text-sm text-[#7a9a88]">
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Ahmednagar District
+                        </span>
+                        <span>•</span>
+                        <span>2–3 Days</span>
+                        <span>•</span>
+                        <span>📏 1424m altitude</span>
+                        <span class="diff-hard text-[0.72rem] font-semibold px-3 py-1 rounded-full">Hard</span>
+                    </div>
+                </div>
+                <a href="#" class="text-sm font-semibold text-[#2D6B4D] underline underline-offset-2 whitespace-nowrap">View Trek Details →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="trek-operator-card operator-card" data-difficulty="hard" data-rating="4.9" data-price="2500" data-duration="3">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#3b1f1f,#7a3535);">
+                            <div class="text-center"><div class="text-4xl mb-2">🗻</div><span class="text-white text-xs opacity-60 tracking-widest uppercase">Harishchandragad</span></div>
+                        </div>
+                        <span class="absolute top-3 left-3 bg-[#E68C32] text-white text-[0.65rem] font-bold uppercase px-3 py-1 rounded-full">Top Rated</span>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span><span class="text-[0.75rem] font-bold text-[#1F4D33]">4.9</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#7a3535,#c04040);">W</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm">WildPeak Adventures</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2011 · 3,100+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★★ <span class="text-[#7a9a88] font-normal text-xs">(311 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Konkan Kada route</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Safety ropes</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">First aid</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div><p class="text-[0.72rem] text-[#7a9a88]">Per person</p><p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹2,500</p></div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'WildPeak','₹2,500')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trek-operator-card operator-card" data-difficulty="hard" data-rating="4.4" data-price="2000" data-duration="2">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#1a2f3a,#2a5060);">
+                            <div class="text-center"><div class="text-4xl mb-2">🌄</div><span class="text-white text-xs opacity-60 tracking-widest uppercase">Harishchandragad</span></div>
+                        </div>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span><span class="text-[0.75rem] font-bold text-[#1F4D33]">4.4</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#1a2f3a,#2a5060);">N</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm">NaturePath Treks</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2020 · 400+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★ <span class="text-[#7a9a88] font-normal text-xs">(64 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Overnight camping</span>
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Bonfire</span>
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Photo stops</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div><p class="text-[0.72rem] text-[#7a9a88]">Per person</p><p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹2,000</p></div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'NaturePath','₹2,000')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trek-operator-card operator-card" data-difficulty="hard" data-rating="4.7" data-price="2800" data-duration="3">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#2a1f3a,#4a3570);">
+                            <div class="text-center"><div class="text-4xl mb-2">🔭</div><span class="text-white text-xs opacity-60 tracking-widest uppercase">Harishchandragad</span></div>
+                        </div>
+                        <span class="absolute top-3 left-3 bg-[#2D6B4D] text-white text-[0.65rem] font-bold uppercase px-3 py-1 rounded-full">Premium</span>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span><span class="text-[0.75rem] font-bold text-[#1F4D33]">4.7</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#2a1f3a,#4a3570);">S</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm">SahyadriSoul Expeditions</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2013 · 2,400+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★★ <span class="text-[#7a9a88] font-normal text-xs">(189 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Certified guide</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Medical kit</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">All meals</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div><p class="text-[0.72rem] text-[#7a9a88]">Per person</p><p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹2,800</p></div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'SahyadriSoul','₹2,800')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- ── TREK GROUP: Kalsubai (Easy) ── -->
+        <div class="trek-group mb-16" data-trek="kalsubai" data-difficulty="easy">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+                <div>
+                    <span class="inline-block text-[0.7rem] font-semibold tracking-[0.12em] uppercase text-[#7a9a88] mb-2">Beginner Friendly</span>
+                    <h2 style="font-family:'Lora',serif;" class="text-3xl font-bold text-[#1F4D33]">Kalsubai Peak</h2>
+                    <div class="flex flex-wrap items-center gap-3 mt-2 text-sm text-[#7a9a88]">
+                        <span class="flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Nashik District
+                        </span>
+                        <span>•</span>
+                        <span>1 Day</span>
+                        <span>•</span>
+                        <span>📏 1646m — Highest peak in Maharashtra</span>
+                        <span class="diff-easy text-[0.72rem] font-semibold px-3 py-1 rounded-full">Easy</span>
+                    </div>
+                </div>
+                <a href="#" class="text-sm font-semibold text-[#2D6B4D] underline underline-offset-2 whitespace-nowrap">View Trek Details →</a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="trek-operator-card operator-card" data-difficulty="easy" data-rating="4.7" data-price="900" data-duration="1">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#1b3a1b,#2D6B4D);">
+                            <div class="text-center"><div class="text-4xl mb-2">🌅</div><span class="text-white text-xs opacity-60 tracking-widest uppercase">Kalsubai</span></div>
+                        </div>
+                        <span class="absolute top-3 left-3 bg-[#E68C32] text-white text-[0.65rem] font-bold uppercase px-3 py-1 rounded-full">Best for Beginners</span>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span><span class="text-[0.75rem] font-bold text-[#1F4D33]">4.7</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#2D6B4D,#4a9e6e);">T</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm">TrailBlaze Maharashtra</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2016 · 1,200+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★★ <span class="text-[#7a9a88] font-normal text-xs">(220 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Sunrise hike</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Breakfast</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">1-day trip</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div><p class="text-[0.72rem] text-[#7a9a88]">Per person</p><p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹900</p></div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'TrailBlaze','₹900')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trek-operator-card operator-card" data-difficulty="easy" data-rating="4.3" data-price="750" data-duration="1">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#2a3a1a,#5a7a30);">
+                            <div class="text-center"><div class="text-4xl mb-2">🌿</div><span class="text-white text-xs opacity-60 tracking-widest uppercase">Kalsubai</span></div>
+                        </div>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span><span class="text-[0.75rem] font-bold text-[#1F4D33]">4.3</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#E68C32,#c97020);">G</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm">GhatVentures</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2019 · 600+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★ <span class="text-[#7a9a88] font-normal text-xs">(77 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Cheapest option</span>
+                            <span class="bg-[#fdf4ec] text-[#c97020] text-[0.7rem] px-2 py-1 rounded-lg">Transport incl.</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div><p class="text-[0.72rem] text-[#7a9a88]">Per person</p><p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹750</p></div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'GhatVentures','₹750')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trek-operator-card operator-card" data-difficulty="easy" data-rating="4.6" data-price="1100" data-duration="1">
+                    <div class="relative">
+                        <div class="h-44 flex items-center justify-center" style="background:linear-gradient(135deg,#1a3040,#285060);">
+                            <div class="text-center"><div class="text-4xl mb-2">🎒</div><span class="text-white text-xs opacity-60 tracking-widest uppercase">Kalsubai</span></div>
+                        </div>
+                        <span class="absolute top-3 left-3 bg-[#2D6B4D] text-white text-[0.65rem] font-bold uppercase px-3 py-1 rounded-full">Family Pick</span>
+                        <div class="absolute top-3 right-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 shadow-sm">
+                            <span class="text-yellow-400 text-xs">★</span><span class="text-[0.75rem] font-bold text-[#1F4D33]">4.6</span>
+                        </div>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="op-logo" style="background:linear-gradient(135deg,#1a3040,#285060);">S</div>
+                            <div>
+                                <p class="font-semibold text-[#1F4D33] text-sm">SahyadriSoul Expeditions</p>
+                                <p class="text-[0.72rem] text-[#7a9a88]">Since 2013 · 2,400+ treks</p>
+                            </div>
+                        </div>
+                        <div class="stars text-sm mb-1">★★★★★ <span class="text-[#7a9a88] font-normal text-xs">(141 reviews)</span></div>
+                        <div class="flex flex-wrap gap-2 my-3">
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Family friendly</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Full day meals</span>
+                            <span class="bg-[#f0f7f3] text-[#2D6B4D] text-[0.7rem] px-2 py-1 rounded-lg">Kids welcome</span>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 pt-4 border-t border-[#f0f0ec]">
+                            <div><p class="text-[0.72rem] text-[#7a9a88]">Per person</p><p style="font-family:'Lora',serif;" class="text-xl font-bold text-[#2D6B4D]">₹1,100</p></div>
+                            <div class="flex gap-2">
+                                <button onclick="addCompare(this,'SahyadriSoul','₹1,100')" class="book-btn-outline text-xs px-3 py-2">+ Compare</button>
+                                <a href="#" class="book-btn text-xs px-3 py-2">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- No results message -->
+        <div id="no-results" class="hidden text-center py-20">
+            <div class="text-5xl mb-4">🔍</div>
+            <h3 style="font-family:'Lora',serif;" class="text-2xl font-bold text-[#1F4D33] mb-2">No treks found</h3>
+            <p class="text-[#7a9a88] text-sm">Try a different search or filter.</p>
+        </div>
+
+    </section>
+
+
+    <!-- ══════════════════════════════
+         WHY BOOK THROUGH US — INFO STRIP
+    ══════════════════════════════ -->
+    <section class="bg-[#2D6B4D] py-14">
+        <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
+            <div class="flex flex-col items-center gap-1 px-5 py-4 text-center">
+                <span style="font-family:'Lora',serif;" class="text-3xl font-bold text-white">15+</span>
+                <span class="text-[0.75rem] uppercase tracking-widest text-white/50">Verified Operators</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 px-5 py-4 text-center">
+                <span style="font-family:'Lora',serif;" class="text-3xl font-bold text-white">50+</span>
+                <span class="text-[0.75rem] uppercase tracking-widest text-white/50">Treks Listed</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 px-5 py-4 text-center">
+                <span style="font-family:'Lora',serif;" class="text-3xl font-bold text-[#E68C32]">4.7★</span>
+                <span class="text-[0.75rem] uppercase tracking-widest text-white/50">Avg Operator Rating</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 px-5 py-4 text-center">
+                <span style="font-family:'Lora',serif;" class="text-3xl font-bold text-white">Free</span>
+                <span class="text-[0.75rem] uppercase tracking-widest text-white/50">No booking fees</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════
+         FAQ ACCORDION
+    ══════════════════════════════ -->
+    <section class="max-w-3xl mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <span class="inline-flex items-center gap-2 text-[0.72rem] font-semibold tracking-[0.18em] uppercase text-[#E68C32] mb-3">
+                <span class="w-5 h-[2px] bg-[#E68C32]"></span>
+                Common Questions
+                <span class="w-5 h-[2px] bg-[#E68C32]"></span>
+            </span>
+            <h2 style="font-family:'Lora',serif;" class="text-3xl font-bold text-[#1F4D33]">Before You Book</h2>
+        </div>
+
+        <div class="flex flex-col gap-3" id="faq">
+
+            {% set faqs = [
+                ("Are these operators verified?", "Yes — every operator listed has been manually reviewed. We check their registration, safety records, and read through real trekker reviews before listing them here."),
+                ("Can I book directly through this website?", "Currently the 'Book Now' buttons take you directly to the operator's page. We don't charge a middleman fee — what you see is what you pay."),
+                ("What if I want a customized group trek?", "Most operators offer private/custom group packages. Use the 'Book Now' link and mention your group size — operators are generally happy to tailor the itinerary."),
+                ("Which season is best for trekking in Maharashtra?", "October to February is ideal for most treks. Monsoon (June–September) is magical for waterfalls but can be slippery. Summer (March–May) is best avoided for high-altitude treks."),
+                ("What should I carry on a trek?", "At minimum: water (2L+), snacks, sunscreen, a light jacket, trekking shoes and a charged phone. Our gear rentals page has everything you might need.")
+            ] %}
+
+            {% for q, a in faqs %}
+            <div class="bg-white rounded-2xl border border-[#e8f0ec] overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer">
+                    <span class="font-semibold text-[#1F4D33] text-sm pr-4">{{ q }}</span>
+                    <svg class="accordion-icon w-5 h-5 text-[#2D6B4D] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div class="accordion-body">
+                    <p class="px-6 pb-5 text-sm text-[#7a9a88] leading-relaxed">{{ a }}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════
+         BOTTOM CTA
+    ══════════════════════════════ -->
+    <section class="px-6 pb-20">
+        <div class="max-w-4xl mx-auto rounded-3xl overflow-hidden relative"
+             style="background: linear-gradient(135deg, #E68C32 0%, #c97020 100%);">
+            <div class="absolute top-[-40px] right-[-40px] w-48 h-48 rounded-full bg-white/8 pointer-events-none"></div>
+            <div class="absolute bottom-[-60px] left-[15%] w-64 h-64 rounded-full bg-white/5 pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 px-10 py-14">
+                <div>
+                    <p class="text-white/70 text-xs font-semibold uppercase tracking-widest mb-2">Can't decide?</p>
+                    <h2 style="font-family:'Lora',serif;" class="text-3xl font-bold text-white leading-tight">Let us suggest the<br>perfect trek for you.</h2>
+                    <p class="text-white/70 text-sm mt-3 max-w-xs leading-relaxed">Tell us your experience level, dates and budget — we'll match you to the right trail and operator.</p>
+                </div>
+                <a href="/contact"
+                   class="whitespace-nowrap bg-white text-[#E68C32] font-bold text-sm px-8 py-4 rounded-2xl hover:opacity-90 transition-opacity duration-200"
+                   style="font-family:'Outfit',sans-serif;">
+                    Get Trek Suggestions →
+                </a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ══════════════════════════════
+     COMPARE STRIP (fixed bottom)
+══════════════════════════════ -->
+<div class="compare-strip" id="compareStrip">
+    <span class="text-sm font-semibold">Comparing: <span id="compareNames" class="text-[#E68C32]"></span></span>
+    <button onclick="clearCompare()" class="text-xs text-white/60 hover:text-white underline transition-colors">Clear</button>
+    <a href="#" class="bg-[#E68C32] hover:bg-[#c97020] text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors"
+       style="font-family:'Outfit',sans-serif;">Compare Now →</a>
+</div>
+
+<script>
+    // ── Count operators on load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCount();
+    });
+
+    function updateCount() {
+        const visible = document.querySelectorAll('.trek-group:not([style*="display: none"]) .operator-card:not([style*="display: none"])').length;
+        document.getElementById('result-count').textContent = visible;
+    }
+
+    // ── Filter by difficulty
+    let activeFilter = 'all';
+
+    function filterTreks(diff, btn) {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = diff;
+
+        document.querySelectorAll('.trek-group').forEach(group => {
+            const groupDiff = group.dataset.difficulty;
+            const show = diff === 'all' || groupDiff === diff;
+            group.style.display = show ? '' : 'none';
+        });
+
+        checkNoResults();
+        updateCount();
+    }
+
+    // ── Sort
+    function sortTreks(by, btn) {
+        const sortBtns = document.querySelectorAll('.pill');
+        sortBtns.forEach(p => { if (['⭐ Top Rated','💰 Lowest Price','⏱ Shortest'].some(t => p.textContent.includes(t.trim()))) p.classList.remove('active'); });
+        btn.classList.add('active');
+
+        document.querySelectorAll('.trek-group').forEach(group => {
+            const grid = group.querySelector('.grid');
+            const cards = Array.from(grid.querySelectorAll('.operator-card'));
+            cards.sort((a, b) => {
+                if (by === 'rating') return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+                if (by === 'price')  return parseFloat(a.dataset.price)  - parseFloat(b.dataset.price);
+                if (by === 'duration') return parseFloat(a.dataset.duration) - parseFloat(b.dataset.duration);
+            });
+            cards.forEach(c => grid.appendChild(c));
+        });
+    }
+
+    // ── Live search
+    function liveSearch(query) {
+        const q = query.toLowerCase().trim();
+        document.querySelectorAll('.trek-group').forEach(group => {
+            const name = group.dataset.trek.toLowerCase();
+            const heading = group.querySelector('h2').textContent.toLowerCase();
+            const match = !q || name.includes(q) || heading.includes(q);
+            group.style.display = match ? '' : 'none';
+        });
+        checkNoResults();
+        updateCount();
+    }
+
+    function checkNoResults() {
+        const any = Array.from(document.querySelectorAll('.trek-group')).some(g => g.style.display !== 'none');
+        document.getElementById('no-results').classList.toggle('hidden', any);
+    }
+
+    // ── FAQ Accordion
+    function toggleFaq(btn) {
+        const body = btn.nextElementSibling;
+        const icon = btn.querySelector('.accordion-icon');
+        const isOpen = body.classList.contains('open');
+
+        document.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+        document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('rotated'));
+
+        if (!isOpen) {
+            body.classList.add('open');
+            icon.classList.add('rotated');
+        }
+    }
+
+    // ── Compare
+    let compareList = [];
+
+    function addCompare(btn, name, price) {
+        if (compareList.find(c => c.name === name)) {
+            compareList = compareList.filter(c => c.name !== name);
+            btn.textContent = '+ Compare';
+            btn.style.background = '';
+            btn.style.color = '';
+            btn.style.borderColor = '';
+        } else {
+            if (compareList.length >= 3) {
+                alert('You can compare up to 3 operators at a time.');
+                return;
+            }
+            compareList.push({ name, price });
+            btn.textContent = '✓ Added';
+            btn.style.background = '#2D6B4D';
+            btn.style.color = '#fff';
+            btn.style.borderColor = '#2D6B4D';
+        }
+
+        const strip = document.getElementById('compareStrip');
+        const names = document.getElementById('compareNames');
+
+        if (compareList.length > 0) {
+            names.textContent = compareList.map(c => `${c.name} (${c.price})`).join(' vs ');
+            strip.classList.add('visible');
+        } else {
+            strip.classList.remove('visible');
+        }
+    }
+
+    function clearCompare() {
+        compareList = [];
+        document.getElementById('compareStrip').classList.remove('visible');
+        document.querySelectorAll('.book-btn-outline').forEach(btn => {
+            if (btn.textContent.trim() === '✓ Added') {
+                btn.textContent = '+ Compare';
+                btn.style.background = '';
+                btn.style.color = '';
+                btn.style.borderColor = '';
+            }
+        });
+    }
+</script>
+
+{% endblock %}
