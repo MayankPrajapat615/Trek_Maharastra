@@ -6,7 +6,7 @@ mongo_db = mongo_client["trek_maharashtra"]
 
 treks_collection = mongo_db["treks"]
 waterfalls_collection = mongo_db["waterfalls"]
-highlights_collection = mongo_db["highlights"]
+users_collection = mongo_db["users"] 
 
 
 # 🔒 INDEXES (RUNS SAFELY MULTIPLE TIMES)
@@ -15,3 +15,4 @@ waterfalls_collection.create_index("slug", unique=True)
 
 treks_collection.create_index("location.district")
 treks_collection.create_index("difficulty")
+users_collection.create_index("email", unique=True)

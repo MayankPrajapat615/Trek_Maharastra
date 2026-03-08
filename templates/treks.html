@@ -1,12 +1,84 @@
 {% extends "base.html" %}
 {% block content %}
+
+<style>
+    .difficulty-btn {
+        padding: 6px 16px;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1F4D33;
+        text-decoration: none;
+        transition: background 0.18s, color 0.18s;
+        cursor: pointer;
+    }
+    .difficulty-btn:hover {
+        background: #2D6B4D22;
+    }
+    .difficulty-btn.active {
+        background: #2D6B4D;
+        color: #fff;
+    }
+
+    /* ── Pagination ── */
+    .pg-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        border: 1.5px solid #cde3d7;
+        background: #fff;
+        color: #1F4D33;
+        transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.15s, box-shadow 0.18s;
+        cursor: pointer;
+        user-select: none;
+        padding: 0 10px;
+    }
+    .pg-btn:hover {
+        background: #f0f7f3;
+        border-color: #2D6B4D;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(45,107,77,0.1);
+    }
+    .pg-btn.active {
+        background: #2D6B4D;
+        color: #fff;
+        border-color: #2D6B4D;
+        box-shadow: 0 4px 14px rgba(45,107,77,0.25);
+        transform: translateY(-1px);
+        font-weight: 600;
+    }
+    .pg-btn.disabled {
+        opacity: 0.35;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+    .pg-dots {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        color: #7a9a88;
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+</style>
+
+    <!-- Page Header -->
     <div class="w-full bg-primary py-6 px-12 mb-12">
-        <div class="m-auto flex text-center flex-col ">
+        <div class="m-auto flex text-center flex-col">
             <h1 class="text-4xl font-bold text-white">All Treks</h1>
             <p class="text-white/80 text-base">Discover the best trekking destinations across Maharashtra's Sahyadri ranges.</p>
         </div>
     </div>
 
+    <!-- Difficulty Filter -->
     <div class="mb-8 px-5 md:px-20 w-full">
         <div class="md:px-8 flex flex-col md:flex-row md:justify-end items-center gap-3">
             <span class="text-base font-medium">Difficulty:</span>
@@ -15,17 +87,14 @@
                    class="difficulty-btn {% if not active_difficulty %}active{% endif %}">
                     All
                 </a>
-            
                 <a href="/treks?difficulty=Easy"
                    class="difficulty-btn {% if active_difficulty == 'Easy' %}active{% endif %}">
                     Easy
                 </a>
-            
                 <a href="/treks?difficulty=Moderate"
                    class="difficulty-btn {% if active_difficulty == 'Moderate' %}active{% endif %}">
                     Moderate
                 </a>
-            
                 <a href="/treks?difficulty=Hard"
                    class="difficulty-btn {% if active_difficulty == 'Hard' %}active{% endif %}">
                     Hard
@@ -34,31 +103,88 @@
         </div>
     </div>
 
-    <div class="card-container px-4 md:px-6 mb-12 flex flex-col md:flex-row gap-6 md:gap-10 flex-wrap items-center justify-center ">
-    
+    <!-- Trek Cards -->
+    <div class="card-container px-4 md:px-6 mb-12 flex flex-col md:flex-row gap-6 md:gap-10 flex-wrap items-center justify-center">
         {% for trek in treks %}
- 
             {% include "components/trek_card.html" %}
-
         {% endfor %}
 
+        {% if treks|length == 0 %}
+            <div class="flex flex-col items-center justify-center py-20 text-center">
+                <span class="text-5xl mb-4">🏔️</span>
+                <p class="text-lg font-semibold text-[#1F4D33]">No treks found</p>
+                <p class="text-sm text-[#7a9a88] mt-1">Try a different difficulty filter.</p>
+            </div>
+        {% endif %}
     </div>
+
+    <!-- ── PAGINATION ── -->
+    {% if pagination and pagination.pages > 1 %}
+    <div class="flex items-center justify-center gap-2 pb-16 px-4 flex-wrap">
+
+        <!-- Result info -->
+        <span class="text-sm text-[#7a9a88] mr-3">
+            Showing {{ ((pagination.page - 1) * pagination.per_page) + 1 }}–{{ [pagination.page * pagination.per_page, pagination.total]|min }} of {{ pagination.total }} treks
+        </span>
+
+        <!-- Prev arrow -->
+        {% if pagination.has_prev %}
+            <a href="/treks?page={{ pagination.prev_num }}{% if active_difficulty %}&difficulty={{ active_difficulty }}{% endif %}"
+               class="pg-btn" aria-label="Previous page">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </a>
+        {% else %}
+            <span class="pg-btn disabled" aria-disabled="true">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </span>
+        {% endif %}
+
+        <!-- Page numbers -->
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == pagination.page %}
+                    <span class="pg-btn active" aria-current="page">{{ page_num }}</span>
+                {% else %}
+                    <a href="/treks?page={{ page_num }}{% if active_difficulty %}&difficulty={{ active_difficulty }}{% endif %}"
+                       class="pg-btn">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                <span class="pg-dots">···</span>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next arrow -->
+        {% if pagination.has_next %}
+            <a href="/treks?page={{ pagination.next_num }}{% if active_difficulty %}&difficulty={{ active_difficulty }}{% endif %}"
+               class="pg-btn" aria-label="Next page">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </a>
+        {% else %}
+            <span class="pg-btn disabled" aria-disabled="true">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </span>
+        {% endif %}
+
+    </div>
+    {% endif %}
+    <!-- ── END PAGINATION ── -->
 
     <script>
         const buttons = document.querySelectorAll(".difficulty-btn");
-
         buttons.forEach(button => {
             button.addEventListener("click", function () {
-            
-                // Remove active from all
                 buttons.forEach(btn => btn.classList.remove("active"));
-            
-                // Add active to clicked one
                 this.classList.add("active");
-            
             });
         });
     </script>
-
 
 {% endblock %}

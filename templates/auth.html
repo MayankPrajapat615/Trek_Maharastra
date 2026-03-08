@@ -1,0 +1,457 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+
+    :root {
+        --primary: #2D6B4D;
+        --secondary: #E68C32;
+        --text: #1F4D33;
+        --bg: #FAF8F5;
+        --hover: #234E38;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.5s ease both; }
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.2s; }
+    .d3 { animation-delay: 0.3s; }
+    .d4 { animation-delay: 0.4s; }
+
+    /* ── AUTH (not logged in) ── */
+    .auth-page { min-height: calc(100vh - 64px); display: grid; grid-template-columns: 1fr 1fr; font-family:'Outfit',sans-serif; }
+
+    .auth-left {
+        position: relative; background: var(--hover);
+        display: flex; flex-direction: column; justify-content: center;
+        padding: 60px 56px; overflow: hidden;
+    }
+    .auth-left::before {
+        content: ''; position: absolute; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'%3E%3Cpath d='M0,250 Q125,125 250,250 T500,250' fill='none' stroke='white' stroke-width='0.6' stroke-opacity='0.06'/%3E%3Cpath d='M0,225 Q125,100 250,225 T500,225' fill='none' stroke='white' stroke-width='0.6' stroke-opacity='0.06'/%3E%3Cpath d='M0,275 Q125,150 250,275 T500,275' fill='none' stroke='white' stroke-width='0.6' stroke-opacity='0.06'/%3E%3Cpath d='M0,200 Q125,75 250,200 T500,200' fill='none' stroke='white' stroke-width='0.6' stroke-opacity='0.06'/%3E%3Cpath d='M0,300 Q125,175 250,300 T500,300' fill='none' stroke='white' stroke-width='0.6' stroke-opacity='0.06'/%3E%3C/svg%3E");
+        background-size: 500px 500px; pointer-events: none;
+    }
+    .auth-left::after {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 20% 70%, rgba(45,107,77,0.5) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 20%, rgba(230,140,50,0.08) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    .auth-left-content { position: relative; z-index: 2; }
+
+    .left-badge {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: rgba(230,140,50,0.15); border: 1px solid rgba(230,140,50,0.3);
+        color: #f5b571; font-size: 0.7rem; font-weight: 600;
+        letter-spacing: 0.15em; text-transform: uppercase;
+        padding: 5px 14px; border-radius: 100px; margin-bottom: 24px; width: fit-content;
+    }
+    .left-title { font-family:'Lora',serif; font-size: clamp(2rem,3.5vw,3rem); font-weight:700; color:#fff; line-height:1.2; margin-bottom:16px; }
+    .left-title em { font-style:italic; color:var(--secondary); }
+    .left-sub { font-size:0.9rem; color:rgba(255,255,255,0.6); line-height:1.75; max-width:380px; margin-bottom:40px; }
+    .feature-list { display:flex; flex-direction:column; gap:14px; }
+    .feature-item { display:flex; align-items:center; gap:12px; color:rgba(255,255,255,0.8); font-size:0.875rem; }
+    .feature-check { width:22px; height:22px; border-radius:50%; background:rgba(45,107,77,0.5); border:1.5px solid rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+    .auth-right { display:flex; align-items:center; justify-content:center; padding:48px 32px; background:var(--bg); }
+    .auth-card { width:100%; max-width:440px; animation:fadeUp 0.5s ease both; }
+
+    .tab-bar { display:grid; grid-template-columns:1fr 1fr; background:#ebe8e3; border-radius:12px; padding:4px; margin-bottom:32px; }
+    .tab-btn { padding:10px; border-radius:9px; font-size:0.875rem; font-weight:600; text-align:center; cursor:pointer; border:none; background:transparent; color:#7a9a88; transition:background 0.2s,color 0.2s,box-shadow 0.2s; font-family:'Outfit',sans-serif; }
+    .tab-btn.active { background:#fff; color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+
+    .form-panel { display:none; }
+    .form-panel.active { display:block; }
+
+    .form-title { font-family:'Lora',serif; font-size:1.6rem; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .form-sub { font-size:0.83rem; color:#7a9a88; margin-bottom:28px; }
+
+    .input-group { display:flex; flex-direction:column; gap:5px; margin-bottom:16px; }
+    .input-group label { font-size:0.8rem; font-weight:600; color:var(--text); }
+    .input-wrap { position:relative; display:flex; align-items:center; }
+    .input-icon { position:absolute; left:14px; color:#a0b8ac; pointer-events:none; }
+    .form-input { width:100%; padding:11px 14px 11px 40px; border:1.5px solid #dae8e0; border-radius:11px; font-size:0.875rem; color:var(--text); background:#fff; font-family:'Outfit',sans-serif; outline:none; transition:border-color 0.2s,box-shadow 0.2s; }
+    .form-input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(45,107,77,0.1); }
+    .form-input::placeholder { color:#b0c8bc; }
+
+    .pw-toggle { position:absolute; right:14px; background:none; border:none; cursor:pointer; color:#a0b8ac; padding:0; display:flex; transition:color 0.2s; }
+    .pw-toggle:hover { color:var(--primary); }
+
+    .field-error { font-size:0.75rem; color:#e05252; display:none; }
+    .field-error.visible { display:block; }
+
+    .flash-msg { padding:11px 14px; border-radius:10px; font-size:0.82rem; margin-bottom:18px; font-weight:500; }
+    .flash-error   { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+    .flash-success { background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; }
+
+    .submit-btn { width:100%; padding:13px; border-radius:12px; background:var(--primary); color:#fff; font-size:0.9rem; font-weight:600; border:none; cursor:pointer; font-family:'Outfit',sans-serif; transition:background 0.2s,transform 0.15s,box-shadow 0.2s; margin-top:8px; }
+    .submit-btn:hover { background:var(--hover); transform:translateY(-1px); box-shadow:0 6px 20px rgba(45,107,77,0.25); }
+
+    .remember-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+    .remember-row label { display:flex; align-items:center; gap:7px; font-size:0.8rem; color:#5a7a68; cursor:pointer; }
+    .remember-row input[type="checkbox"] { accent-color:var(--primary); width:15px; height:15px; }
+    .forgot-link { font-size:0.8rem; color:var(--secondary); text-decoration:none; font-weight:500; }
+    .forgot-link:hover { color:#c97020; }
+    .terms-note { font-size:0.75rem; color:#a0b8ac; text-align:center; margin-top:16px; line-height:1.6; }
+    .terms-note a { color:var(--primary); text-decoration:none; font-weight:500; }
+
+    .strength-bar-wrap { height:4px; background:#e8f0ec; border-radius:4px; margin-top:6px; overflow:hidden; }
+    .strength-bar { height:100%; border-radius:4px; width:0%; transition:width 0.3s,background 0.3s; }
+    .strength-label { font-size:0.72rem; margin-top:4px; font-weight:500; }
+
+    /* ── PROFILE (logged in) ── */
+    .profile-page { min-height:calc(100vh - 64px); background:var(--bg); padding:48px 24px 80px; font-family:'Outfit',sans-serif; }
+    .profile-inner { max-width:900px; margin:0 auto; }
+
+    .avatar-circle { width:96px; height:96px; border-radius:50%; background:linear-gradient(135deg,var(--primary),#3a8a62); display:flex; align-items:center; justify-content:center; font-family:'Lora',serif; font-size:2.4rem; font-weight:700; color:#fff; border:4px solid rgba(255,255,255,0.3); box-shadow:0 8px 28px rgba(45,107,77,0.25); flex-shrink:0; }
+
+    .profile-hero { background:linear-gradient(135deg,var(--hover) 0%,var(--primary) 100%); border-radius:24px; padding:40px; display:flex; align-items:center; gap:28px; position:relative; overflow:hidden; margin-bottom:20px; }
+    .profile-hero::before { content:''; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cpath d='M0,200 Q100,100 200,200 T400,200' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.07'/%3E%3Cpath d='M0,180 Q100,80 200,180 T400,180' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.07'/%3E%3Cpath d='M0,220 Q100,120 200,220 T400,220' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.07'/%3E%3C/svg%3E"); background-size:400px; pointer-events:none; }
+    .profile-hero-info { position:relative; z-index:1; }
+
+    .profile-name { font-family:'Lora',serif; font-size:1.9rem; font-weight:700; color:#fff; margin-bottom:4px; line-height:1.2; }
+    .profile-email { font-size:0.875rem; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+    .profile-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.85); font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:4px 12px; border-radius:100px; }
+
+    .member-strip { background:#f0f7f3; border-radius:14px; padding:14px 20px; display:flex; align-items:center; gap:12px; margin-bottom:20px; border:1px solid #d8ece2; }
+
+    .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+    .info-card { background:#fff; border-radius:18px; padding:24px; border:1px solid #e8f0ec; transition:box-shadow 0.2s; }
+    .info-card:hover { box-shadow:0 8px 28px rgba(45,107,77,0.08); }
+    .info-card-label { font-size:0.7rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#7a9a88; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+    .info-card-value { font-size:1rem; font-weight:600; color:var(--text); }
+    .info-card-sub { font-size:0.78rem; color:#a0b8ac; margin-top:2px; }
+
+    .action-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+    .action-card { background:#fff; border-radius:16px; padding:20px; border:1px solid #e8f0ec; text-decoration:none; display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s; }
+    .action-card:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(45,107,77,0.1); border-color:#b8dcc8; }
+    .action-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; }
+    .action-title { font-size:0.875rem; font-weight:600; color:var(--text); }
+    .action-sub { font-size:0.72rem; color:#7a9a88; }
+
+    .logout-btn { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:13px; border-radius:14px; border:1.5px solid #fca5a5; background:#fff; color:#dc2626; font-size:0.9rem; font-weight:600; font-family:'Outfit',sans-serif; cursor:pointer; text-decoration:none; transition:background 0.2s,box-shadow 0.2s,transform 0.15s; }
+    .logout-btn:hover { background:#fee2e2; box-shadow:0 4px 16px rgba(220,38,38,0.12); transform:translateY(-1px); color:#dc2626; }
+
+    @media (max-width:768px) {
+        .auth-page { grid-template-columns:1fr; }
+        .auth-left { display:none; }
+        .auth-right { padding:32px 20px; }
+        .info-grid { grid-template-columns:1fr; }
+        .action-grid { grid-template-columns:1fr 1fr; }
+        .profile-hero { flex-direction:column; text-align:center; padding:28px 20px; }
+    }
+</style>
+
+{% if current_user %}
+<!-- ══════════ PROFILE VIEW ══════════ -->
+<div class="profile-page">
+    <div class="profile-inner">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}{% for category, message in messages %}
+                <div class="flash-msg flash-{{ category }} mb-4">{{ message }}</div>
+            {% endfor %}{% endif %}
+        {% endwith %}
+
+        <!-- Hero -->
+        <div class="profile-hero fade-up">
+            <div class="avatar-circle">
+                {{ current_user.first_name[0]|upper }}{{ current_user.last_name[0]|upper }}
+            </div>
+            <div class="profile-hero-info">
+                <h1 class="profile-name">{{ current_user.first_name }} {{ current_user.last_name }}</h1>
+                <p class="profile-email">{{ current_user.email }}</p>
+                <span class="profile-badge">
+                    <svg width="10" height="10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    Trekker Member
+                </span>
+            </div>
+        </div>
+
+        <!-- Member since -->
+        <div class="member-strip fade-up d1">
+            <div style="width:36px;height:36px;border-radius:10px;background:#d1fae5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="16" height="16" fill="none" stroke="#2D6B4D" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+                <p style="font-size:0.78rem;font-weight:600;color:var(--text);">Member since</p>
+                <p style="font-size:0.82rem;color:#7a9a88;">
+                    {% if current_user.created_at %}{{ current_user.created_at.strftime('%B %d, %Y') }}{% else %}Trek Maharashtra Community{% endif %}
+                </p>
+            </div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;box-shadow:0 0 0 2px rgba(74,222,128,0.3);"></span>
+                <span style="font-size:0.78rem;color:#7a9a88;">Active account</span>
+            </div>
+        </div>
+
+        <!-- Info cards -->
+        <div class="info-grid fade-up d2">
+            <div class="info-card">
+                <div class="info-card-label">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Full Name
+                </div>
+                <p class="info-card-value">{{ current_user.first_name }} {{ current_user.last_name }}</p>
+                <p class="info-card-sub">Your display name on Trek Maharashtra</p>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+                    Email Address
+                </div>
+                <p class="info-card-value" style="font-size:0.9rem;word-break:break-all;">{{ current_user.email }}</p>
+                <p class="info-card-sub">Used to log in to your account</p>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 2 2 0 012 .94h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.92a16 16 0 006.29 6.29l1.31-1.31a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                    Phone Number
+                </div>
+                <p class="info-card-value">
+                    {% if current_user.phone %}{{ current_user.phone }}
+                    {% else %}<span style="color:#b0c8bc;font-weight:400;font-size:0.85rem;">Not added</span>{% endif %}
+                </p>
+                <p class="info-card-sub">For booking confirmations</p>
+            </div>
+            <div class="info-card">
+                <div class="info-card-label">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Account Status
+                </div>
+                <p class="info-card-value" style="color:#16a34a;">Active ✓</p>
+                <p class="info-card-sub">Your account is in good standing</p>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="action-grid fade-up d3">
+            <a href="/treks" class="action-card">
+                <div class="action-icon" style="background:#e8f4ed;">
+                    <svg width="22" height="22" fill="none" stroke="#2D6B4D" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 17l4-8 4 4 4-6 4 10"/></svg>
+                </div>
+                <p class="action-title">Browse Treks</p>
+                <p class="action-sub">Explore Maharashtra trails</p>
+            </a>
+            <a href="/waterfalls" class="action-card">
+                <div class="action-icon" style="background:#e0f2fe;">
+                    <svg width="22" height="22" fill="none" stroke="#0369a1" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2v20M2 12c0-5.5 3-10 10-10s10 4.5 10 10"/></svg>
+                </div>
+                <p class="action-title">Waterfalls</p>
+                <p class="action-sub">Discover hidden gems</p>
+            </a>
+            <a href="/plan-your-trek" class="action-card">
+                <div class="action-icon" style="background:#fef3c7;">
+                    <svg width="22" height="22" fill="none" stroke="#d97706" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+                </div>
+                <p class="action-title">Plan a Trek</p>
+                <p class="action-sub">Compare operators & book</p>
+            </a>
+        </div>
+
+        <!-- Logout -->
+        <div class="fade-up d4">
+            <a href="/logout" class="logout-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Log Out of My Account
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% else %}
+<!-- ══════════ LOGIN / REGISTER VIEW ══════════ -->
+<div class="auth-page">
+    <div class="auth-left">
+        <div class="auth-left-content">
+            <div class="left-badge">🏔 Maharashtra Treks</div>
+            <h1 class="left-title">Your next<br><em>adventure</em><br>starts here.</h1>
+            <p class="left-sub">Join thousands of trekkers who plan smarter, explore deeper and never waste hours researching again.</p>
+            <div class="feature-list">
+                <div class="feature-item"><div class="feature-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E68C32" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Save and bookmark your favourite treks</div>
+                <div class="feature-item"><div class="feature-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E68C32" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Book trek operators in one click</div>
+                <div class="feature-item"><div class="feature-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E68C32" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Get personalised trek recommendations</div>
+                <div class="feature-item"><div class="feature-check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#E68C32" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Track your booking history &amp; gear rentals</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-right">
+        <div class="auth-card">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}{% for category, message in messages %}
+                    <div class="flash-msg flash-{{ category }}">{{ message }}</div>
+                {% endfor %}{% endif %}
+            {% endwith %}
+
+            <div class="tab-bar">
+                <button class="tab-btn active" id="tab-login" onclick="switchTab('login',this)">Log In</button>
+                <button class="tab-btn" id="tab-register" onclick="switchTab('register',this)">Create Account</button>
+            </div>
+
+            <!-- LOGIN -->
+            <div class="form-panel active" id="panel-login">
+                <h2 class="form-title">Welcome back 👋</h2>
+                <p class="form-sub">Log in to continue your trekking journey.</p>
+                <form method="POST" action="/login">
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+                            <input type="email" id="login-email" name="email" class="form-input" placeholder="you@example.com" required>
+                        </div>
+                        <span class="field-error" id="login-email-err">Please enter a valid email.</span>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            <input type="password" id="login-password" name="password" class="form-input" placeholder="Enter your password" required>
+                            <button type="button" class="pw-toggle" onclick="togglePw('login-password')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                        </div>
+                        <span class="field-error" id="login-pw-err">Password is required.</span>
+                    </div>
+                    <div class="remember-row">
+                        <label><input type="checkbox" name="remember"> Remember me</label>
+                        <a href="/forgot-password" class="forgot-link">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="submit-btn" onclick="return validateLogin()">Log In →</button>
+                </form>
+                <p class="terms-note" style="margin-top:20px;">Don't have an account? <a href="#" onclick="switchTab('register',document.getElementById('tab-register'));return false;">Create one free →</a></p>
+            </div>
+
+            <!-- REGISTER -->
+            <div class="form-panel" id="panel-register">
+                <h2 class="form-title">Join the community 🌿</h2>
+                <p class="form-sub">Create your free account — takes 30 seconds.</p>
+                <form method="POST" action="/register">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div class="input-group" style="margin-bottom:0;">
+                            <label>First Name</label>
+                            <div class="input-wrap">
+                                <svg class="input-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <input type="text" id="reg-fname" name="first_name" class="form-input" placeholder="Arjun" required>
+                            </div>
+                            <span class="field-error" id="reg-fname-err">Required.</span>
+                        </div>
+                        <div class="input-group" style="margin-bottom:0;">
+                            <label>Last Name</label>
+                            <div class="input-wrap">
+                                <svg class="input-icon" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <input type="text" id="reg-lname" name="last_name" class="form-input" placeholder="Patil" required>
+                            </div>
+                            <span class="field-error" id="reg-lname-err">Required.</span>
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top:16px;">
+                        <label>Email Address</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+                            <input type="email" id="reg-email" name="email" class="form-input" placeholder="you@example.com" required>
+                        </div>
+                        <span class="field-error" id="reg-email-err">Please enter a valid email.</span>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            <input type="password" id="reg-password" name="password" class="form-input" placeholder="Min. 8 characters" required oninput="checkStrength(this.value)">
+                            <button type="button" class="pw-toggle" onclick="togglePw('reg-password')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                        </div>
+                        <div class="strength-bar-wrap"><div class="strength-bar" id="strength-bar"></div></div>
+                        <span class="strength-label" id="strength-label" style="color:#a0b8ac;"></span>
+                        <span class="field-error" id="reg-pw-err">Min. 8 characters required.</span>
+                    </div>
+                    <div class="input-group">
+                        <label>Confirm Password</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                            <input type="password" id="reg-confirm" name="confirm_password" class="form-input" placeholder="Re-enter password" required>
+                            <button type="button" class="pw-toggle" onclick="togglePw('reg-confirm')"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                        </div>
+                        <span class="field-error" id="reg-confirm-err">Passwords do not match.</span>
+                    </div>
+                    <button type="submit" class="submit-btn" onclick="return validateRegister()">Create My Account →</button>
+                </form>
+                <p class="terms-note">By creating an account you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const p = new URLSearchParams(window.location.search);
+        if (p.get('tab') === 'register') switchTab('register', document.getElementById('tab-register'));
+    });
+
+    function switchTab(tab, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + tab).classList.add('active');
+    }
+
+    function togglePw(id) {
+        const el = document.getElementById(id);
+        el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    function checkStrength(val) {
+        const bar = document.getElementById('strength-bar');
+        const lbl = document.getElementById('strength-label');
+        let s = 0;
+        if (val.length >= 8) s++;
+        if (/[A-Z]/.test(val)) s++;
+        if (/[0-9]/.test(val)) s++;
+        if (/[^A-Za-z0-9]/.test(val)) s++;
+        const c = [
+            {w:'0%',bg:'',t:''},
+            {w:'25%',bg:'#e05252',t:'Weak'},
+            {w:'50%',bg:'#E68C32',t:'Fair'},
+            {w:'75%',bg:'#3ab07a',t:'Good'},
+            {w:'100%',bg:'#2D6B4D',t:'Strong 💪'},
+        ][s];
+        bar.style.width = c.w; bar.style.background = c.bg;
+        lbl.textContent = c.t; lbl.style.color = c.bg;
+    }
+
+    function validateLogin() {
+        let ok = true;
+        const e = document.getElementById('login-email');
+        const p = document.getElementById('login-password');
+        ['login-email-err','login-pw-err'].forEach(id => document.getElementById(id).classList.remove('visible'));
+        if (!e.value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value)) { document.getElementById('login-email-err').classList.add('visible'); e.style.borderColor='#e05252'; ok=false; } else e.style.borderColor='';
+        if (!p.value) { document.getElementById('login-pw-err').classList.add('visible'); p.style.borderColor='#e05252'; ok=false; } else p.style.borderColor='';
+        return ok;
+    }
+
+    function validateRegister() {
+        let ok = true;
+        const checks = [
+            {id:'reg-fname', err:'reg-fname-err', test:v=>v.trim().length>0},
+            {id:'reg-lname', err:'reg-lname-err', test:v=>v.trim().length>0},
+            {id:'reg-email', err:'reg-email-err', test:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
+            {id:'reg-password',err:'reg-pw-err',  test:v=>v.length>=8},
+        ];
+        checks.forEach(({id,err,test})=>{
+            const el=document.getElementById(id);
+            document.getElementById(err).classList.remove('visible'); el.style.borderColor='';
+            if(!test(el.value)){document.getElementById(err).classList.add('visible'); el.style.borderColor='#e05252'; ok=false;}
+        });
+        const pw=document.getElementById('reg-password'), cf=document.getElementById('reg-confirm');
+        document.getElementById('reg-confirm-err').classList.remove('visible');
+        if(cf.value!==pw.value){document.getElementById('reg-confirm-err').classList.add('visible'); cf.style.borderColor='#e05252'; ok=false;}
+        return ok;
+    }
+</script>
+
+{% endblock %}
