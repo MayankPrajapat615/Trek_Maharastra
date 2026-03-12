@@ -196,47 +196,61 @@ function updateHighlight(items) {
     }
 }
 
-//-----------------loader starts from here----------------- 
+//-----------------loader starts from here-----------------
 
 document.addEventListener('DOMContentLoaded', function () {
 
     const pageLoader = document.getElementById('pageLoader');
 
-    // Hide loader using Tailwind — removes 'flex', adds 'hidden'
     function hideLoader() {
+        if (!pageLoader) return;
         pageLoader.classList.remove('flex');
         pageLoader.classList.add('hidden');
     }
 
-    // Show loader using Tailwind — removes 'hidden', adds 'flex'
     function showLoader() {
+        if (!pageLoader) return;
         pageLoader.classList.remove('hidden');
         pageLoader.classList.add('flex');
     }
 
-    // Hide once full page loads
+    // ✅ Hide once page loads
     window.addEventListener('load', function () {
         hideLoader();
     });
 
-    // Fix for back button — pageshow fires when browser restores from cache
+    // ✅ Hard fallback — hide after 2.5s no matter what
+    setTimeout(function () {
+        hideLoader();
+    }, 2500);
+
+    // ✅ Fix for back button cache
     window.addEventListener('pageshow', function (e) {
         if (e.persisted) {
             hideLoader();
         }
     });
 
-    const navLinks = document.querySelectorAll('a[href]:not([href="#"]):not([href^="javascript"]):not([target="_blank"])');
+    const navLinks = document.querySelectorAll(
+        'a[href]:not([href="#"]):not([href^="javascript"]):not([target="_blank"])'
+    );
 
     navLinks.forEach(function (link) {
         link.addEventListener('click', function (e) {
             const destination = link.getAttribute('href');
+            
+            // ✅ Skip loader for logout — redirect immediately
+            if (destination === '/logout') {
+                return;
+            }
+
             e.preventDefault();
             showLoader();
 
             setTimeout(function () {
                 window.location.href = destination;
-            }, 800);
+            }, 600);   // ← reduced from 800 to 600 for snappier feel
         });
     });
+
 });

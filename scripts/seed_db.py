@@ -15,8 +15,8 @@ waterfalls_collection = db["waterfalls"]
 # ---------- DATA ----------
 TREKS = [
     {
-    "name": "Bhimashankar",
-    "slug": "bhimashankar-trek",
+    "name": "mvm-college",
+    "slug": "mvm-clg",
     "description": """Bhimashankar is where spirituality meets the raw, untamed wilderness of the Western Ghats. It is home to one of the twelve Jyotirlingas of Lord Shiva, making it a major pilgrimage site, but for trekkers, it is the ultimate "Jungle Trek." Located in the heart of the Bhimashankar Wildlife Sanctuary, the trail takes you through dense, evergreen forests that are among the most biodiverse in Maharashtra. This is the land of the "Shekru" (Malabar Giant Squirrel) and ancient trees covered in moss and orchids. Whether you take the challenging Shidi Ghat (Ladder Route) or the scenic Ganesh Ghat, the journey is an immersive experience in nature. Reaching the temple complex, with its stunning Nagara-style architecture and the sound of bells echoing through the misty valley, feels like a transition from the wild into the divine.
 
 <h2 class="text-2xl font-bold mt-6 mb-4">History & Heritage</h2>
@@ -213,3 +213,6 @@ if __name__ == "__main__":
     seed_treks()
     seed_waterfalls()
     print("✅ Seeding complete")
+
+
+# python -m scripts.seed_db

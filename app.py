@@ -15,7 +15,7 @@ from admin import admin_treks, admin_waterfalls
 def create_app():
 
     app = Flask(__name__)
-    app.secret_key = "your-super-secret-key-change-this"  # ← CHANGE THIS to a long random string
+    app.secret_key = "your-super-secret-key-"  # ← CHANGE THIS to a long random string
 
     app.register_blueprint(admin_waterfalls, url_prefix="/admin")
     app.register_blueprint(admin_treks, url_prefix="/admin")
@@ -25,13 +25,16 @@ def create_app():
     # HELPER — get logged-in user from session
     # ─────────────────────────────────────────
     def get_current_user():
-        """Returns the user dict from DB if logged in, else None."""
         user_id = session.get("user_id")
+        print(">>> SESSION CONTENTS:", dict(session)) 
+        print(">>> user_id from session:", user_id)      
         if not user_id:
             return None
         user = users_collection.find_one({"email": user_id}, {"_id": 0, "password": 0})
+        print(">>> USER FOUND:", user)               
         return user
-
+    
+    
     # Inject current_user into ALL templates automatically
     @app.context_processor
     def inject_user():
@@ -143,7 +146,7 @@ def create_app():
     def auth():
         # If already logged in, redirect to home
         if session.get("user_id"):
-            return redirect(url_for("home"))
+            return redirect(url_for("profile"))
         return render_template('auth.html')
 
 
@@ -197,7 +200,14 @@ def create_app():
         app.permanent_session_lifetime = timedelta(days=7)
 
         flash(f"Welcome to Trek Maharashtra, {first_name}! 🎉", "success")
-        return redirect(url_for("home"))
+        return redirect(url_for("profile"))
+    
+    @app.route('/profile')
+    def profile():
+        if not session.get("user_id"):
+            flash("Please log in to view your profile.", "error")
+            return redirect(url_for("auth"))
+        return render_template('auth.html')  # current_user is injected via context_processor
 
 
     @app.route('/login', methods=["POST"])
@@ -236,7 +246,7 @@ def create_app():
             session.permanent = False   # session ends when browser closes
 
         flash(f"Welcome back, {user['first_name']}! 👋", "success")
-        return redirect(url_for("home"))
+        return redirect(url_for("profile"))
 
 
     @app.route('/logout')
@@ -315,6 +325,7 @@ def create_app():
             .skip((page - 1) * per_page)
             .limit(per_page)
         )
+        waterfalls = [add_new_flag(w) for w in waterfalls]
 
         class Pagination:
             def __init__(self):

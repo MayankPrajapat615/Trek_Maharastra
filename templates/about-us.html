@@ -155,6 +155,7 @@
         width: 88px;
         height: 88px;
         border-radius: 50%;
+        overflow: hidden;
         background: linear-gradient(135deg, var(--primary), #3a8a62);
         display: flex;
         align-items: center;
@@ -165,6 +166,11 @@
         font-weight: 700;
         color: #fff;
         border: 3px solid rgba(255,255,255,0.15);
+    }
+    .founder-img{
+        height: 88px;
+        width: 88px;
+        object-fit: cover;
     }
 
     .founder-name {
@@ -709,7 +715,9 @@
 
         <div class="hero-right fade-up delay-2">
             <div class="founder-card">
-                <div class="founder-avatar">S</div>
+                <div class="founder-avatar">
+                    <img class="founder-img" src="{{ url_for('static', filename='images/founder-avatar.jpeg') }}" alt="">
+                </div>
                 <div class="founder-name">The Founder</div>
                 <div class="founder-role">Student · Trekker · Builder</div>
                 <p class="founder-quote">

@@ -397,9 +397,9 @@
                 {% for rental in rentals %}
                 <div class="rental-card" data-category="{{ rental.category }}">
                     <div class="rental-card-img">
-                        <img src="{{ url_for('static', filename=rental.image) }}" alt="{{ rental.name }}" />
-                        <div class="rental-badge">{{ rental.category }}</div>
-                        <div class="availability-dot {% if not rental.available %}unavailable{% endif %}"></div>
+                        <img src="{{ url_for('static', filename='images/rentals/' + item.image) }}" alt="{{ item.name }}" />
+                        <div class="rental-badge">{{ item.category }}</div>
+                        <div class="availability-dot {% if not item.available %}unavailable{% endif %}"></div>
                     </div>
                     <div class="rental-card-body">
                         <h3 class="rental-name">{{ rental.name }}</h3>
@@ -427,25 +427,25 @@
                 {% endfor %}
 
             {% else %}
-                <!-- Placeholder cards when no data -->
-                {% set placeholder_items = [
-                    {"name": "2-Person Dome Tent", "category": "shelter", "price": 350, "features": ["Waterproof", "Lightweight", "Easy Setup"], "available": true},
-                    {"name": "Trekking Poles (Pair)", "category": "navigation", "price": 120, "features": ["Adjustable", "Aluminium", "Anti-shock"], "available": true},
-                    {"name": "Hiking Boots (Size 6–12)", "category": "footwear", "price": 200, "features": ["Grip Sole", "Ankle Support", "Waterproof"], "available": true},
-                    {"name": "Sleeping Bag (15°C)", "category": "shelter", "price": 180, "features": ["Compact", "Mummy Shape", "Carry Bag"], "available": false},
-                    {"name": "Rain Poncho & Jacket", "category": "clothing", "price": 90, "features": ["Windproof", "Packable", "Unisex"], "available": true},
-                    {"name": "First Aid Kit", "category": "safety", "price": 80, "features": ["20+ Items", "Snakebite", "Blister Care"], "available": true},
-                    {"name": "Headlamp + Batteries", "category": "navigation", "price": 60, "features": ["300 Lumen", "USB Charge", "Red Mode"], "available": true},
-                    {"name": "Carabiner Set (x4)", "category": "safety", "price": 100, "features": ["25kN rated", "Locking Gate", "Lightweight"], "available": false},
-                    {"name": "Rucksack 50L", "category": "shelter", "price": 250, "features": ["Rain Cover", "Hip Belt", "Ventilated"], "available": true}
-                ] %}
+            <!-- Placeholder cards when no data -->
+            {% set placeholder_items = [
+                {"name": "2-Person Dome Tent",     "image": "tent.webp",          "category": "shelter",     "price": 350, "features": ["Waterproof", "Lightweight", "Easy Setup"],    "available": true},
+                {"name": "Trekking Poles (Pair)",  "image": "trekking-pole.jpg",  "category": "navigation",  "price": 120, "features": ["Adjustable", "Aluminium", "Anti-shock"],      "available": true},
+                {"name": "Hiking Boots",           "image": "hikking-boots.webp", "category": "footwear",    "price": 200, "features": ["Grip Sole", "Ankle Support", "Waterproof"],    "available": true},
+                {"name": "Sleeping Bag (15°C)",    "image": "sleeping-bag.png",   "category": "shelter",     "price": 180, "features": ["Compact", "Mummy Shape", "Carry Bag"],        "available": false},
+                {"name": "Rain Poncho & Jacket",   "image": "rain-poncho.webp",   "category": "clothing",    "price": 90,  "features": ["Windproof", "Packable", "Unisex"],            "available": true},
+                {"name": "First Aid Kit",          "image": "first-aid-kit.jpg",  "category": "safety",      "price": 80,  "features": ["20+ Items", "Snakebite", "Blister Care"],     "available": true},
+                {"name": "Headlamp + Batteries",   "image": "headlamp.jpg",       "category": "navigation",  "price": 60,  "features": ["300 Lumen", "USB Charge", "Red Mode"],        "available": true},
+                {"name": "Carabiner Set (x4)",     "image": "Carabiner.jpg",      "category": "safety",      "price": 100, "features": ["25kN rated", "Locking Gate", "Lightweight"],  "available": false},
+                {"name": "Rucksack 50L",           "image": "rucksack.webp",      "category": "shelter",     "price": 250, "features": ["Rain Cover", "Hip Belt", "Ventilated"],       "available": true}
+            ] %}
 
                 {% for item in placeholder_items %}
                 <div class="rental-card" data-category="{{ item.category }}">
                     <div class="rental-card-img" style="background: linear-gradient(135deg, #d8ece2, #c2e0d0);">
-                        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#2D6B4D" stroke-width="1" stroke-opacity="0.4"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                        </div>
+                            <img src="{{ url_for('static', filename='images/rentals/' + item.image) }}" alt="{{ item.name }}" />
+                            <div class="rental-badge">{{ item.category }}</div>
+                            <div class="availability-dot {% if not item.available %}unavailable{% endif %}"></div>
                         <div class="rental-badge">{{ item.category }}</div>
                         <div class="availability-dot {% if not item.available %}unavailable{% endif %}"></div>
                     </div>

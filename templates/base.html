@@ -5,19 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TREK_MAHARASHTRA{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
-    <!-- fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
-    <!-- swiper cdn -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
-        /* login icon hover ring */
         .login-icon-btn { transition: border-color 0.2s, background 0.2s, transform 0.2s; }
         .login-icon-btn:hover { transform: scale(1.08); }
-
-        /* avatar dropdown */
         .avatar-dropdown { transition: opacity 0.18s ease, visibility 0.18s ease; }
     </style>
 </head>
@@ -56,42 +51,32 @@
                     <ul id="results" class="absolute left-[-1px] top-full pt-2 w-[calc(100%+2px)] max-h-60 overflow-y-auto bg-background shadow-md hidden border-b border-secondary z-50"></ul>
                 </div>
 
-                <!-- ── Plan your trek button (desktop) ── -->
+                <!-- Plan your trek button -->
                 <div class="hidden md:block px-3 py-1.5 bg-secondary rounded-md cursor-pointer">
                     <a class="text-center font-medium text-base capitalize" href="/plan-your-trek">plan your trek</a>
                 </div>
 
-                <!-- ── LOGIN / USER ICON (desktop) ── -->
-                {% if current_user is defined and current_user.is_authenticated %}
+                <!-- ── LOGIN / USER ICON ── -->
+                {% if current_user %}
 
-                    <!-- Logged in → avatar with initials + dropdown -->
+                    <!-- Logged in → initials avatar + dropdown -->
                     <div class="relative hidden md:block group">
                         <button class="login-icon-btn flex items-center justify-center w-9 h-9 rounded-full bg-background text-primary font-bold text-sm border-2 border-secondary cursor-pointer select-none">
                             {{ current_user.first_name[0] | upper }}
                         </button>
 
-                        <!-- Dropdown menu -->
                         <div class="avatar-dropdown absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible z-50 overflow-hidden">
-                            <!-- User info -->
                             <div class="px-4 py-3 border-b border-gray-100 bg-[#f8faf9]">
                                 <p class="text-sm font-semibold text-[#1F4D33] truncate">
                                     {{ current_user.first_name }} {{ current_user.last_name }}
                                 </p>
                                 <p class="text-xs text-gray-400 truncate">{{ current_user.email }}</p>
                             </div>
-                            <!-- Links -->
-                            <a href="/profile"
-                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1F4D33] hover:bg-[#f0f7f3] transition-colors duration-150">
+                            <a href="/auth" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1F4D33] hover:bg-[#f0f7f3] transition-colors duration-150">
                                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                                 My Profile
                             </a>
-                            <a href="/my-bookings"
-                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#1F4D33] hover:bg-[#f0f7f3] transition-colors duration-150">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
-                                My Bookings
-                            </a>
-                            <a href="/logout"
-                               class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors duration-150 border-t border-gray-100">
+                            <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors duration-150 border-t border-gray-100">
                                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                                 Log Out
                             </a>
@@ -100,7 +85,7 @@
 
                 {% else %}
 
-                    <!-- Not logged in → person icon button -->
+                    <!-- Not logged in → person icon -->
                     <a href="/auth"
                        class="login-icon-btn hidden md:flex items-center justify-center w-9 h-9 rounded-full border-2 border-white/40 hover:border-secondary hover:bg-white/10 cursor-pointer"
                        title="Login / Register">
@@ -112,7 +97,7 @@
 
                 {% endif %}
 
-                <!-- ── Burger (mobile) ── -->
+                <!-- Burger (mobile) -->
                 <button class="burger md:hidden">
                     <span class="close-icon text-xl font-semibold">☰</span>
                     <span class="open-icon hidden text-xl font-semibold">✖</span>
@@ -129,10 +114,9 @@
             <li class="capitalize"><a href="/rentals">rentals</a></li>
             <li class="capitalize"><a href="/about-us">about us</a></li>
 
-            <!-- Login link in mobile menu -->
-            {% if current_user is defined and current_user.is_authenticated %}
+            {% if current_user %}
                 <li class="capitalize border-t border-white/10 pt-3">
-                    <a href="/profile" class="flex items-center justify-center gap-2 text-background">
+                    <a href="/auth" class="flex items-center justify-center gap-2 text-background">
                         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         {{ current_user.first_name }}
                     </a>
@@ -166,9 +150,7 @@
                 {% endif %}
             {% endwith %}
         </div>
-        {% block content %}
-            <!-- home page only -->
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer class="w-full h-auto bg-primary">
@@ -177,12 +159,9 @@
                 <div class="flex-1 min-w-0 mb-8">
                     <h2 class="text-2xl mb-4 text-secondary">Trek Maharashtra</h2>
                     <p class="break-all overflow-hidden text-background">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore odio tenetur corrupti repellendus vel impedit.</p>
-                    <div>
-                        <!-- social media icons here -->
-                    </div>
                 </div>
                 <div class="flex-1 min-w-0 mb-8">
-                    <h2 class="text-2xl mb-4 text-background">Quicks Links</h2>
+                    <h2 class="text-2xl mb-4 text-background">Quick Links</h2>
                     <ul>
                         <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/">Home</a></li>
                         <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
@@ -195,10 +174,8 @@
                         <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
                         <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
                         <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
                     </ul>
-                </div>  
+                </div>
                 <div class="flex-1 min-w-0 mb-8">
                     <h2 class="text-2xl mb-4 text-background">Contact Us</h2>
                     <ul>
@@ -206,14 +183,12 @@
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom text-center">
                 <p>© 2026 Maharashtra Treks. All rights reserved. Made with ❤️ for trekking enthusiasts.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Page loader -->
     <div id="pageLoader" class="fixed inset-0 bg-white flex items-center justify-center z-[9999]">
         <video loop autoplay id="loaderVideo" preload="auto" muted class="w-18 h-16 object-cover">
             <source src="{{ url_for('static', filename='videos/mountains-animation.mp4') }}" type="video/mp4">
