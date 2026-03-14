@@ -204,33 +204,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function hideLoader() {
         if (!pageLoader) return;
-        pageLoader.classList.remove('flex');
-        pageLoader.classList.add('hidden');
+        pageLoader.style.opacity = '0';
+        pageLoader.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => {
+            pageLoader.classList.remove('flex');
+            pageLoader.classList.add('hidden');
+            pageLoader.style.opacity = '1'; // reset for next use
+        }, 300);
     }
 
     function showLoader() {
         if (!pageLoader) return;
+        pageLoader.style.opacity = '1';
         pageLoader.classList.remove('hidden');
         pageLoader.classList.add('flex');
     }
 
-    // ✅ Hide once page loads
-    window.addEventListener('load', function () {
+    // ✅ Hide as soon as DOM + resources load
+    if (document.readyState === 'complete') {
+        // Page already fully loaded (e.g. cached page)
         hideLoader();
-    });
+    } else {
+        window.addEventListener('load', hideLoader);
+    }
 
-    // ✅ Hard fallback — hide after 2.5s no matter what
-    setTimeout(function () {
-        hideLoader();
-    }, 2500);
+    // ✅ Hard fallback — hide after 2s no matter what
+    setTimeout(hideLoader, 2000);
 
-    // ✅ Fix for back button cache
+    // ✅ Fix for back/forward button cache (bfcache)
     window.addEventListener('pageshow', function (e) {
-        if (e.persisted) {
-            hideLoader();
-        }
+        hideLoader(); // always hide on pageshow, persisted or not
     });
 
+    // ✅ Also hide if user hits back and page is already interactive
+    window.addEventListener('popstate', function () {
+        hideLoader();
+    });
+
+    // ✅ Link click handler
     const navLinks = document.querySelectorAll(
         'a[href]:not([href="#"]):not([href^="javascript"]):not([target="_blank"])'
     );
@@ -238,18 +249,20 @@ document.addEventListener('DOMContentLoaded', function () {
     navLinks.forEach(function (link) {
         link.addEventListener('click', function (e) {
             const destination = link.getAttribute('href');
-            
-            // ✅ Skip loader for logout — redirect immediately
-            if (destination === '/logout') {
-                return;
-            }
+
+            // Skip loader for logout
+            if (destination === '/logout') return;
+
+            // Skip if same page or anchor link
+            if (destination.startsWith('#')) return;
+            if (destination === window.location.pathname) return;
 
             e.preventDefault();
             showLoader();
 
             setTimeout(function () {
                 window.location.href = destination;
-            }, 600);   // ← reduced from 800 to 600 for snappier feel
+            }, 500);
         });
     });
 

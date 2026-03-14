@@ -180,11 +180,17 @@
             <div class="swiper-wrapper">
                 {% for item in hero_items %}
                     <div class="swiper-slide overflow-hidden">
-                        <div class="hero-bg h-screen w-full bg-cover bg-center flex items-center justify-center text-muted"
-                             style="background-image: url('{{ url_for('static', filename=item.image) }}');
-                                    filter: brightness(0.7) contrast(1.1) saturate(0.8) hue-rotate(-10deg);">
+                        <div class="hero-bg h-screen w-full bg-cover bg-center flex items-center justify-center text-muted relative overflow-hidden"
+                             style="background-image: url('{{ url_for('static', filename=item.image) }}');">
 
-                            <div class="hero-slide-content p-8 rounded-xl text-center max-w-2xl mx-auto">
+                            <!-- Filter overlay — only affects background, not content -->
+                            <div class="absolute inset-0"
+                                 style="background-image: inherit; background-size: cover; background-position: center;
+                                        filter: brightness(0.7) contrast(1.1) saturate(0.8) hue-rotate(-10deg); z-index: 0;">
+                            </div>
+                        
+                            <!-- Content sits above the filter -->
+                            <div class="relative z-10 hero-slide-content p-8 rounded-xl text-center max-w-2xl mx-auto">
                                 <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
                                     {{ item.name }}
                                 </h1>
@@ -200,7 +206,7 @@
                                     </a>
                                 {% endif %}
                             </div>
-
+                        
                         </div>
                     </div>
                 {% endfor %}
@@ -244,9 +250,9 @@
             </div>
         </div>
         <div class="reveal r-d3 mt-8">
-            <div class="btn-sweep view-all-treks-btn py-2 px-5 rounded-xl text-base cursor-pointer text-background bg-primary inline-block">
-                <a href="/treks">View all Treks →</a>
-            </div>
+            <a href="/treks" class="btn-sweep view-all-treks-btn py-2 px-5 rounded-xl text-base cursor-pointer text-background bg-primary inline-block">
+                View all Treks →
+            </a>
         </div>
     </section>
 
@@ -275,9 +281,9 @@
             </div>
         </div>
         <div class="reveal r-d3 mt-8">
-            <div class="btn-sweep view-all-treks-btn py-2 px-5 rounded-xl text-base cursor-pointer text-background bg-hover inline-block">
-                <a href="/waterfalls">View all Waterfalls →</a>
-            </div>
+            <a href="/waterfalls" class="btn-sweep view-all-treks-btn py-2 px-5 rounded-xl text-base cursor-pointer text-background bg-primary inline-block">
+                View all Waterfalls →
+            </a>
         </div>
     </section>
 

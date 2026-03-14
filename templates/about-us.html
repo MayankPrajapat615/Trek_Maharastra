@@ -10,31 +10,21 @@
         --secondary: #E68C32;
         --text: #1F4D33;
         --bg: #FAF8F5;
-        --muted: #fffefcc3;
         --hover: #234E38;
     }
 
-    * { box-sizing: border-box; }
+    .about-page { font-family: 'Outfit', sans-serif; overflow-x: clip; }
 
-    .about-page {
-        font-family: 'Outfit', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-    }
-
-    /* ── Fade-in animation ── */
     @keyframes fadeUp {
         from { opacity: 0; transform: translateY(28px); }
         to   { opacity: 1; transform: translateY(0); }
     }
-    .fade-up { animation: fadeUp 0.7s ease both; }
-    .delay-1 { animation-delay: 0.15s; }
-    .delay-2 { animation-delay: 0.30s; }
-    .delay-3 { animation-delay: 0.45s; }
-    .delay-4 { animation-delay: 0.60s; }
+    .fade-up  { animation: fadeUp 0.7s ease both; }
+    .delay-1  { animation-delay: 0.15s; }
+    .delay-2  { animation-delay: 0.30s; }
+    .delay-3  { animation-delay: 0.45s; }
 
-    /* ── HERO ── */
+    /* Hero */
     .about-hero {
         min-height: 100vh;
         background: var(--hover);
@@ -42,8 +32,8 @@
         grid-template-columns: 1fr 1fr;
         position: relative;
         overflow: hidden;
+        z-index: 0;
     }
-
     .about-hero::before {
         content: '';
         position: absolute;
@@ -52,643 +42,101 @@
                           radial-gradient(circle at 80% 20%, rgba(230,140,50,0.1) 0%, transparent 50%);
         pointer-events: none;
     }
-
-    /* Topographic line pattern */
     .about-hero::after {
         content: '';
         position: absolute;
         inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cpath d='M0,200 Q100,100 200,200 T400,200' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,180 Q100,80 200,180 T400,180' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,220 Q100,120 200,220 T400,220' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,160 Q100,60 200,160 T400,160' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,240 Q100,140 200,240 T400,240' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,140 Q100,40 200,140 T400,140' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,260 Q100,160 200,260 T400,260' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Cpath d='M0,200 Q100,100 200,200 T400,200' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,180 Q100,80 200,180 T400,180' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,220 Q100,120 200,220 T400,220' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,160 Q100,60 200,160 T400,160' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3Cpath d='M0,240 Q100,140 200,240 T400,240' fill='none' stroke='white' stroke-width='0.4' stroke-opacity='0.06'/%3E%3C/svg%3E");
         background-size: 400px 400px;
         pointer-events: none;
+        z-index: 0;
     }
 
-    .hero-left {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 80px 60px 80px 80px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .hero-eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--secondary);
-        margin-bottom: 24px;
-    }
-
-    .hero-eyebrow::before {
-        content: '';
-        width: 28px;
-        height: 2px;
-        background: var(--secondary);
-        display: inline-block;
-    }
-
-    .hero-h1 {
-        font-family: 'Lora', serif;
-        font-size: clamp(2.8rem, 5vw, 4.2rem);
-        font-weight: 700;
-        color: #fff;
-        line-height: 1.12;
-        margin-bottom: 28px;
-    }
-
-    .hero-h1 em {
-        font-style: italic;
-        color: var(--secondary);
-    }
-
-    .hero-sub {
-        font-size: 1rem;
-        line-height: 1.75;
-        color: rgba(255,255,255,0.65);
-        max-width: 420px;
-        margin-bottom: 40px;
-    }
-
-    .hero-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        background: var(--secondary);
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.9rem;
-        padding: 14px 28px;
-        border-radius: 14px;
-        text-decoration: none;
-        transition: background 0.2s;
-        width: fit-content;
-    }
-
-    .hero-cta:hover { background: #c97020; color: #fff; }
-
-    .hero-right {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 60px 80px 60px 20px;
-    }
-
-    .founder-card {
-        background: rgba(255,255,255,0.06);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 28px;
-        padding: 40px 36px;
-        max-width: 380px;
-        width: 100%;
-        position: relative;
-    }
-
-    .founder-avatar {
-        width: 88px;
-        height: 88px;
-        border-radius: 50%;
-        overflow: hidden;
-        background: linear-gradient(135deg, var(--primary), #3a8a62);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        font-family: 'Lora', serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: #fff;
-        border: 3px solid rgba(255,255,255,0.15);
-    }
-    .founder-img{
-        height: 88px;
-        width: 88px;
-        object-fit: cover;
-    }
-
-    .founder-name {
-        font-family: 'Lora', serif;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #fff;
-        margin-bottom: 4px;
-    }
-
-    .founder-role {
-        font-size: 0.78rem;
-        font-weight: 500;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--secondary);
-        margin-bottom: 20px;
-    }
-
-    .founder-quote {
-        font-family: 'Lora', serif;
-        font-style: italic;
-        font-size: 0.95rem;
-        line-height: 1.7;
-        color: rgba(255,255,255,0.7);
-        border-left: 3px solid var(--secondary);
-        padding-left: 16px;
-        margin-bottom: 24px;
-    }
-
-    .founder-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .founder-tag {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.12);
-        color: rgba(255,255,255,0.7);
-        font-size: 0.72rem;
-        font-weight: 500;
-        padding: 5px 13px;
-        border-radius: 100px;
-    }
-
-    .scroll-hint {
-        position: absolute;
-        bottom: 36px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        z-index: 5;
-        opacity: 0.5;
-    }
-
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(6px); }
-    }
-
-    .scroll-hint svg { animation: bounce 1.6s ease infinite; }
-
-    /* ── ORIGIN STORY ── */
-    .story-section {
-        padding: 100px 0;
-        background: var(--bg);
-        position: relative;
-    }
-
-    .story-section::before {
-        content: '"';
-        position: absolute;
-        top: 40px;
-        left: 6%;
-        font-family: 'Lora', serif;
-        font-size: 18rem;
-        line-height: 1;
-        color: var(--primary);
-        opacity: 0.04;
-        pointer-events: none;
-        user-select: none;
-    }
-
-    .timeline {
-        max-width: 760px;
-        margin: 0 auto;
-        padding: 0 24px;
-        position: relative;
-    }
-
+    /* Timeline */
+    .timeline { max-width: 760px; margin: 0 auto; padding: 0 24px; position: relative; }
     .timeline::before {
         content: '';
         position: absolute;
-        left: 50%;
-        top: 0;
-        bottom: 0;
+        left: 50%; top: 0; bottom: 0;
         width: 2px;
         background: linear-gradient(to bottom, transparent, var(--primary), transparent);
         transform: translateX(-50%);
     }
-
     .timeline-item {
         display: grid;
         grid-template-columns: 1fr 60px 1fr;
-        gap: 0;
         margin-bottom: 56px;
         align-items: start;
     }
-
-    .timeline-item:nth-child(even) .tl-content {
-        grid-column: 3;
-        grid-row: 1;
-    }
-
-    .timeline-item:nth-child(even) .tl-empty {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .tl-dot-wrap {
-        grid-column: 2;
-        display: flex;
-        justify-content: center;
-        padding-top: 6px;
-    }
-
+    .timeline-item:nth-child(even) .tl-content { grid-column: 3; grid-row: 1; }
+    .timeline-item:nth-child(even) .tl-empty   { grid-column: 1; grid-row: 1; }
+    .tl-dot-wrap { grid-column: 2; display: flex; justify-content: center; padding-top: 6px; }
     .tl-dot {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
+        width: 20px; height: 20px; border-radius: 50%;
         background: var(--secondary);
         border: 3px solid var(--bg);
         box-shadow: 0 0 0 3px var(--secondary);
         flex-shrink: 0;
     }
+    .tl-content { padding: 0 24px; }
 
-    .tl-content {
-        padding: 0 24px;
-    }
-
-    .tl-label {
-        font-size: 0.7rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--secondary);
-        margin-bottom: 6px;
-    }
-
-    .tl-title {
+    /* Story big quote decoration */
+    .story-section { position: relative; }
+    .story-section::before {
+        content: '"';
+        position: absolute;
+        top: 40px; left: 6%;
         font-family: 'Lora', serif;
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 10px;
-        line-height: 1.3;
+        font-size: 18rem; line-height: 1;
+        color: var(--primary); opacity: 0.04;
+        pointer-events: none; user-select: none;
     }
 
-    .tl-body {
-        font-size: 0.88rem;
-        line-height: 1.75;
-        color: #5a7a68;
-    }
-
-    /* ── THE PROBLEM ── */
-    .problem-section {
-        background: var(--primary);
-        padding: 100px 24px;
-        position: relative;
-        overflow: hidden;
-    }
-
+    /* Problem watermark */
     .problem-section::after {
         content: '2 hrs';
         position: absolute;
-        right: -30px;
-        top: 50%;
+        right: -30px; top: 50%;
         transform: translateY(-50%) rotate(90deg);
         font-family: 'Lora', serif;
-        font-size: 10rem;
-        font-weight: 700;
+        font-size: 10rem; font-weight: 700;
         color: rgba(255,255,255,0.04);
-        white-space: nowrap;
-        pointer-events: none;
+        white-space: nowrap; pointer-events: none;
     }
 
-    .problem-inner {
-        max-width: 900px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 60px;
-        align-items: center;
-    }
-
-    .problem-text h2 {
-        font-family: 'Lora', serif;
-        font-size: 2.4rem;
-        font-weight: 700;
-        color: #fff;
-        line-height: 1.2;
-        margin-bottom: 20px;
-    }
-
-    .problem-text h2 span {
-        color: var(--secondary);
-        font-style: italic;
-    }
-
-    .problem-text p {
-        font-size: 0.92rem;
-        line-height: 1.8;
-        color: rgba(255,255,255,0.65);
-    }
-
-    .problem-stat-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-
-    .p-stat {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 18px;
-        padding: 24px 20px;
-        text-align: center;
-    }
-
-    .p-stat .num {
-        font-family: 'Lora', serif;
-        font-size: 2.4rem;
-        font-weight: 700;
-        line-height: 1;
-        margin-bottom: 6px;
-    }
-
-    .p-stat .desc {
-        font-size: 0.78rem;
-        color: rgba(255,255,255,0.55);
-        line-height: 1.4;
-    }
-
-    .p-stat:nth-child(1) .num { color: var(--secondary); }
-    .p-stat:nth-child(2) .num { color: #7dd3b0; }
-    .p-stat:nth-child(3) .num { color: #7dd3b0; }
-    .p-stat:nth-child(4) .num { color: var(--secondary); }
-
-    /* ── MISSION & VALUES ── */
-    .mission-section {
-        padding: 100px 24px;
-        background: var(--bg);
-    }
-
-    .mission-inner {
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-
-    .section-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--secondary);
-        margin-bottom: 16px;
-    }
-
-    .section-label::before {
-        content: '';
-        width: 24px;
-        height: 2px;
-        background: var(--secondary);
-    }
-
-    .section-title {
-        font-family: 'Lora', serif;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--text);
-        line-height: 1.2;
-        margin-bottom: 16px;
-    }
-
-    .section-sub {
-        font-size: 0.92rem;
-        color: #7a9a88;
-        line-height: 1.75;
-        max-width: 560px;
-        margin-bottom: 56px;
-    }
-
-    .values-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-    }
-
-    .value-card {
-        background: #fff;
-        border-radius: 20px;
-        padding: 32px 28px;
-        border: 1px solid #edf2ef;
-        transition: box-shadow 0.3s, transform 0.3s;
-        position: relative;
-        overflow: hidden;
-    }
-
+    /* Value card top bar */
     .value-card::before {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
+        top: 0; left: 0; right: 0; height: 4px;
         background: var(--primary);
-        transform: scaleX(0);
-        transform-origin: left;
+        transform: scaleX(0); transform-origin: left;
         transition: transform 0.3s ease;
     }
-
-    .value-card:hover {
-        box-shadow: 0 16px 48px rgba(45,107,77,0.12);
-        transform: translateY(-4px);
-    }
-
     .value-card:hover::before { transform: scaleX(1); }
 
-    .value-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 20px;
-        font-size: 1.5rem;
+    /* Section label line */
+    .section-label::before { content: ''; width: 24px; height: 2px; background: var(--secondary); }
+
+    /* Hero eyebrow line */
+    .hero-eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--secondary); display: inline-block; }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(6px); }
     }
-
-    .value-icon.green { background: #e8f4ed; }
-    .value-icon.orange { background: #fdf0e1; }
-
-    .value-title {
-        font-family: 'Lora', serif;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 10px;
-    }
-
-    .value-body {
-        font-size: 0.85rem;
-        line-height: 1.7;
-        color: #7a9a88;
-    }
-
-    /* ── FOR TREKKERS ── */
-    .for-section {
-        background: #f0f7f3;
-        padding: 90px 24px;
-    }
-
-    .for-inner {
-        max-width: 960px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .for-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin-top: 52px;
-    }
-
-    .for-item {
-        background: #fff;
-        border-radius: 20px;
-        padding: 32px 20px;
-        text-align: center;
-        border: 1px solid #deeee6;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .for-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 36px rgba(45,107,77,0.1);
-    }
-
-    .for-emoji {
-        font-size: 2.4rem;
-        margin-bottom: 14px;
-        display: block;
-    }
-
-    .for-title {
-        font-family: 'Lora', serif;
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 8px;
-    }
-
-    .for-desc {
-        font-size: 0.8rem;
-        color: #7a9a88;
-        line-height: 1.6;
-    }
-
-    /* ── FINAL CTA ── */
-    .about-cta {
-        padding: 100px 24px;
-        background: var(--bg);
-        text-align: center;
-    }
-
-    .cta-inner {
-        max-width: 620px;
-        margin: 0 auto;
-    }
-
-    .cta-blob {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--primary), #3a8a62);
-        margin-bottom: 28px;
-        font-size: 2rem;
-    }
-
-    .cta-buttons {
-        display: flex;
-        gap: 14px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-top: 36px;
-    }
-
-    .btn-primary {
-        background: var(--primary);
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.9rem;
-        padding: 14px 28px;
-        border-radius: 14px;
-        text-decoration: none;
-        transition: background 0.2s;
-        font-family: 'Outfit', sans-serif;
-    }
-
-    .btn-primary:hover { background: var(--hover); color: #fff; }
-
-    .btn-outline {
-        background: transparent;
-        color: var(--primary);
-        font-weight: 600;
-        font-size: 0.9rem;
-        padding: 14px 28px;
-        border-radius: 14px;
-        text-decoration: none;
-        border: 2px solid var(--primary);
-        transition: all 0.2s;
-        font-family: 'Outfit', sans-serif;
-    }
-
-    .btn-outline:hover {
-        background: var(--primary);
-        color: #fff;
-    }
+    .scroll-hint svg { animation: bounce 1.6s ease infinite; }
 
     /* Responsive */
     @media (max-width: 768px) {
-        .about-hero {
-            grid-template-columns: 1fr;
-        }
-
-        .hero-left {
-            padding: 80px 28px 40px;
-        }
-
-        .hero-right {
-            padding: 20px 28px 60px;
-        }
-
-        .problem-inner {
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-
-        .values-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .for-grid {
-            grid-template-columns: 1fr 1fr;
-        }
-
+        .about-hero { grid-template-columns: 1fr; }
         .timeline::before { left: 24px; }
-
-        .timeline-item {
-            grid-template-columns: 48px 1fr;
-        }
-
+        .timeline-item { grid-template-columns: 48px 1fr; }
         .tl-dot-wrap { grid-column: 1; }
-        .tl-content { grid-column: 2; padding: 0 0 0 16px; }
-        .tl-empty { display: none; }
+        .tl-content  { grid-column: 2; padding: 0 0 0 16px; }
+        .tl-empty    { display: none; }
         .timeline-item:nth-child(even) .tl-content { grid-column: 2; }
-        .timeline-item:nth-child(even) .tl-empty { display: none; }
+        .timeline-item:nth-child(even) .tl-empty   { display: none; }
     }
 </style>
 
@@ -699,41 +147,42 @@
     ════════════════════════════════════════ -->
     <section class="about-hero">
 
-        <div class="hero-left">
-            <div class="hero-eyebrow fade-up">Our Story</div>
-            <h1 class="hero-h1 fade-up delay-1">
-                Built by a<br><em>Trekker,</em><br>for Trekkers.
+        <div class="flex flex-col justify-center px-10 md:px-20 py-20 relative z-[2]">
+            <div class="hero-eyebrow fade-up inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase mb-6" style="color:var(--secondary);">Our Story</div>
+            <h1 class="fade-up delay-1 text-white font-bold leading-tight mb-7" style="font-family:'Lora',serif; font-size:clamp(2.8rem,5vw,4.2rem); line-height:1.12;">
+                Built by a<br><em class="italic" style="color:var(--secondary);">Trekker,</em><br>for Trekkers.
             </h1>
-            <p class="hero-sub fade-up delay-2">
+            <p class="fade-up delay-2 text-base leading-relaxed mb-10 max-w-md" style="color:rgba(255,255,255,0.65);">
                 No more hunting through hours of videos just to plan a single trail. Maharashtra's mountains deserve better — and so do the people who love them.
             </p>
-            <a href="/treks" class="hero-cta fade-up delay-3">
+            <a href="/treks" class="fade-up delay-3 inline-flex items-center gap-2.5 font-semibold text-sm px-7 py-3.5 rounded-xl text-white w-fit transition-colors duration-200" style="background:var(--secondary);"
+               onmouseover="this.style.background='#c97020'" onmouseout="this.style.background='var(--secondary)'">
                 Start Exploring
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
         </div>
 
-        <div class="hero-right fade-up delay-2">
-            <div class="founder-card">
-                <div class="founder-avatar">
-                    <img class="founder-img" src="{{ url_for('static', filename='images/founder-avatar.jpeg') }}" alt="">
+        <div class="relative z-[2] flex items-center justify-center px-5 py-16 md:px-20 fade-up delay-2">
+            <div class="rounded-[28px] p-10 max-w-sm w-full" style="background:rgba(255,255,255,0.06); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.1);">
+                <div class="w-[88px] h-[88px] rounded-full overflow-hidden mb-5 flex items-center justify-center" style="background:linear-gradient(135deg,var(--primary),#3a8a62); border:3px solid rgba(255,255,255,0.15);">
+                    <img class="h-[88px] w-[88px] object-cover" src="{{ url_for('static', filename='images/founder-avatar.jpeg') }}" alt="">
                 </div>
-                <div class="founder-name">The Founder</div>
-                <div class="founder-role">Student · Trekker · Builder</div>
-                <p class="founder-quote">
+                <div class="text-white font-bold text-2xl mb-1" style="font-family:'Lora',serif;">The Founder</div>
+                <div class="text-xs font-medium tracking-widest uppercase mb-5" style="color:var(--secondary);">Student · Trekker · Builder</div>
+                <p class="text-sm leading-relaxed mb-6 pl-4 italic" style="font-family:'Lora',serif; color:rgba(255,255,255,0.7); border-left:3px solid var(--secondary);">
                     "I spent 2 hours watching videos just to plan one trek. I knew there had to be a better way — so I built it."
                 </p>
-                <div class="founder-tags">
-                    <span class="founder-tag">🏔 Western Ghats Explorer</span>
-                    <span class="founder-tag">⛺ Camping Enthusiast</span>
-                    <span class="founder-tag">💻 Student Developer</span>
-                    <span class="founder-tag">🌿 Nature Lover</span>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.7);">🏔 Western Ghats Explorer</span>
+                    <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.7);">⛺ Camping Enthusiast</span>
+                    <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.7);">💻 Student Developer</span>
+                    <span class="text-xs font-medium px-3 py-1 rounded-full" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.7);">🌿 Nature Lover</span>
                 </div>
             </div>
         </div>
 
-        <div class="scroll-hint">
-            <span style="font-size:0.65rem; letter-spacing:0.1em; color:rgba(255,255,255,0.4); text-transform:uppercase;">Scroll</span>
+        <div class="scroll-hint absolute bottom-9 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-[5] opacity-50">
+            <span class="text-[0.65rem] tracking-widest uppercase" style="color:rgba(255,255,255,0.4);">Scroll</span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
         </div>
     </section>
@@ -742,22 +191,21 @@
     <!-- ════════════════════════════════════════
          ORIGIN STORY TIMELINE
     ════════════════════════════════════════ -->
-    <section class="story-section">
-        <div style="max-width:900px; margin:0 auto; padding:0 24px 60px; text-align:center;">
-            <div class="section-label" style="justify-content:center;">How it began</div>
-            <h2 class="section-title">The Story Behind<br>This Website</h2>
-            <p class="section-sub" style="margin:0 auto 0;">
+    <section class="story-section py-24" style="background:var(--bg);">
+        <div class="max-w-3xl mx-auto px-6 pb-16 text-center">
+            <div class="section-label inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase mb-4" style="color:var(--secondary);">How it began</div>
+            <h2 class="text-4xl font-bold leading-tight mb-4" style="font-family:'Lora',serif; color:var(--text);">The Story Behind<br>This Website</h2>
+            <p class="text-sm leading-relaxed mx-auto" style="color:#7a9a88; max-width:520px;">
                 Every great project has an origin. Ours started not in a boardroom, but on a trail — or rather, before one.
             </p>
         </div>
 
         <div class="timeline">
-
             <div class="timeline-item">
                 <div class="tl-content">
-                    <div class="tl-label">The Spark</div>
-                    <h3 class="tl-title">A student discovers the Western Ghats</h3>
-                    <p class="tl-body">Like thousands of young Maharashtrians, our founder fell in love with trekking — the forts, the mist, the waterfalls that appear only in monsoon. Every weekend became an adventure waiting to happen.</p>
+                    <div class="text-xs font-semibold tracking-widest uppercase mb-1.5" style="color:var(--secondary);">The Spark</div>
+                    <h3 class="text-xl font-bold mb-2.5 leading-snug" style="font-family:'Lora',serif; color:var(--text);">A student discovers the Western Ghats</h3>
+                    <p class="text-sm leading-relaxed" style="color:#5a7a68;">Like thousands of young Maharashtrians, our founder fell in love with trekking — the forts, the mist, the waterfalls that appear only in monsoon. Every weekend became an adventure waiting to happen.</p>
                 </div>
                 <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
                 <div class="tl-empty"></div>
@@ -767,17 +215,17 @@
                 <div class="tl-empty"></div>
                 <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
                 <div class="tl-content">
-                    <div class="tl-label">The Problem</div>
-                    <h3 class="tl-title">2 hours wasted — for a single trek</h3>
-                    <p class="tl-body">Planning should be simple. But every search led to scattered blogs, outdated videos, half-baked Reddit threads and contradicting timings. By the time the trail was planned, the excitement was drained.</p>
+                    <div class="text-xs font-semibold tracking-widest uppercase mb-1.5" style="color:var(--secondary);">The Problem</div>
+                    <h3 class="text-xl font-bold mb-2.5 leading-snug" style="font-family:'Lora',serif; color:var(--text);">2 hours wasted — for a single trek</h3>
+                    <p class="text-sm leading-relaxed" style="color:#5a7a68;">Planning should be simple. But every search led to scattered blogs, outdated videos, half-baked Reddit threads and contradicting timings. By the time the trail was planned, the excitement was drained.</p>
                 </div>
             </div>
 
             <div class="timeline-item">
                 <div class="tl-content">
-                    <div class="tl-label">The Frustration</div>
-                    <h3 class="tl-title">"Why isn't there one place for all of this?"</h3>
-                    <p class="tl-body">The question that changed everything. Waterfall heights, trek difficulty, best seasons, entry timings, parking, nearby villages — all information that exists, but never together in one place.</p>
+                    <div class="text-xs font-semibold tracking-widest uppercase mb-1.5" style="color:var(--secondary);">The Frustration</div>
+                    <h3 class="text-xl font-bold mb-2.5 leading-snug" style="font-family:'Lora',serif; color:var(--text);">"Why isn't there one place for all of this?"</h3>
+                    <p class="text-sm leading-relaxed" style="color:#5a7a68;">The question that changed everything. Waterfall heights, trek difficulty, best seasons, entry timings, parking, nearby villages — all information that exists, but never together in one place.</p>
                 </div>
                 <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
                 <div class="tl-empty"></div>
@@ -787,22 +235,21 @@
                 <div class="tl-empty"></div>
                 <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
                 <div class="tl-content">
-                    <div class="tl-label">The Initiative</div>
-                    <h3 class="tl-title">A student decides to build the solution</h3>
-                    <p class="tl-body">Armed with curiosity, code, and a backpack full of trail miles, the decision was made — build the resource that every Maharashtra trekker deserves. Not a startup. Not a business. Just a passion project for the community.</p>
+                    <div class="text-xs font-semibold tracking-widest uppercase mb-1.5" style="color:var(--secondary);">The Initiative</div>
+                    <h3 class="text-xl font-bold mb-2.5 leading-snug" style="font-family:'Lora',serif; color:var(--text);">A student decides to build the solution</h3>
+                    <p class="text-sm leading-relaxed" style="color:#5a7a68;">Armed with curiosity, code, and a backpack full of trail miles, the decision was made — build the resource that every Maharashtra trekker deserves. Not a startup. Not a business. Just a passion project for the community.</p>
                 </div>
             </div>
 
             <div class="timeline-item">
                 <div class="tl-content">
-                    <div class="tl-label">Today</div>
-                    <h3 class="tl-title">MaharashtraTreks is live 🎉</h3>
-                    <p class="tl-body">Treks, waterfalls, gear rentals, difficulty ratings, best seasons and more — all in one place, built with love for everyone who hears the mountains calling.</p>
+                    <div class="text-xs font-semibold tracking-widest uppercase mb-1.5" style="color:var(--secondary);">Today</div>
+                    <h3 class="text-xl font-bold mb-2.5 leading-snug" style="font-family:'Lora',serif; color:var(--text);">MaharashtraTreks is live 🎉</h3>
+                    <p class="text-sm leading-relaxed" style="color:#5a7a68;">Treks, waterfalls, gear rentals, difficulty ratings, best seasons and more — all in one place, built with love for everyone who hears the mountains calling.</p>
                 </div>
-                <div class="tl-dot-wrap"><div class="tl-dot" style="background:var(--primary); box-shadow: 0 0 0 3px var(--primary);"></div></div>
+                <div class="tl-dot-wrap"><div class="tl-dot" style="background:var(--primary); box-shadow:0 0 0 3px var(--primary);"></div></div>
                 <div class="tl-empty"></div>
             </div>
-
         </div>
     </section>
 
@@ -810,31 +257,33 @@
     <!-- ════════════════════════════════════════
          THE PROBLEM (BOLD)
     ════════════════════════════════════════ -->
-    <section class="problem-section">
-        <div class="problem-inner">
-            <div class="problem-text">
-                <div class="section-label" style="color: rgba(230,140,50,0.9);">Why we exist</div>
-                <h2>Planning a trek<br>shouldn't take<br><span>longer than the trek.</span></h2>
-                <p>
+    <section class="problem-section relative overflow-hidden py-24 px-6" style="background:var(--primary);">
+        <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div>
+                <div class="section-label inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase mb-4" style="color:rgba(230,140,50,0.9);">Why we exist</div>
+                <h2 class="text-4xl font-bold leading-snug mb-5 text-white" style="font-family:'Lora',serif;">
+                    Planning a trek<br>shouldn't take<br><span class="italic" style="color:var(--secondary);">longer than the trek.</span>
+                </h2>
+                <p class="text-sm leading-relaxed" style="color:rgba(255,255,255,0.65);">
                     The information is out there — buried across YouTube videos, blog posts from 2016, and WhatsApp groups you're not part of. We pulled it all together so you spend your time on trails, not tabs.
                 </p>
             </div>
-            <div class="problem-stat-grid">
-                <div class="p-stat">
-                    <div class="num">2+</div>
-                    <div class="desc">Hours wasted planning one trek</div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="rounded-[18px] p-6 text-center" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">
+                    <div class="text-4xl font-bold mb-1.5" style="font-family:'Lora',serif; color:var(--secondary);">2+</div>
+                    <div class="text-xs leading-snug" style="color:rgba(255,255,255,0.55);">Hours wasted planning one trek</div>
                 </div>
-                <div class="p-stat">
-                    <div class="num">50+</div>
-                    <div class="desc">Treks & waterfalls documented</div>
+                <div class="rounded-[18px] p-6 text-center" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">
+                    <div class="text-4xl font-bold mb-1.5" style="font-family:'Lora',serif; color:#7dd3b0;">50+</div>
+                    <div class="text-xs leading-snug" style="color:rgba(255,255,255,0.55);">Treks & waterfalls documented</div>
                 </div>
-                <div class="p-stat">
-                    <div class="num">1</div>
-                    <div class="desc">Platform, all the info you need</div>
+                <div class="rounded-[18px] p-6 text-center" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">
+                    <div class="text-4xl font-bold mb-1.5" style="font-family:'Lora',serif; color:#7dd3b0;">1</div>
+                    <div class="text-xs leading-snug" style="color:rgba(255,255,255,0.55);">Platform, all the info you need</div>
                 </div>
-                <div class="p-stat">
-                    <div class="num">0₹</div>
-                    <div class="desc">Cost to use this resource</div>
+                <div class="rounded-[18px] p-6 text-center" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);">
+                    <div class="text-4xl font-bold mb-1.5" style="font-family:'Lora',serif; color:var(--secondary);">0₹</div>
+                    <div class="text-xs leading-snug" style="color:rgba(255,255,255,0.55);">Cost to use this resource</div>
                 </div>
             </div>
         </div>
@@ -844,44 +293,44 @@
     <!-- ════════════════════════════════════════
          MISSION & VALUES
     ════════════════════════════════════════ -->
-    <section class="mission-section">
-        <div class="mission-inner">
-            <div class="section-label">What we stand for</div>
-            <h2 class="section-title">Our Mission & Values</h2>
-            <p class="section-sub">
+    <section class="py-24 px-6" style="background:var(--bg);">
+        <div class="max-w-5xl mx-auto">
+            <div class="section-label inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase mb-4" style="color:var(--secondary);">What we stand for</div>
+            <h2 class="text-4xl font-bold leading-tight mb-4" style="font-family:'Lora',serif; color:var(--text);">Our Mission & Values</h2>
+            <p class="text-sm leading-relaxed mb-14 max-w-lg" style="color:#7a9a88;">
                 Built from real frustration, guided by genuine love for nature and the outdoors of Maharashtra.
             </p>
 
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon green">🗺️</div>
-                    <h3 class="value-title">Accessible Information</h3>
-                    <p class="value-body">Every trekker — beginner or veteran — deserves clear, honest, up-to-date information without having to dig through hours of content.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="value-card bg-white rounded-2xl p-8 border border-[#edf2ef] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                    <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-5 text-2xl bg-[#e8f4ed]">🗺️</div>
+                    <h3 class="text-lg font-bold mb-2.5" style="font-family:'Lora',serif; color:var(--text);">Accessible Information</h3>
+                    <p class="text-sm leading-relaxed" style="color:#7a9a88;">Every trekker — beginner or veteran — deserves clear, honest, up-to-date information without having to dig through hours of content.</p>
                 </div>
-                <div class="value-card">
-                    <div class="value-icon orange">🌿</div>
-                    <h3 class="value-title">Love for Nature</h3>
-                    <p class="value-body">Maharashtra's landscapes are breathtaking. We're here to help you experience them responsibly, safely, and with full appreciation.</p>
+                <div class="value-card bg-white rounded-2xl p-8 border border-[#edf2ef] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                    <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-5 text-2xl bg-[#fdf0e1]">🌿</div>
+                    <h3 class="text-lg font-bold mb-2.5" style="font-family:'Lora',serif; color:var(--text);">Love for Nature</h3>
+                    <p class="text-sm leading-relaxed" style="color:#7a9a88;">Maharashtra's landscapes are breathtaking. We're here to help you experience them responsibly, safely, and with full appreciation.</p>
                 </div>
-                <div class="value-card">
-                    <div class="value-icon green">🤝</div>
-                    <h3 class="value-title">Community First</h3>
-                    <p class="value-body">This isn't a business — it's a community resource. Built by a trekker, maintained for trekkers, growing with every trail explored.</p>
+                <div class="value-card bg-white rounded-2xl p-8 border border-[#edf2ef] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                    <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-5 text-2xl bg-[#e8f4ed]">🤝</div>
+                    <h3 class="text-lg font-bold mb-2.5" style="font-family:'Lora',serif; color:var(--text);">Community First</h3>
+                    <p class="text-sm leading-relaxed" style="color:#7a9a88;">This isn't a business — it's a community resource. Built by a trekker, maintained for trekkers, growing with every trail explored.</p>
                 </div>
-                <div class="value-card">
-                    <div class="value-icon orange">⏱️</div>
-                    <h3 class="value-title">Respect Your Time</h3>
-                    <p class="value-body">Your weekend is precious. We've done the research so you can go straight from "I want to trek" to "I'm on the trail" — fast.</p>
+                <div class="value-card bg-white rounded-2xl p-8 border border-[#edf2ef] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                    <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-5 text-2xl bg-[#fdf0e1]">⏱️</div>
+                    <h3 class="text-lg font-bold mb-2.5" style="font-family:'Lora',serif; color:var(--text);">Respect Your Time</h3>
+                    <p class="text-sm leading-relaxed" style="color:#7a9a88;">Your weekend is precious. We've done the research so you can go straight from "I want to trek" to "I'm on the trail" — fast.</p>
                 </div>
-                <div class="value-card">
-                    <div class="value-icon green">📍</div>
-                    <h3 class="value-title">Hyper-Local Focus</h3>
-                    <p class="value-body">We don't cover everywhere. We cover Maharashtra — deeply, honestly, and with the kind of insider knowledge only a local trekker has.</p>
+                <div class="value-card bg-white rounded-2xl p-8 border border-[#edf2ef] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                    <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-5 text-2xl bg-[#e8f4ed]">📍</div>
+                    <h3 class="text-lg font-bold mb-2.5" style="font-family:'Lora',serif; color:var(--text);">Hyper-Local Focus</h3>
+                    <p class="text-sm leading-relaxed" style="color:#7a9a88;">We don't cover everywhere. We cover Maharashtra — deeply, honestly, and with the kind of insider knowledge only a local trekker has.</p>
                 </div>
-                <div class="value-card">
-                    <div class="value-icon orange">🌟</div>
-                    <h3 class="value-title">Always Honest</h3>
-                    <p class="value-body">Difficulty ratings, seasonal warnings, crowd levels — we tell you the truth, even when it means recommending you wait for a better day.</p>
+                <div class="value-card bg-white rounded-2xl p-8 border border-[#edf2ef] hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                    <div class="w-13 h-13 rounded-xl flex items-center justify-center mb-5 text-2xl bg-[#fdf0e1]">🌟</div>
+                    <h3 class="text-lg font-bold mb-2.5" style="font-family:'Lora',serif; color:var(--text);">Always Honest</h3>
+                    <p class="text-sm leading-relaxed" style="color:#7a9a88;">Difficulty ratings, seasonal warnings, crowd levels — we tell you the truth, even when it means recommending you wait for a better day.</p>
                 </div>
             </div>
         </div>
@@ -891,34 +340,34 @@
     <!-- ════════════════════════════════════════
          FOR WHOM
     ════════════════════════════════════════ -->
-    <section class="for-section">
-        <div class="for-inner">
-            <div class="section-label" style="justify-content:center;">Who this is for</div>
-            <h2 class="section-title">Built for Everyone<br>Who Feels the Call</h2>
-            <p style="color:#7a9a88; font-size:0.9rem; line-height:1.75; max-width:500px; margin:0 auto;">
+    <section class="py-24 px-6 bg-[#f0f7f3]">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="section-label inline-flex justify-center items-center gap-2.5 text-xs font-semibold tracking-widest uppercase mb-4" style="color:var(--secondary);">Who this is for</div>
+            <h2 class="text-4xl font-bold leading-tight mb-4" style="font-family:'Lora',serif; color:var(--text);">Built for Everyone<br>Who Feels the Call</h2>
+            <p class="text-sm leading-relaxed max-w-md mx-auto" style="color:#7a9a88;">
                 Whether you've trekked a hundred trails or you're planning your very first one — this is your home base.
             </p>
 
-            <div class="for-grid">
-                <div class="for-item">
-                    <span class="for-emoji">🎒</span>
-                    <h3 class="for-title">First-Time Trekkers</h3>
-                    <p class="for-desc">Easy trails, beginner tips, and all the planning done for you. Just show up.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-14">
+                <div class="bg-white rounded-2xl p-8 text-center border border-[#deeee6] hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                    <span class="text-4xl mb-3.5 block">🎒</span>
+                    <h3 class="text-base font-bold mb-2" style="font-family:'Lora',serif; color:var(--text);">First-Time Trekkers</h3>
+                    <p class="text-xs leading-relaxed" style="color:#7a9a88;">Easy trails, beginner tips, and all the planning done for you. Just show up.</p>
                 </div>
-                <div class="for-item">
-                    <span class="for-emoji">🏔️</span>
-                    <h3 class="for-title">Seasoned Explorers</h3>
-                    <p class="for-desc">Discover hidden trails and waterfalls you haven't hit yet. Maharashtra has more than you think.</p>
+                <div class="bg-white rounded-2xl p-8 text-center border border-[#deeee6] hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                    <span class="text-4xl mb-3.5 block">🏔️</span>
+                    <h3 class="text-base font-bold mb-2" style="font-family:'Lora',serif; color:var(--text);">Seasoned Explorers</h3>
+                    <p class="text-xs leading-relaxed" style="color:#7a9a88;">Discover hidden trails and waterfalls you haven't hit yet. Maharashtra has more than you think.</p>
                 </div>
-                <div class="for-item">
-                    <span class="for-emoji">📸</span>
-                    <h3 class="for-title">Nature Photographers</h3>
-                    <p class="for-desc">Find the best seasonal waterfalls and sunrise viewpoints with precise timing info.</p>
+                <div class="bg-white rounded-2xl p-8 text-center border border-[#deeee6] hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                    <span class="text-4xl mb-3.5 block">📸</span>
+                    <h3 class="text-base font-bold mb-2" style="font-family:'Lora',serif; color:var(--text);">Nature Photographers</h3>
+                    <p class="text-xs leading-relaxed" style="color:#7a9a88;">Find the best seasonal waterfalls and sunrise viewpoints with precise timing info.</p>
                 </div>
-                <div class="for-item">
-                    <span class="for-emoji">👨‍👩‍👧</span>
-                    <h3 class="for-title">Families & Groups</h3>
-                    <p class="for-desc">Family-friendly trails with difficulty ratings so everyone has a great time.</p>
+                <div class="bg-white rounded-2xl p-8 text-center border border-[#deeee6] hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                    <span class="text-4xl mb-3.5 block">👨‍👩‍👧</span>
+                    <h3 class="text-base font-bold mb-2" style="font-family:'Lora',serif; color:var(--text);">Families & Groups</h3>
+                    <p class="text-xs leading-relaxed" style="color:#7a9a88;">Family-friendly trails with difficulty ratings so everyone has a great time.</p>
                 </div>
             </div>
         </div>
@@ -926,23 +375,132 @@
 
 
     <!-- ════════════════════════════════════════
+         LEAVE US A MESSAGE
+    ════════════════════════════════════════ -->
+    <section class="py-24 px-6 bg-[#f0f7f3]" id="contact">
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_1.3fr] gap-16 items-start">
+
+            <!-- Left -->
+            <div>
+                <div class="section-label inline-flex items-center gap-2.5 text-xs font-semibold tracking-widest uppercase mb-4" style="color:var(--secondary);">Get in Touch</div>
+                <h2 class="text-4xl font-bold leading-tight mb-4" style="font-family:'Lora',serif; color:var(--text);">
+                    Have a Trail Tip?<br>Leave Us a <em class="italic" style="color:var(--secondary);">Message.</em>
+                </h2>
+                <p class="text-sm leading-relaxed mb-8" style="color:#7a9a88;">
+                    Know a hidden waterfall? Spotted outdated info? Want to suggest a trek? We're all ears — this platform grows because of people like you.
+                </p>
+
+                <div class="flex flex-wrap gap-2.5 mb-7">
+                    <div class="bg-white border border-[#deeee6] text-xs font-medium px-3.5 py-1.5 rounded-full cursor-default transition-all duration-200 hover:bg-[#2D6B4D] hover:text-white hover:border-[#2D6B4D]" style="color:var(--text);">🏔️ Suggest a Trek</div>
+                    <div class="bg-white border border-[#deeee6] text-xs font-medium px-3.5 py-1.5 rounded-full cursor-default transition-all duration-200 hover:bg-[#2D6B4D] hover:text-white hover:border-[#2D6B4D]" style="color:var(--text);">💧 Report a Waterfall</div>
+                    <div class="bg-white border border-[#deeee6] text-xs font-medium px-3.5 py-1.5 rounded-full cursor-default transition-all duration-200 hover:bg-[#2D6B4D] hover:text-white hover:border-[#2D6B4D]" style="color:var(--text);">✏️ Fix an Error</div>
+                    <div class="bg-white border border-[#deeee6] text-xs font-medium px-3.5 py-1.5 rounded-full cursor-default transition-all duration-200 hover:bg-[#2D6B4D] hover:text-white hover:border-[#2D6B4D]" style="color:var(--text);">💬 Just Say Hi</div>
+                </div>
+
+                <div class="flex items-center gap-2.5 text-sm" style="color:#7a9a88;">
+                    <svg width="16" height="16" fill="none" stroke="var(--secondary)" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    contact@trekmaharashtra.com
+                </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div>
+                <form class="bg-white rounded-3xl p-10 border border-[#deeee6] shadow-lg" id="contactForm" style="box-shadow:0 8px 40px rgba(45,107,77,0.07);">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex flex-col mb-5">
+                            <label class="text-xs font-semibold tracking-wider uppercase mb-2" style="color:var(--text);">Your Name</label>
+                            <input type="text" placeholder="Rahul Patil" required
+                                class="border rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-[#fafcfb]"
+                                style="border:1.5px solid #e2ece7; font-family:'Outfit',sans-serif; color:var(--text);"
+                                onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(45,107,77,0.08)'"
+                                onblur="this.style.borderColor='#e2ece7'; this.style.boxShadow='none'" />
+                        </div>
+                        <div class="flex flex-col mb-5">
+                            <label class="text-xs font-semibold tracking-wider uppercase mb-2" style="color:var(--text);">Email Address</label>
+                            <input type="email" placeholder="rahul@example.com" required
+                                class="border rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-[#fafcfb]"
+                                style="border:1.5px solid #e2ece7; font-family:'Outfit',sans-serif; color:var(--text);"
+                                onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(45,107,77,0.08)'"
+                                onblur="this.style.borderColor='#e2ece7'; this.style.boxShadow='none'" />
+                        </div>
+                    </div>
+                    <div class="flex flex-col mb-5">
+                        <label class="text-xs font-semibold tracking-wider uppercase mb-2" style="color:var(--text);">Subject</label>
+                        <select class="border rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-[#fafcfb]"
+                            style="border:1.5px solid #e2ece7; font-family:'Outfit',sans-serif; color:var(--text);"
+                            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(45,107,77,0.08)'"
+                            onblur="this.style.borderColor='#e2ece7'; this.style.boxShadow='none'">
+                            <option value="">Select a topic...</option>
+                            <option>Suggest a Trek</option>
+                            <option>Report a Waterfall</option>
+                            <option>Fix Incorrect Info</option>
+                            <option>General Feedback</option>
+                            <option>Just Saying Hi 👋</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col mb-5">
+                        <label class="text-xs font-semibold tracking-wider uppercase mb-2" style="color:var(--text);">Message</label>
+                        <textarea rows="5" placeholder="Tell us what's on your mind — a hidden trail, a correction, or just your experience with the platform..." required
+                            class="border rounded-xl px-4 py-3 text-sm outline-none transition-all duration-200 bg-[#fafcfb] resize-none"
+                            style="border:1.5px solid #e2ece7; font-family:'Outfit',sans-serif; color:var(--text);"
+                            onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(45,107,77,0.08)'"
+                            onblur="this.style.borderColor='#e2ece7'; this.style.boxShadow='none'"></textarea>
+                    </div>
+                    <button type="submit" id="submitBtn"
+                        class="w-full text-white font-semibold text-sm py-3.5 px-6 rounded-xl flex items-center justify-center gap-2.5 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+                        style="background:var(--primary); font-family:'Outfit',sans-serif;"
+                        onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='var(--primary)'">
+                        <span id="btnText">Send Message</span>
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                    </button>
+                    <div id="formSuccess" class="hidden mt-4 text-sm font-medium text-center px-4 py-3 rounded-xl" style="background:#e8f5ee; border:1px solid #b6ddc8; color:var(--primary);">
+                        ✅ Message sent! We'll get back to you soon.
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════
          FINAL CTA
     ════════════════════════════════════════ -->
-    <section class="about-cta">
-        <div class="cta-inner">
-            <div class="cta-blob">🏕️</div>
-            <div class="section-label" style="justify-content:center;">Ready?</div>
-            <h2 class="section-title">Stop Planning.<br>Start Trekking.</h2>
-            <p style="color:#7a9a88; font-size:0.92rem; line-height:1.75;">
+    <section class="py-24 px-6 text-center" style="background:var(--bg);">
+        <div class="max-w-lg mx-auto">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full text-3xl mb-7" style="background:linear-gradient(135deg,var(--primary),#3a8a62);">🏕️</div>
+            <div class="section-label inline-flex justify-center items-center gap-2.5 text-xs font-semibold tracking-widest uppercase mb-4" style="color:var(--secondary);">Ready?</div>
+            <h2 class="text-4xl font-bold leading-tight mb-4" style="font-family:'Lora',serif; color:var(--text);">Stop Planning.<br>Start Trekking.</h2>
+            <p class="text-sm leading-relaxed" style="color:#7a9a88;">
                 Every trail in Maharashtra is waiting. All the information you need is already here — because we've been where you are, staring at a blank search bar, wishing someone had done the work for you. We did.
             </p>
-            <div class="cta-buttons">
-                <a href="/treks" class="btn-primary">Browse Treks →</a>
-                <a href="/waterfalls" class="btn-outline">Explore Waterfalls</a>
+            <div class="flex gap-3.5 justify-center flex-wrap mt-9">
+                <a href="/treks" class="font-semibold text-sm px-7 py-3.5 rounded-xl text-white transition-colors duration-200"
+                   style="background:var(--primary); font-family:'Outfit',sans-serif;"
+                   onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background='var(--primary)'">Browse Treks →</a>
+                <a href="/waterfalls" class="font-semibold text-sm px-7 py-3.5 rounded-xl transition-all duration-200"
+                   style="background:transparent; color:var(--primary); border:2px solid var(--primary); font-family:'Outfit',sans-serif;"
+                   onmouseover="this.style.background='var(--primary)'; this.style.color='#fff'" onmouseout="this.style.background='transparent'; this.style.color='var(--primary)'">Explore Waterfalls</a>
             </div>
         </div>
     </section>
 
 </div>
+
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const success = document.getElementById('formSuccess');
+        btnText.textContent = 'Sending...';
+        btn.disabled = true;
+        setTimeout(() => {
+            btn.style.display = 'none';
+            success.classList.remove('hidden');
+            this.reset();
+        }, 1200);
+    });
+</script>
 
 {% endblock %}

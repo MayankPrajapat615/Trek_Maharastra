@@ -153,39 +153,100 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="w-full h-auto bg-primary">
-        <div class="py-4 px-8 m-auto md:py-8 md:px-8 lg:px-16">
-            <div class="flex-col md:text-left md:flex md:flex-row md:gap-16">
-                <div class="flex-1 min-w-0 mb-8">
-                    <h2 class="text-2xl mb-4 text-secondary">Trek Maharashtra</h2>
-                    <p class="break-all overflow-hidden text-background">Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore odio tenetur corrupti repellendus vel impedit.</p>
+    <footer class="w-full bg-primary overflow-hidden relative">
+
+        <!-- Decorative mountain silhouette SVG divider -->
+        <div class="w-full overflow-hidden leading-none">
+            <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full h-16 fill-background opacity-5">
+                <path d="M0,80 L0,40 L120,10 L240,50 L360,5 L480,45 L600,15 L720,55 L840,10 L960,50 L1080,20 L1200,60 L1320,15 L1440,45 L1440,80 Z"/>
+            </svg>
+        </div>
+
+        <div class="py-12 px-8 lg:px-20">
+
+            <!-- Top section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <h2 class="text-3xl font-semibold text-secondary mb-3 tracking-wide">Trek Maharashtra</h2>
+                    <p class="text-background/70 text-sm leading-relaxed mb-5">
+                        Discover the rugged beauty of Maharashtra — from misty Sahyadri peaks to roaring monsoon waterfalls.
+                    </p>
+                    <!-- Social icons -->
+                    <div class="flex gap-3 mt-4">
+                        <a href="#" class="w-9 h-9 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:border-secondary hover:text-secondary transition-all duration-300">
+                            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:border-secondary hover:text-secondary transition-all duration-300">
+                            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full border border-background/20 flex items-center justify-center text-background/60 hover:border-secondary hover:text-secondary transition-all duration-300">
+                            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.27 8.27 0 004.84 1.55V6.79a4.85 4.85 0 01-1.07-.1z"/></svg>
+                        </a>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0 mb-8">
-                    <h2 class="text-2xl mb-4 text-background">Quick Links</h2>
-                    <ul>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/">Home</a></li>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/waterfalls">Featured Waterfalls</a></li>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-background font-semibold text-lg mb-4 uppercase tracking-widest text-sm">Explore</h3>
+                    <ul class="space-y-2.5">
+                        <li><a href="/" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Home</a></li>
+                        <li><a href="/treks" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>All Treks</a></li>
+                        <li><a href="/waterfalls" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Waterfalls</a></li>
+                        <li><a href="/rentals" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Rentals</a></li>
+                        <li><a href="/plan-your-trek" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Plan Your Trek</a></li>
+                        <li><a href="/about-us" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>About Us</a></li>
+                        <li><a href="/about-us#contact" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Contact Us</a></li>
                     </ul>
                 </div>
-                <div class="flex-1 min-w-0 mb-8">
-                    <h2 class="text-2xl mb-4 text-background">Popular Treks</h2>
-                    <ul>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
-                        <li class="list-none text-background mt-2 transition-all duration-300 ease-in hover:text-secondary cursor-pointer"><a href="/treks">Featured Treks</a></li>
+
+                <!-- Popular Treks -->
+                <div>
+                    <h3 class="text-background font-semibold text-lg mb-4 uppercase tracking-widest text-sm">Popular Treks</h3>
+                    <ul class="space-y-2.5">
+                        <li><a href="/treks/rajgad" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Rajgad Fort</a></li>
+                        <li><a href="/treks/harishchandragad" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Harishchandragad</a></li>
+                        <li><a href="/treks/kalsubai" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Kalsubai Peak</a></li>
+                        <li><a href="/treks/sinhagad" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Sinhagad Fort</a></li>
+                        <li><a href="/treks/lohagad" class="text-background/60 hover:text-secondary transition-colors duration-200 text-sm flex items-center gap-2 group"><span class="w-4 h-px bg-secondary/40 group-hover:w-6 transition-all duration-300"></span>Lohagad Fort</a></li>
                     </ul>
                 </div>
-                <div class="flex-1 min-w-0 mb-8">
-                    <h2 class="text-2xl mb-4 text-background">Contact Us</h2>
-                    <ul>
-                        <li class="list-none text-background transition-all duration-300 ease-in hover:text-secondary cursor-pointer break-all overflow-hidden">contact@trekmaharashtra.com</li>
+
+                <!-- Contact -->
+                <div>
+                    <h3 class="text-background font-semibold mb-4 uppercase tracking-widest text-sm">Contact Us</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-background/60 text-sm">
+                            <svg class="mt-0.5 shrink-0 text-secondary" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            contact@trekmaharashtra.com
+                        </li>
+                        <li class="flex items-start gap-3 text-background/60 text-sm">
+                            <svg class="mt-0.5 shrink-0 text-secondary" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            Pune, Maharashtra, India
+                        </li>
+                        <li class="mt-4">
+                            <a href="/about-us#contact" class="inline-flex items-center gap-2 text-secondary text-sm font-medium hover:underline transition-all">
+                                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+                                Leave us a message →
+                            </a>
+                        </li>
                     </ul>
+                </div>
+
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-background/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+                <p class="text-background/40 text-xs text-center">
+                    © 2026 Trek Maharashtra. All rights reserved. Made with ❤️ for trekking enthusiasts.
+                </p>
+                <div class="flex gap-5 text-xs text-background/40">
+                    <a href="#" class="hover:text-secondary transition-colors duration-200">Privacy Policy</a>
+                    <a href="#" class="hover:text-secondary transition-colors duration-200">Terms of Use</a>
                 </div>
             </div>
-            <div class="footer-bottom text-center">
-                <p>© 2026 Maharashtra Treks. All rights reserved. Made with ❤️ for trekking enthusiasts.</p>
-            </div>
+
         </div>
     </footer>
 
