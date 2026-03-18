@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, abort, jsonify, session, redirect, url_for, flash
 from datetime import datetime, timedelta, timezone
 import bcrypt
+import os
 
 # DATABASE IMPORTS
 from pymongo import MongoClient
@@ -15,7 +16,7 @@ from admin import admin_treks, admin_waterfalls
 def create_app():
 
     app = Flask(__name__)
-    app.secret_key = "your-super-secret-key-"  # ← CHANGE THIS to a long random string
+    app.secret_key = os.getenv("SECRET_KEY")
 
     app.register_blueprint(admin_waterfalls, url_prefix="/admin")
     app.register_blueprint(admin_treks, url_prefix="/admin")
