@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+    :root { --primary:#2D6B4D; --secondary:#E68C32; --text:#1F4D33; --bg:#FAF8F5; }
+    body { font-family:'Outfit',sans-serif; background:var(--bg); }
+
+    @keyframes fadeUp {
+        from { opacity:0; transform:translateY(24px); }
+        to   { opacity:1; transform:translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .d1 { animation-delay: 0.1s; }
+    .d2 { animation-delay: 0.22s; }
+    .d3 { animation-delay: 0.34s; }
+    .d4 { animation-delay: 0.46s; }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50%       { transform: translateY(-12px); }
+    }
+    .float { animation: float 3.5s ease-in-out infinite; }
+
+    @keyframes pulse-ring {
+        0%   { transform: scale(0.8); opacity: 0.8; }
+        100% { transform: scale(1.6); opacity: 0; }
+    }
+    .pulse-ring {
+        position: absolute; inset: 0; border-radius: 50%;
+        border: 2px solid rgba(230,140,50,0.4);
+        animation: pulse-ring 2s ease-out infinite;
+    }
+    .pulse-ring-2 { animation-delay: 0.7s; }
+    .pulse-ring-3 { animation-delay: 1.4s; }
+</style>
+
+<div style="min-height:calc(100vh - 64px); display:flex; align-items:center; 
+            justify-content:center; padding:48px 24px; background:var(--bg);
+            font-family:'Outfit',sans-serif;">
+
+    <div style="max-width:560px; width:100%; text-align:center;">
+
+        <!-- Floating map pin icon -->
+        <div class="fade-up" style="position:relative; display:inline-flex; 
+                    align-items:center; justify-content:center; 
+                    margin-bottom:36px; width:100px; height:100px;">
+            
+            <!-- Pulse rings -->
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring pulse-ring-2"></div>
+            <div class="pulse-ring pulse-ring-3"></div>
+
+            <!-- Icon circle -->
+            <div class="float" style="width:90px; height:90px; border-radius:50%;
+                         background:linear-gradient(135deg,#E68C32,#c97020);
+                         display:flex; align-items:center; justify-content:center;
+                         box-shadow:0 16px 48px rgba(230,140,50,0.35); position:relative; z-index:1;">
+                <svg width="40" height="40" fill="none" stroke="white" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Trek name if passed -->
+        {% if trek_name %}
+        <div class="fade-up d1" style="display:inline-flex; align-items:center; gap:8px;
+                    background:#fff; border:1px solid #e8f0ec; border-radius:100px;
+                    padding:6px 16px; margin-bottom:20px;">
+            <span style="font-size:0.72rem; font-weight:600; color:#7a9a88; 
+                         text-transform:uppercase; letter-spacing:0.12em;">Directions for</span>
+            <span style="font-size:0.78rem; font-weight:700; color:var(--text);">{{ trek_name }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Headline -->
+        <h1 class="fade-up d1" style="font-family:'Lora',serif; 
+                   font-size:clamp(2rem,5vw,2.8rem); font-weight:700; 
+                   color:var(--text); line-height:1.2; margin-bottom:16px;">
+            Directions are<br><em style="color:var(--secondary);">coming soon</em> 🗺️
+        </h1>
+
+        <!-- Subtext -->
+        <p class="fade-up d2" style="font-size:0.92rem; color:#7a9a88; 
+                  line-height:1.75; max-width:420px; margin:0 auto 36px;">
+            We're building a full directions feature with GPS routes, 
+            nearest pickup points, and public transport options 
+            to every trailhead in Maharashtra.
+        </p>
+
+        <!-- Progress / what's coming cards -->
+        <div class="fade-up d2" style="display:grid; grid-template-columns:1fr 1fr 1fr; 
+                    gap:12px; margin-bottom:36px;">
+            
+            <div style="background:#fff; border-radius:16px; border:1px solid #e8f0ec; padding:18px 14px;">
+                <div style="font-size:1.5rem; margin-bottom:8px;">🛣️</div>
+                <p style="font-size:0.78rem; font-weight:600; color:var(--text); margin-bottom:3px;">GPS Routes</p>
+                <p style="font-size:0.68rem; color:#7a9a88;">Turn-by-turn to the trailhead</p>
+            </div>
+
+            <div style="background:#fff; border-radius:16px; border:1px solid #e8f0ec; padding:18px 14px;">
+                <div style="font-size:1.5rem; margin-bottom:8px;">🚌</div>
+                <p style="font-size:0.78rem; font-weight:600; color:var(--text); margin-bottom:3px;">Public Transport</p>
+                <p style="font-size:0.68rem; color:#7a9a88;">Bus & train options nearby</p>
+            </div>
+
+            <div style="background:#fff; border-radius:16px; border:1px solid #e8f0ec; padding:18px 14px;">
+                <div style="font-size:1.5rem; margin-bottom:8px;">📍</div>
+                <p style="font-size:0.78rem; font-weight:600; color:var(--text); margin-bottom:3px;">Pickup Points</p>
+                <p style="font-size:0.68rem; color:#7a9a88;">Meet your guide locations</p>
+            </div>
+
+        </div>
+
+        <!-- Notify me form -->
+        <div class="fade-up d3" style="background:#fff; border-radius:20px; 
+                    border:1px solid #e8f0ec; padding:28px;
+                    box-shadow:0 8px 32px rgba(45,107,77,0.06); margin-bottom:28px;">
+            
+            <p style="font-size:0.85rem; font-weight:600; color:var(--text); margin-bottom:4px;">
+                Get notified when it launches
+            </p>
+            <p style="font-size:0.75rem; color:#7a9a88; margin-bottom:18px;">
+                We'll send you a one-time email. No spam, ever.
+            </p>
+
+            <div id="notifyForm">
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <input type="email" id="notifyEmail" placeholder="your@email.com"
+                           style="flex:1; min-width:180px; padding:11px 16px; 
+                                  border:1.5px solid #e8f0ec; border-radius:12px;
+                                  font-family:'Outfit',sans-serif; font-size:0.85rem;
+                                  color:var(--text); outline:none;
+                                  transition:border-color 0.2s, box-shadow 0.2s;"
+                           onfocus="this.style.borderColor='#2D6B4D'; this.style.boxShadow='0 0 0 3px rgba(45,107,77,0.1)'"
+                           onblur="this.style.borderColor='#e8f0ec'; this.style.boxShadow='none'" />
+                    <button onclick="submitNotify()"
+                            style="background:var(--primary); color:#fff; border:none;
+                                   padding:11px 22px; border-radius:12px; font-weight:600;
+                                   font-size:0.85rem; font-family:'Outfit',sans-serif;
+                                   cursor:pointer; transition:background 0.2s, transform 0.15s;
+                                   white-space:nowrap;"
+                            onmouseover="this.style.background='#234E38'; this.style.transform='translateY(-1px)'"
+                            onmouseout="this.style.background='#2D6B4D'; this.style.transform='none'">
+                        Notify Me →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success state (hidden) -->
+            <div id="notifySuccess" style="display:none; padding:12px;
+                 background:#d1fae5; border-radius:12px; text-align:center;">
+                <p style="font-size:0.85rem; font-weight:600; color:#065f46;">
+                    ✅ You're on the list! We'll notify you when directions launch.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Back buttons -->
+        <div class="fade-up d4" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <a href="javascript:history.back()"
+               style="display:inline-flex; align-items:center; gap:6px;
+                      padding:11px 22px; border-radius:12px; font-weight:600;
+                      font-size:0.85rem; color:#7a9a88; text-decoration:none;
+                      border:1.5px solid #e8f0ec; background:#fff;
+                      transition:all 0.2s;"
+               onmouseover="this.style.background='#f0f7f3'; this.style.color='var(--text)'"
+               onmouseout="this.style.background='#fff'; this.style.color='#7a9a88'">
+                ← Go Back
+            </a>
+            <a href="/treks"
+               style="display:inline-flex; align-items:center; gap:6px;
+                      padding:11px 22px; border-radius:12px; font-weight:600;
+                      font-size:0.85rem; color:#fff; text-decoration:none;
+                      background:var(--primary); transition:all 0.2s;"
+               onmouseover="this.style.background='#234E38'; this.style.transform='translateY(-1px)'"
+               onmouseout="this.style.background='#2D6B4D'; this.style.transform='none'">
+                Browse Treks →
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function submitNotify() {
+    const email = document.getElementById('notifyEmail').value.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('notifyEmail').style.borderColor = '#ef4444';
+        document.getElementById('notifyEmail').style.boxShadow  = '0 0 0 3px rgba(239,68,68,0.1)';
+        return;
+    }
+    // Hide form, show success
+    document.getElementById('notifyForm').style.display    = 'none';
+    document.getElementById('notifySuccess').style.display = 'block';
+}
+</script>
+
+{% endblock %}

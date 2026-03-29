@@ -2,13 +2,14 @@ from flask import Flask, render_template, request, abort, jsonify, session, redi
 from datetime import datetime, timedelta, timezone
 import bcrypt
 import os
+import uuid
 
 # DATABASE IMPORTS
 from pymongo import MongoClient
 from pymongo.errors import DuplicateKeyError
 from validators.trek_validator import validate_trek
 from validators.waterfall_validator import validate_waterfall
-from db import treks_collection, waterfalls_collection, users_collection  # ← added users_collection
+from db import treks_collection, waterfalls_collection, users_collection, bookings_collection  # ← added users_collection
 from flask_cors import CORS
 from admin import admin_treks, admin_waterfalls
 
@@ -208,7 +209,16 @@ def create_app():
         if not session.get("user_id"):
             flash("Please log in to view your profile.", "error")
             return redirect(url_for("auth"))
-        return render_template('auth.html')  # current_user is injected via context_processor
+
+        # Fetch this user's bookings from MongoDB
+        user_email = session.get("user_id")
+        bookings = list(
+            bookings_collection.find(
+                {"booked_by": user_email},
+                {"_id": 0}
+            ).sort("created_at", -1)  # newest first
+        )
+        return render_template('auth.html', bookings=bookings)
 
 
     @app.route('/login', methods=["POST"])
@@ -367,7 +377,82 @@ def create_app():
     @app.route('/plan-your-trek')
     def plan_your_trek():
         return render_template('plan-your-trek.html')
+    
+    @app.route('/directions')
+    def directions():
+        trek_name = request.args.get('trek', '')
+        return render_template('directions.html', trek_name=trek_name)
+    
+    # ─────────────────────────────────────────
+    # BOOK AND CHECKOUTPAGE 
+    # ─────────────────────────────────────────
+    @app.route('/book')
+    def book():
+        if not session.get("user_id"):
+            flash("Please log in first to book a trek.", "error")
+            return redirect(url_for("auth"))
+        return render_template('book.html')
+    
+    @app.route('/api/demo-payment', methods=["POST"])
+    def demo_payment():
+        if not session.get("user_id"):
+            return jsonify({"success": False, "error": "Not logged in"}), 401
+        try:
+            data = request.get_json(force=True)
 
+            if not data or "booking" not in data:
+                return jsonify({"success": False, "error": "No booking data received"}), 400
+
+            booking_data = data["booking"]
+            booking_id   = "TM-" + uuid.uuid4().hex[:6].upper()
+
+            booking = {
+                "booking_id":     booking_id,
+                "trek":           booking_data.get("trek", ""),
+                "operator":       booking_data.get("operator", ""),
+                "date":           booking_data.get("date", ""),
+                "adults":         booking_data.get("adults", 1),
+                "teens":          booking_data.get("teens", 0),
+                "kids":           booking_data.get("kids", 0),
+                "lead_name":      booking_data.get("lead_name", ""),
+                "lead_email":     booking_data.get("lead_email", ""),
+                "lead_phone":     booking_data.get("lead_phone", ""),
+                "em_name":        booking_data.get("em_name", ""),
+                "em_phone":       booking_data.get("em_phone", ""),
+                "em_relation":    booking_data.get("em_relation", ""),
+                "fitness":        booking_data.get("fitness", ""),
+                "gear":           list(booking_data.get("gear", {}).keys()),  # store as list of keys
+                "special":        booking_data.get("special", ""),
+                "amount":         booking_data.get("amount", 0),
+                "payment_status": "paid",
+                "payment_method": "demo",
+                "booked_by":      session.get("user_id"),
+                "created_at":     datetime.now(timezone.utc),
+            }
+
+            bookings_collection.insert_one(booking)
+
+            return jsonify({"success": True, "booking_id": booking_id})
+
+        except Exception as e:
+            print("❌ demo_payment error:", str(e))   # you'll see this in your terminal
+            return jsonify({"success": False, "error": str(e)}), 500
+        
+    @app.route('/my-bookings')
+    def my_bookings():
+        if not session.get("user_id"):
+            flash("Please log in to view your bookings.", "error")
+            return redirect(url_for("auth"))
+
+        user_email = session.get("user_id")
+        bookings = list(
+            bookings_collection.find(
+                {"booked_by": user_email},
+                {"_id": 0}
+            ).sort("created_at", -1)  # newest first
+        )
+        return render_template('my-bookings.html', bookings=bookings)    
+    
 
     # ─────────────────────────────────────────
     # SLUG ROUTES

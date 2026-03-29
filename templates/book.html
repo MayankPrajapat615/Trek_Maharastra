@@ -1,0 +1,1469 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+
+    :root {
+        --primary: #2D6B4D;
+        --secondary: #E68C32;
+        --text: #1F4D33;
+        --bg: #FAF8F5;
+        --hover: #234E38;
+        --muted: #7a9a88;
+        --border: #e8f0ec;
+    }
+
+    body { font-family: 'Outfit', sans-serif; background: var(--bg); }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.55s ease both; }
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.15s; }
+    .d3 { animation-delay: 0.25s; }
+    .d4 { animation-delay: 0.35s; }
+
+    /* ── Progress Steps ── */
+    .step-circle {
+        width: 36px; height: 36px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.8rem; font-weight: 700;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+    .step-active   { background: var(--primary); color: #fff; box-shadow: 0 0 0 4px rgba(45,107,77,0.18); }
+    .step-done     { background: var(--primary); color: #fff; }
+    .step-inactive { background: #e8f0ec; color: var(--muted); }
+    .step-line     { flex: 1; height: 2px; background: #e8f0ec; margin: 0 6px; transition: background 0.3s; }
+    .step-line.done { background: var(--primary); }
+
+    /* ── Card ── */
+    .card {
+        background: #fff;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        padding: 28px;
+    }
+
+    /* ── Section title inside card ── */
+    .section-title {
+        font-family: 'Lora', serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .section-title span.icon {
+        width: 32px; height: 32px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary), #3a8a62);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.9rem; flex-shrink: 0;
+    }
+
+    /* ── Form elements ── */
+    .form-label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 6px;
+        letter-spacing: 0.02em;
+    }
+    .form-label .req { color: var(--secondary); margin-left: 2px; }
+
+    .form-input {
+        width: 100%;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        padding: 11px 14px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.88rem;
+        color: var(--text);
+        outline: none;
+        background: #fff;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+    }
+    .form-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(45,107,77,0.1);
+    }
+    .form-input::placeholder { color: #b0c4bb; }
+    .form-input.error { border-color: #ef4444; }
+
+    select.form-input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a9a88' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
+
+    .form-hint { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+    .form-error { font-size: 0.72rem; color: #ef4444; margin-top: 4px; display: none; }
+
+    /* ── Trek Summary Card (right side) ── */
+    .summary-card {
+        background: #fff;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        position: sticky;
+        top: 24px;
+    }
+    .summary-header {
+        background: linear-gradient(135deg, #1a3d2b, var(--primary));
+        padding: 20px;
+        color: #fff;
+    }
+    .summary-body { padding: 20px; }
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.83rem;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .label { color: var(--muted); }
+    .summary-row .value { color: var(--text); font-weight: 600; }
+    .summary-total {
+        background: #f0f7f3;
+        border-radius: 14px;
+        padding: 16px;
+        margin-top: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* ── Trekker count widget ── */
+    .counter-box {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        width: fit-content;
+    }
+    .counter-btn {
+        width: 40px; height: 40px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.1rem;
+        background: #f0f7f3;
+        color: var(--primary);
+        cursor: pointer;
+        border: none;
+        font-family: 'Outfit', sans-serif;
+        transition: background 0.2s;
+        font-weight: 700;
+    }
+    .counter-btn:hover { background: #d4ede0; }
+    .counter-val {
+        width: 52px; text-align: center;
+        font-size: 1rem; font-weight: 700;
+        color: var(--text);
+        border-left: 1.5px solid var(--border);
+        border-right: 1.5px solid var(--border);
+        padding: 8px 0;
+    }
+
+    /* ── Medical/Physical info ── */
+    .checkbox-row {
+        display: flex; align-items: flex-start; gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+    }
+    .checkbox-row:last-child { border-bottom: none; }
+    .custom-checkbox {
+        width: 18px; height: 18px; border-radius: 5px;
+        border: 1.5px solid #cde3d7;
+        background: #fff;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0; margin-top: 1px;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .custom-checkbox.checked { background: var(--primary); border-color: var(--primary); }
+    .checkbox-label { font-size: 0.83rem; color: var(--text); line-height: 1.4; }
+    .checkbox-sub   { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
+
+    /* ── Razorpay button ── */
+    .pay-btn {
+        width: 100%;
+        background: linear-gradient(135deg, var(--primary), #3a8a62);
+        color: #fff;
+        border: none;
+        border-radius: 14px;
+        padding: 16px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        font-family: 'Outfit', sans-serif;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.15s;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        letter-spacing: 0.02em;
+    }
+    .pay-btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .pay-btn:active { transform: translateY(0); }
+
+    /* ── Trust badges ── */
+    .trust-badge {
+        display: flex; align-items: center; gap-7px;
+        font-size: 0.72rem; color: var(--muted);
+        gap: 6px;
+    }
+
+    /* ── Step panels ── */
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    /* ── Pill tag ── */
+    .tag {
+        display: inline-flex; align-items: center; gap: 4px;
+        font-size: 0.7rem; font-weight: 600;
+        padding: 4px 10px; border-radius: 100px;
+    }
+    .tag-green { background: #d1fae5; color: #065f46; }
+    .tag-orange { background: #fef3c7; color: #92400e; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+
+    /* ── Date grid ── */
+    .date-option {
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+    }
+    .date-option:hover { border-color: var(--primary); background: #f0f7f3; }
+    .date-option.selected { border-color: var(--primary); background: #f0f7f3; }
+    .date-option .date-day { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .date-option .date-num { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 700; color: var(--text); }
+    .date-option .date-slots { font-size: 0.68rem; color: var(--primary); font-weight: 600; margin-top: 2px; }
+    .date-option.full { opacity: 0.45; cursor: not-allowed; border-style: dashed; }
+    .date-option.full .date-slots { color: #ef4444; }
+
+    /* ── Nav btns ── */
+    .nav-btn {
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .nav-next { background: var(--primary); color: #fff; border: none; }
+    .nav-next:hover { background: var(--hover); }
+    .nav-back { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+    .nav-back:hover { background: #f0f7f3; color: var(--text); }
+
+    /* hero-topo reuse */
+    .hero-topo-mini {
+        background-color: #234E38;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cpath d='M0,300 Q150,150 300,300 T600,300' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3Cpath d='M0,280 Q150,130 300,280 T600,280' fill='none' stroke='white' stroke-width='0.5' stroke-opacity='0.05'/%3E%3C/svg%3E");
+    }
+
+    /* ── Success screen ── */
+    #successScreen { display: none; }
+    @keyframes popIn {
+        0%   { transform: scale(0.5); opacity: 0; }
+        70%  { transform: scale(1.08); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .pop-in { animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cde3d7; border-radius: 4px; }
+    /* ===== PREMIUM STEP 1 UPGRADE ===== */
+
+    .premium-card {
+        border: none;
+        background: linear-gradient(135deg, #ffffff, #f7fbf9);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    }
+    
+    .price-pill {
+        background: linear-gradient(135deg, #2D6B4D, #3a8a62);
+        color: white;
+        font-weight: 700;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+    }
+    
+    .date-section {
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+    }
+    
+    /* upgraded date cards */
+    .date-option {
+        border: 1.5px solid var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        background: #fff;
+    }
+    
+    .date-option:hover {
+        transform: translateY(-3px) scale(1.03);
+        border-color: var(--primary);
+        box-shadow: 0 8px 20px rgba(45,107,77,0.15);
+    }
+    
+    .date-option.selected {
+        background: linear-gradient(135deg, #e6f4ee, #f0f7f3);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(45,107,77,0.2);
+    }
+    
+    .date-day {
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+    }
+    
+    .date-num {
+        font-size: 1.5rem;
+        font-weight: 700;
+        font-family: 'Lora', serif;
+    }
+    
+    .date-slots {
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+    
+    .date-option.full {
+        opacity: 0.4;
+        cursor: not-allowed;
+        border-style: dashed;
+    }
+</style>
+
+<div class="font-['Outfit',sans-serif] bg-[#FAF8F5] text-[#1F4D33]">
+
+    <!-- Mini hero bar -->
+    <div class="hero-topo-mini py-10 px-6">
+        <div class="max-w-5xl mx-auto">
+            <a href="/plan-your-trek" class="inline-flex items-center gap-2 text-white/50 hover:text-white text-sm mb-5 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                Back to treks
+            </a>
+            <h1 class="fade-up text-white mb-1" style="font-family:'Lora',serif; font-size:clamp(1.8rem,4vw,2.6rem); font-weight:700;">
+                Complete Your Booking
+            </h1>
+            <p class="fade-up d1 text-white/55 text-sm">Secure checkout · No hidden fees · Instant confirmation</p>
+        </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="bg-white border-b border-[#e8f0ec] sticky top-0 z-40 shadow-sm">
+        <div class="max-w-5xl mx-auto px-6 py-4">
+            <div class="flex items-center" id="progressBar">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center gap-1 cursor-pointer" onclick="goToStep(1)">
+                    <div class="step-circle step-active" id="sc1">1</div>
+                    <span class="text-[0.65rem] font-semibold text-[#2D6B4D] hidden sm:block">Trek & Date</span>
+                </div>
+                <div class="step-line" id="sl1"></div>
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center gap-1 cursor-pointer" onclick="goToStep(2)">
+                    <div class="step-circle step-inactive" id="sc2">2</div>
+                    <span class="text-[0.65rem] font-semibold text-[#7a9a88] hidden sm:block" id="sl2-label">Trekkers</span>
+                </div>
+                <div class="step-line" id="sl2"></div>
+                <!-- Step 3 -->
+                <div class="flex flex-col items-center gap-1 cursor-pointer" onclick="goToStep(3)">
+                    <div class="step-circle step-inactive" id="sc3">3</div>
+                    <span class="text-[0.65rem] font-semibold text-[#7a9a88] hidden sm:block" id="sl3-label">Health & Gear</span>
+                </div>
+                <div class="step-line" id="sl3"></div>
+                <!-- Step 4 -->
+                <div class="flex flex-col items-center gap-1">
+                    <div class="step-circle step-inactive" id="sc4">4</div>
+                    <span class="text-[0.65rem] font-semibold text-[#7a9a88] hidden sm:block" id="sl4-label">Payment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8" id="mainContent">
+
+        <!-- LEFT: Form panels -->
+        <div>
+
+            <!-- ════ STEP 1: Trek & Date (UPGRADED) ════ -->
+            <div class="step-panel active fade-up" id="panel1">
+            
+                <!-- Combined Trek + Date Card -->
+                <div class="card premium-card mb-6">
+                
+                    <!-- Header -->
+                    <div class="flex justify-between items-start mb-5">
+                        <div>
+                            <p class="text-[0.7rem] text-[#7a9a88] uppercase tracking-widest mb-1">Selected Trek</p>
+                            <h2 class="text-xl font-bold text-[#1F4D33]" id="trekName">Rajgad Fort Trek</h2>
+                            <p class="text-[0.75rem] text-[#7a9a88]" id="trekMeta">Pune · 2–3 Days</p>
+                        </div>
+                        <div class="price-pill" id="trekPrice">
+                            ₹1,800
+                        </div>
+                    </div>
+                
+                    <!-- Trek Tags -->
+                    <div class="flex gap-2 mb-5 flex-wrap">
+                        <span class="tag tag-orange" id="trekDiff">Moderate</span>
+                        <span class="tag tag-green">Verified Operator</span>
+                        <span class="tag tag-green">Instant Confirmation</span>
+                    </div>
+                
+                    <!-- Date Selection -->
+                    <div class="date-section">
+                        <div class="flex justify-between items-center mb-3">
+                            <p class="section-title mb-0">
+                                <span class="icon">📅</span>
+                                Select Trek Date
+                            </p>
+                            <span class="text-[0.7rem] text-[#7a9a88]">Next 6 weeks</span>
+                        </div>
+                    
+                        <div class="grid grid-cols-3 sm:grid-cols-5 gap-3" id="dateGrid"></div>
+                    
+                        <!-- Custom date -->
+                        <div class="mt-4 flex items-center gap-3 flex-wrap">
+                            <input type="date"
+                                   class="form-input"
+                                   id="customDate"
+                                   style="max-width:200px;"
+                                   min=""
+                                   oninput="selectCustomDate(this.value)" />
+                        
+                            <span class="text-[0.72rem] text-[#7a9a88]">
+                                or request custom date
+                            </span>
+                        </div>
+                    </div>
+                
+                    <!-- Small note -->
+                    <p class="text-[0.72rem] text-[#7a9a88] mt-4">
+                        Custom dates are confirmed within 24 hours via WhatsApp.
+                    </p>
+                
+                </div>
+            
+                <!-- Trekkers -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">👥</span>
+                        Number of Trekkers
+                    </div>
+                
+                    <div class="flex items-center gap-6 flex-wrap">
+                    
+                        <div>
+                            <p class="form-label mb-3">Adults</p>
+                            <div class="counter-box">
+                                <button class="counter-btn" onclick="changeCount('adults',-1)">−</button>
+                                <div class="counter-val" id="adultsVal">1</div>
+                                <button class="counter-btn" onclick="changeCount('adults',1)">+</button>
+                            </div>
+                        </div>
+                    
+                        <div>
+                            <p class="form-label mb-3">Teens</p>
+                            <div class="counter-box">
+                                <button class="counter-btn" onclick="changeCount('teens',-1)">−</button>
+                                <div class="counter-val" id="teensVal">0</div>
+                                <button class="counter-btn" onclick="changeCount('teens',1)">+</button>
+                            </div>
+                        </div>
+                    
+                        <div>
+                            <p class="form-label mb-3">Children</p>
+                            <div class="counter-box">
+                                <button class="counter-btn" onclick="changeCount('kids',-1)">−</button>
+                                <div class="counter-val" id="kidsVal">0</div>
+                                <button class="counter-btn" onclick="changeCount('kids',1)">+</button>
+                            </div>
+                        </div>
+                    
+                    </div>
+                
+                    <p class="form-hint mt-4">
+                        Children under 13 are charged at 60% of adult price. Max group size: 20.
+                    </p>
+                </div>
+            
+                <!-- CTA -->
+                <div class="flex justify-end">
+                    <button class="nav-btn nav-next" onclick="nextStep(1)">
+                        Continue →
+                    </button>
+                </div>
+            
+            </div>
+
+
+            <!-- ════ STEP 2: Trekker Details ════ -->
+            <div class="step-panel" id="panel2">
+
+                <!-- Lead trekker -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">👤</span>
+                        Lead Trekker (Primary Contact)
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="form-label">Full Name <span class="req">*</span></label>
+                            <input class="form-input" id="leadName" type="text" placeholder="e.g. Arjun Sharma" />
+                            <p class="form-error" id="err-leadName">Please enter your full name.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Age <span class="req">*</span></label>
+                            <input class="form-input" id="leadAge" type="number" placeholder="e.g. 28" min="10" max="80" />
+                            <p class="form-error" id="err-leadAge">Please enter a valid age.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Phone Number <span class="req">*</span></label>
+                            <input class="form-input" id="leadPhone" type="tel" placeholder="+91 98765 43210" />
+                            <p class="form-error" id="err-leadPhone">Please enter a valid phone number.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Email Address <span class="req">*</span></label>
+                            <input class="form-input" id="leadEmail" type="email" placeholder="you@email.com" />
+                            <p class="form-error" id="err-leadEmail">Please enter a valid email.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">City / State <span class="req">*</span></label>
+                            <input class="form-input" id="leadCity" type="text" placeholder="e.g. Pune, Maharashtra" />
+                            <p class="form-error" id="err-leadCity">Please enter your city.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Gender</label>
+                            <select class="form-input" id="leadGender">
+                                <option value="">Prefer not to say</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Non-binary</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">🚨</span>
+                        Emergency Contact
+                    </div>
+                    <p class="text-[0.78rem] text-[#7a9a88] mb-4">This person will be contacted only in case of an emergency on the trail.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="form-label">Contact Name <span class="req">*</span></label>
+                            <input class="form-input" id="emName" type="text" placeholder="e.g. Priya Sharma" />
+                            <p class="form-error" id="err-emName">Please enter emergency contact name.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Relationship <span class="req">*</span></label>
+                            <select class="form-input" id="emRelation">
+                                <option value="">Select relationship</option>
+                                <option>Parent</option>
+                                <option>Sibling</option>
+                                <option>Spouse / Partner</option>
+                                <option>Friend</option>
+                                <option>Other</option>
+                            </select>
+                            <p class="form-error" id="err-emRelation">Please select a relationship.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Phone Number <span class="req">*</span></label>
+                            <input class="form-input" id="emPhone" type="tel" placeholder="+91 98765 43210" />
+                            <p class="form-error" id="err-emPhone">Please enter emergency contact phone.</p>
+                        </div>
+                        <div>
+                            <label class="form-label">Alternate Phone</label>
+                            <input class="form-input" id="emAltPhone" type="tel" placeholder="+91 (optional)" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional trekkers (if > 1) -->
+                <div class="card mb-6" id="addlTrekkersCard" style="display:none;">
+                    <div class="section-title">
+                        <span class="icon">👥</span>
+                        Additional Trekkers
+                    </div>
+                    <p class="text-[0.78rem] text-[#7a9a88] mb-4">Please provide details for each additional trekker.</p>
+                    <div id="addlTrekkersList"></div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button class="nav-btn nav-back" onclick="prevStep(2)">← Back</button>
+                    <button class="nav-btn nav-next" onclick="nextStep(2)">Continue to Health Info →</button>
+                </div>
+            </div>
+
+
+            <!-- ════ STEP 3: Health & Gear ════ -->
+            <div class="step-panel" id="panel3">
+
+                <!-- Physical fitness -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">💪</span>
+                        Physical Fitness Level
+                    </div>
+                    <p class="text-[0.78rem] text-[#7a9a88] mb-4">This helps guides prepare the right pace and support for your group.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="fitnessOptions">
+                        <div class="date-option" onclick="selectFitness(this,'beginner')">
+                            <div class="text-2xl mb-1">🚶</div>
+                            <div class="font-semibold text-[#1F4D33] text-sm">Beginner</div>
+                            <div class="text-[0.7rem] text-[#7a9a88] mt-1">Occasional walks, no trekking exp.</div>
+                        </div>
+                        <div class="date-option" onclick="selectFitness(this,'intermediate')">
+                            <div class="text-2xl mb-1">🏃</div>
+                            <div class="font-semibold text-[#1F4D33] text-sm">Intermediate</div>
+                            <div class="text-[0.7rem] text-[#7a9a88] mt-1">Regular exercise, done 1–2 treks.</div>
+                        </div>
+                        <div class="date-option" onclick="selectFitness(this,'experienced')">
+                            <div class="text-2xl mb-1">🧗</div>
+                            <div class="font-semibold text-[#1F4D33] text-sm">Experienced</div>
+                            <div class="text-[0.7rem] text-[#7a9a88] mt-1">Fit, trekked multiple difficult trails.</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="fitnessVal" />
+                    <p class="form-error" id="err-fitness" style="display:none; margin-top:8px;">Please select your fitness level.</p>
+                </div>
+
+                <!-- Medical conditions -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">🏥</span>
+                        Medical Conditions & Allergies
+                    </div>
+                    <p class="text-[0.78rem] text-[#7a9a88] mb-4">Check all that apply to any trekker in your group. This is kept strictly confidential.</p>
+
+                    <div id="medCheckboxes">
+                        <div class="checkbox-row" onclick="toggleCheck(this)">
+                            <div class="custom-checkbox"></div>
+                            <div><div class="checkbox-label">Heart or cardiovascular condition</div><div class="checkbox-sub">e.g. hypertension, arrhythmia</div></div>
+                        </div>
+                        <div class="checkbox-row" onclick="toggleCheck(this)">
+                            <div class="custom-checkbox"></div>
+                            <div><div class="checkbox-label">Respiratory condition</div><div class="checkbox-sub">e.g. asthma, COPD</div></div>
+                        </div>
+                        <div class="checkbox-row" onclick="toggleCheck(this)">
+                            <div class="custom-checkbox"></div>
+                            <div><div class="checkbox-label">Diabetes</div><div class="checkbox-sub">Insulin-dependent or otherwise</div></div>
+                        </div>
+                        <div class="checkbox-row" onclick="toggleCheck(this)">
+                            <div class="custom-checkbox"></div>
+                            <div><div class="checkbox-label">Knee / joint injuries</div><div class="checkbox-sub">Current or recent</div></div>
+                        </div>
+                        <div class="checkbox-row" onclick="toggleCheck(this)">
+                            <div class="custom-checkbox"></div>
+                            <div><div class="checkbox-label">Altitude sickness history</div><div class="checkbox-sub">Previous episodes at high altitude</div></div>
+                        </div>
+                        <div class="checkbox-row" onclick="toggleCheck(this)">
+                            <div class="custom-checkbox"></div>
+                            <div><div class="checkbox-label">Food allergies</div><div class="checkbox-sub">Nuts, gluten, dairy, etc.</div></div>
+                        </div>
+                        <div class="checkbox-row" onclick="toggleCheck(this)">
+                            <div class="custom-checkbox"></div>
+                            <div><div class="checkbox-label">Medication I must carry</div><div class="checkbox-sub">Guide will be informed</div></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="form-label">Additional medical notes <span class="font-normal text-[#7a9a88]">(optional)</span></label>
+                        <textarea class="form-input" id="medNotes" rows="3" placeholder="Any other info your guide should know..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Gear rentals -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">🎒</span>
+                        Gear Rental <span class="text-[0.72rem] font-normal text-[#7a9a88] ml-2">Optional add-ons</span>
+                    </div>
+                    <p class="text-[0.78rem] text-[#7a9a88] mb-4">We provide quality gear — just check what you'd like to rent.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="gearGrid">
+                        <div class="date-option flex items-center gap-3 text-left" onclick="toggleGear(this,'trekking_poles','₹150','150')">
+                            <div class="custom-checkbox flex-shrink-0"></div>
+                            <div><div class="font-semibold text-sm text-[#1F4D33]">🥢 Trekking Poles</div><div class="text-[0.7rem] text-[#7a9a88]">₹150 / person</div></div>
+                        </div>
+                        <div class="date-option flex items-center gap-3 text-left" onclick="toggleGear(this,'sleeping_bag','₹200','200')">
+                            <div class="custom-checkbox flex-shrink-0"></div>
+                            <div><div class="font-semibold text-sm text-[#1F4D33]">🛏️ Sleeping Bag</div><div class="text-[0.7rem] text-[#7a9a88]">₹200 / person</div></div>
+                        </div>
+                        <div class="date-option flex items-center gap-3 text-left" onclick="toggleGear(this,'rain_poncho','₹80','80')">
+                            <div class="custom-checkbox flex-shrink-0"></div>
+                            <div><div class="font-semibold text-sm text-[#1F4D33]">🧥 Rain Poncho</div><div class="text-[0.7rem] text-[#7a9a88]">₹80 / person</div></div>
+                        </div>
+                        <div class="date-option flex items-center gap-3 text-left" onclick="toggleGear(this,'headlamp','₹100','100')">
+                            <div class="custom-checkbox flex-shrink-0"></div>
+                            <div><div class="font-semibold text-sm text-[#1F4D33]">🔦 Headlamp</div><div class="text-[0.7rem] text-[#7a9a88]">₹100 / person</div></div>
+                        </div>
+                        <div class="date-option flex items-center gap-3 text-left" onclick="toggleGear(this,'backpack','₹250','250')">
+                            <div class="custom-checkbox flex-shrink-0"></div>
+                            <div><div class="font-semibold text-sm text-[#1F4D33]">🎒 Trekking Backpack (40L)</div><div class="text-[0.7rem] text-[#7a9a88]">₹250 / person</div></div>
+                        </div>
+                        <div class="date-option flex items-center gap-3 text-left" onclick="toggleGear(this,'first_aid','₹120','120')">
+                            <div class="custom-checkbox flex-shrink-0"></div>
+                            <div><div class="font-semibold text-sm text-[#1F4D33]">🩹 Personal First-Aid Kit</div><div class="text-[0.7rem] text-[#7a9a88]">₹120 / person</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special requests -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">💬</span>
+                        Special Requests <span class="text-[0.72rem] font-normal text-[#7a9a88] ml-2">Optional</span>
+                    </div>
+                    <label class="form-label">Dietary preferences, celebration, photography focus, etc.</label>
+                    <textarea class="form-input" id="specialReq" rows="3" placeholder="e.g. vegetarian meals only, celebrating a birthday, interested in wildlife photography..."></textarea>
+                </div>
+
+                <div class="flex justify-between">
+                    <button class="nav-btn nav-back" onclick="prevStep(3)">← Back</button>
+                    <button class="nav-btn nav-next" onclick="nextStep(3)">Review & Pay →</button>
+                </div>
+            </div>
+
+
+            <!-- ════ STEP 4: Payment ════ -->
+            <div class="step-panel" id="panel4">
+
+                <!-- Review summary -->
+                <div class="card mb-6">
+                    <div class="section-title">
+                        <span class="icon">📋</span>
+                        Booking Summary
+                   </div>
+
+                    <div id="reviewContent" class="space-y-3 text-sm">
+                        <!-- filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Cancellation policy -->
+                <div class="card mb-6" style="background: #fffbf5; border-color: #fde8c6;">
+                    <div class="section-title">
+                        <span class="icon" style="background:linear-gradient(135deg,#E68C32,#c97020);">📜</span>
+                        Cancellation Policy
+                    </div>
+                    <div class="space-y-2 text-[0.78rem] text-[#7a9a88]">
+                        <div class="flex items-start gap-2"><span class="text-green-600 mt-0.5">✓</span><span><strong class="text-[#1F4D33]">7+ days before trek:</strong> Full refund</span></div>
+                        <div class="flex items-start gap-2"><span class="text-orange-500 mt-0.5">!</span><span><strong class="text-[#1F4D33]">3–6 days before trek:</strong> 50% refund</span></div>
+                        <div class="flex items-start gap-2"><span class="text-red-500 mt-0.5">✗</span><span><strong class="text-[#1F4D33]">Less than 3 days / No-show:</strong> No refund</span></div>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="card mb-6">
+                    <div class="checkbox-row" onclick="toggleCheck(this)" id="termsRow">
+                        <div class="custom-checkbox"></div>
+                        <div class="checkbox-label">I have read and agree to the <a href="/terms" class="text-[#2D6B4D] underline underline-offset-2" onclick="event.stopPropagation()">Terms & Conditions</a> and <a href="/refund-policy" class="text-[#2D6B4D] underline underline-offset-2" onclick="event.stopPropagation()">Refund Policy</a>. I confirm all trekkers are in reasonable health to undertake this trek.</div>
+                    </div>
+                    <p class="form-error" id="err-terms" style="margin-top:6px;">Please accept the terms to proceed.</p>
+                </div>
+
+                <!-- Pay button -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-[0.72rem] text-[#7a9a88]">Total amount</p>
+                            <p class="text-2xl font-bold text-[#2D6B4D]" style="font-family:'Lora',serif;" id="payTotal">₹1,800</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[0.7rem] text-[#7a9a88]">Payment</p>
+                            <p class="text-sm font-bold text-[#2D6B4D]">Demo Mode</p>
+                        </div>
+                    </div>
+                
+                    <!-- Demo card form -->
+                    <div class="bg-[#f0f7f3] rounded-2xl p-5 mb-4">
+                        <p class="text-[0.72rem] font-semibold text-[#2D6B4D] uppercase tracking-widest mb-4">
+                            💳 Demo Payment — Enter Any Details
+                        </p>
+                        <div class="grid grid-cols-1 gap-3">
+                            <div>
+                                <label class="form-label">Card Number</label>
+                                <input class="form-input" id="demoCard" type="text" 
+                                       placeholder="4242 4242 4242 4242"
+                                       maxlength="19"
+                                       oninput="formatCard(this)" />
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="form-label">Expiry</label>
+                                    <input class="form-input" id="demoExpiry" type="text" 
+                                           placeholder="MM/YY" maxlength="5"
+                                           oninput="formatExpiry(this)" />
+                                </div>
+                                <div>
+                                    <label class="form-label">CVV</label>
+                                    <input class="form-input" id="demoCvv" type="text" 
+                                           placeholder="123" maxlength="3" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">Name on Card</label>
+                                <input class="form-input" id="demoCardName" type="text" 
+                                       placeholder="e.g. Arjun Sharma" />
+                            </div>
+                        </div>
+                        <p class="text-[0.68rem] text-[#7a9a88] mt-3">
+                            🔒 This is a demo — no real payment is processed. Enter any values.
+                        </p>
+                    </div>
+                
+                    <button class="pay-btn" onclick="initiatePayment()">
+                        ✅ Confirm & Complete Booking
+                    </button>
+                
+                    <div class="flex flex-wrap justify-center gap-5 mt-4">
+                        <div class="trust-badge"><span>🔒</span> Demo Mode</div>
+                        <div class="trust-badge"><span>✅</span> No real charge</div>
+                        <div class="trust-badge"><span>📱</span> Instant confirmation</div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-start mt-4">
+                    <button class="nav-btn nav-back" onclick="prevStep(4)">← Back</button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT: Trek Summary Sidebar -->
+        <div>
+            <div class="summary-card">
+                <div class="summary-header">
+                    <p class="text-white/55 text-[0.7rem] uppercase tracking-widest mb-1">Booking for</p>
+                    <p class="text-white font-bold text-base" id="sb-trekName">Rajgad Fort Trek</p>
+                    <p class="text-white/55 text-xs mt-1" id="sb-operator">TrailBlaze Maharashtra</p>
+                    <div class="mt-3 inline-flex items-center gap-2 bg-white/10 rounded-xl px-3 py-2">
+                        <span class="text-white text-sm" id="sb-date">📅 Date not selected</span>
+                    </div>
+                </div>
+                <div class="summary-body">
+                    <div class="summary-row">
+                        <span class="label">Adults</span>
+                        <span class="value" id="sb-adults">1 × ₹1,800</span>
+                    </div>
+                    <div class="summary-row" id="sb-teens-row" style="display:none;">
+                        <span class="label">Teens</span>
+                        <span class="value" id="sb-teens">0</span>
+                    </div>
+                    <div class="summary-row" id="sb-kids-row" style="display:none;">
+                        <span class="label">Children</span>
+                        <span class="value" id="sb-kids">0</span>
+                    </div>
+                    <div class="summary-row" id="sb-gear-row" style="display:none;">
+                        <span class="label">Gear rental</span>
+                        <span class="value" id="sb-gear">₹0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Booking fee</span>
+                        <span class="value text-green-600">Free</span>
+                    </div>
+
+                    <div class="summary-total">
+                        <span class="font-bold text-[#1F4D33] text-sm">Total</span>
+                        <span class="font-bold text-[#2D6B4D] text-xl" style="font-family:'Lora',serif;" id="sb-total">₹1,800</span>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-[#f0f7f3] rounded-xl">
+                        <p class="text-[0.7rem] font-semibold text-[#2D6B4D] mb-1">✅ What's included</p>
+                        <div class="text-[0.7rem] text-[#7a9a88] space-y-1" id="sb-inclusions">
+                            <div>· Expert certified guide</div>
+                            <div>· First aid support</div>
+                            <div>· Camping gear</div>
+                            <div>· All meals during trek</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 flex items-center gap-2 text-[0.7rem] text-[#7a9a88]">
+                        <span>💬</span>
+                        <span>Questions? <a href="https://wa.me/919876543210" class="text-[#2D6B4D] font-semibold underline-offset-2 underline">WhatsApp us</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Success Screen -->
+    <div id="successScreen" class="min-h-screen flex items-center justify-center px-6 py-20">
+        <div class="text-center max-w-md mx-auto">
+            <div class="pop-in text-7xl mb-6">🎉</div>
+            <h2 class="pop-in" style="font-family:'Lora',serif; font-size:2rem; font-weight:700; color:var(--text);">Booking Confirmed!</h2>
+            <p class="text-[#7a9a88] mt-3 text-sm leading-relaxed">
+                Your trek is booked. A confirmation has been sent to <strong class="text-[#1F4D33]" id="confirmEmail">your email</strong> and WhatsApp. Your guide will reach out 48 hours before the trek.
+            </p>
+            <div class="mt-8 card text-left">
+                <div class="summary-row"><span class="label">Booking ID</span><span class="value font-mono text-[#2D6B4D]" id="confBookingId">#TM-00000</span></div>
+                <div class="summary-row"><span class="label">Trek</span><span class="value" id="confTrek">Rajgad Fort Trek</span></div>
+                <div class="summary-row"><span class="label">Date</span><span class="value" id="confDate">—</span></div>
+                <div class="summary-row"><span class="label">Trekkers</span><span class="value" id="confTrekkers">1</span></div>
+                <div class="summary-row"><span class="label">Amount Paid</span><span class="value text-[#2D6B4D]" id="confAmount">₹1,800</span></div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+                <a href="/plan-your-trek" class="nav-btn nav-next text-center">Browse More Treks</a>
+                <a href="/my-bookings" class="nav-btn nav-back text-center">My Bookings →</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+const state = {
+    currentStep: 1,
+    trekName: 'Rajgad Fort Trek',
+    operator: 'TrailBlaze Maharashtra',
+    pricePerAdult: 1800,
+    difficulty: 'moderate',
+    selectedDate: null,
+    adults: 1,
+    teens: 0,
+    kids: 0,
+    fitness: '',
+    gearAddons: {},
+    gearTotal: 0,
+    termsAccepted: false
+};
+
+// ── Parse URL params (so Book Now passes trek info)
+const params = new URLSearchParams(window.location.search);
+if (params.get('trek'))     state.trekName       = decodeURIComponent(params.get('trek'));
+if (params.get('operator')) state.operator        = decodeURIComponent(params.get('operator'));
+if (params.get('price'))    state.pricePerAdult   = parseInt(params.get('price'));
+if (params.get('diff'))     state.difficulty      = params.get('diff');
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+    // Fill trek info
+    document.getElementById('trekName').textContent  = state.trekName;
+    document.getElementById('trekOp').textContent    = state.operator;
+    document.getElementById('trekPrice').textContent = '₹' + state.pricePerAdult.toLocaleString('en-IN');
+    document.getElementById('sb-trekName').textContent = state.trekName;
+    document.getElementById('sb-operator').textContent = state.operator;
+
+    const diffEl = document.getElementById('trekDiff');
+    diffEl.textContent = capitalize(state.difficulty);
+    diffEl.className = 'tag ' + (state.difficulty === 'easy' ? 'tag-green' : state.difficulty === 'hard' ? 'tag-red' : 'tag-orange');
+
+    buildDateGrid();
+    updateSummary();
+
+    // Set min date for custom date picker
+    const today = new Date();
+    document.getElementById('customDate').min = today.toISOString().split('T')[0];
+});
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ══════════════════════════════════════
+// DATE GRID
+// ══════════════════════════════════════
+const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function buildDateGrid() {
+    const grid = document.getElementById('dateGrid');
+    grid.innerHTML = '';
+    const today = new Date();
+    // Only weekends + next 6 batches
+    const dates = [];
+    let d = new Date(today);
+    d.setDate(d.getDate() + 2); // starts from day after tomorrow
+    while (dates.length < 10) {
+        if (d.getDay() === 6 || d.getDay() === 0) { // Sat or Sun
+            dates.push(new Date(d));
+        }
+        d.setDate(d.getDate() + 1);
+    }
+    // Mark ~2 as full
+    const fullIdx = [2, 7];
+    dates.forEach((date, i) => {
+        const isFull = fullIdx.includes(i);
+        const slots = isFull ? 0 : Math.floor(Math.random() * 8) + 3;
+        const el = document.createElement('div');
+        el.className = 'date-option' + (isFull ? ' full' : '');
+        el.dataset.dateStr = date.toISOString().split('T')[0];
+        el.innerHTML = `
+            <div class="date-day">${days[date.getDay()]}</div>
+            <div class="date-num">${date.getDate()} ${months[date.getMonth()]}</div>
+            <div class="date-slots">${isFull ? 'Full' : slots + ' spots left'}</div>
+        `;
+        if (!isFull) el.onclick = () => selectDate(el, date);
+        grid.appendChild(el);
+    });
+}
+
+function selectDate(el, date) {
+    document.querySelectorAll('#dateGrid .date-option:not(.full)').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    state.selectedDate = date;
+    document.getElementById('customDate').value = '';
+    updateSidebar();
+}
+
+function selectCustomDate(val) {
+    if (!val) return;
+    document.querySelectorAll('#dateGrid .date-option').forEach(e => e.classList.remove('selected'));
+    state.selectedDate = new Date(val + 'T00:00:00');
+    updateSidebar();
+}
+
+// ══════════════════════════════════════
+// TREKKER COUNTERS
+// ══════════════════════════════════════
+function changeCount(type, delta) {
+    state[type] = Math.max(0, state[type] + delta);
+    if (type === 'adults') state.adults = Math.max(1, state.adults);
+    state.adults + state.teens + state.kids <= 20 || (state[type] -= delta);
+
+    document.getElementById(type === 'adults' ? 'adultsVal' : type === 'teens' ? 'teensVal' : 'kidsVal').textContent = state[type];
+    updateSummary();
+    rebuildAddlTrekkers();
+}
+
+function rebuildAddlTrekkers() {
+    const total = state.adults + state.teens + state.kids;
+    const card  = document.getElementById('addlTrekkersCard');
+    const list  = document.getElementById('addlTrekkersList');
+    card.style.display = total > 1 ? '' : 'none';
+    list.innerHTML = '';
+    for (let i = 1; i < total; i++) {
+        list.innerHTML += `
+        <div class="mb-4 p-3 bg-[#f9fdf9] rounded-xl border border-[#e8f0ec]">
+            <p class="text-[0.75rem] font-semibold text-[#7a9a88] mb-3 uppercase tracking-wide">Trekker ${i+1}</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="form-label">Full Name <span class="req">*</span></label>
+                    <input class="form-input" name="addl_name_${i}" type="text" placeholder="Name" />
+                </div>
+                <div>
+                    <label class="form-label">Age <span class="req">*</span></label>
+                    <input class="form-input" name="addl_age_${i}" type="number" placeholder="Age" min="5" max="80" />
+                </div>
+            </div>
+        </div>`;
+    }
+}
+
+// ══════════════════════════════════════
+// FITNESS
+// ══════════════════════════════════════
+function selectFitness(el, val) {
+    document.querySelectorAll('#fitnessOptions .date-option').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    state.fitness = val;
+    document.getElementById('fitnessVal').value = val;
+    document.getElementById('err-fitness').style.display = 'none';
+}
+
+// ══════════════════════════════════════
+// GEAR
+// ══════════════════════════════════════
+function toggleGear(el, key, label, price) {
+    const cb = el.querySelector('.custom-checkbox');
+    if (state.gearAddons[key]) {
+        delete state.gearAddons[key];
+        cb.classList.remove('checked');
+        cb.innerHTML = '';
+        el.classList.remove('selected');
+    } else {
+        state.gearAddons[key] = { label, price: parseInt(price) };
+        cb.classList.add('checked');
+        cb.innerHTML = '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        el.classList.add('selected');
+    }
+    state.gearTotal = Object.values(state.gearAddons).reduce((s,v) => s + v.price, 0);
+    updateSummary();
+}
+
+// ══════════════════════════════════════
+// CHECKBOXES (generic)
+// ══════════════════════════════════════
+function toggleCheck(row) {
+    const cb = row.querySelector('.custom-checkbox');
+    const isChecked = cb.classList.contains('checked');
+    cb.classList.toggle('checked', !isChecked);
+    cb.innerHTML = !isChecked
+        ? '<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+        : '';
+    if (row.id === 'termsRow') {
+        state.termsAccepted = !isChecked;
+        if (!isChecked) document.getElementById('err-terms').style.display = 'none';
+    }
+}
+
+// ══════════════════════════════════════
+// SUMMARY UPDATE
+// ══════════════════════════════════════
+function updateSummary() {
+    const pricePerAdult = state.pricePerAdult;
+    const adultTotal = state.adults * pricePerAdult;
+    const teenTotal  = state.teens  * Math.round(pricePerAdult * 1.0); // teens same price
+    const kidTotal   = state.kids   * Math.round(pricePerAdult * 0.6);
+    const gearTotal  = state.gearTotal * (state.adults + state.teens + state.kids);
+    const grand      = adultTotal + teenTotal + kidTotal + gearTotal;
+
+    document.getElementById('sb-adults').textContent = `${state.adults} × ₹${pricePerAdult.toLocaleString('en-IN')}`;
+
+    const tRow = document.getElementById('sb-teens-row');
+    tRow.style.display = state.teens > 0 ? '' : 'none';
+    document.getElementById('sb-teens').textContent = `${state.teens} × ₹${pricePerAdult.toLocaleString('en-IN')}`;
+
+    const kRow = document.getElementById('sb-kids-row');
+    kRow.style.display = state.kids > 0 ? '' : 'none';
+    document.getElementById('sb-kids').textContent = `${state.kids} × ₹${Math.round(pricePerAdult * 0.6).toLocaleString('en-IN')}`;
+
+    const gRow = document.getElementById('sb-gear-row');
+    gRow.style.display = state.gearTotal > 0 ? '' : 'none';
+    document.getElementById('sb-gear').textContent = '₹' + gearTotal.toLocaleString('en-IN');
+
+    document.getElementById('sb-total').textContent = '₹' + grand.toLocaleString('en-IN');
+    document.getElementById('payTotal').textContent  = '₹' + grand.toLocaleString('en-IN');
+
+    updateSidebar();
+}
+
+function updateSidebar() {
+    if (state.selectedDate) {
+        const d = state.selectedDate;
+        document.getElementById('sb-date').textContent = `📅 ${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    }
+}
+
+// ══════════════════════════════════════
+// STEP NAVIGATION
+// ══════════════════════════════════════
+function goToStep(step) {
+    if (step >= state.currentStep) return; // only go back
+    setStep(step);
+}
+
+function nextStep(current) {
+    if (!validateStep(current)) return;
+    setStep(current + 1);
+    if (current + 1 === 4) buildReview();
+}
+
+function prevStep(current) {
+    setStep(current - 1);
+}
+
+function setStep(step) {
+    state.currentStep = step;
+    document.querySelectorAll('.step-panel').forEach((p,i) => {
+        p.classList.toggle('active', i + 1 === step);
+    });
+    // Update circles
+    for (let i = 1; i <= 4; i++) {
+        const sc = document.getElementById(`sc${i}`);
+        sc.className = 'step-circle ' + (i < step ? 'step-done' : i === step ? 'step-active' : 'step-inactive');
+        sc.innerHTML = i < step
+            ? '<svg width="14" height="12" viewBox="0 0 14 12" fill="none"><path d="M1 6l4 4 8-9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            : i;
+        if (i <= 3) {
+            document.getElementById(`sl${i}`).classList.toggle('done', i < step);
+        }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════
+// VALIDATION
+// ══════════════════════════════════════
+function validateStep(step) {
+    if (step === 1) {
+        if (!state.selectedDate) {
+            showToast('Please select a trek date.');
+            return false;
+        }
+        return true;
+    }
+    if (step === 2) {
+        let ok = true;
+        const checks = [
+            { id: 'leadName',  errId: 'err-leadName',  test: v => v.trim().length > 1 },
+            { id: 'leadAge',   errId: 'err-leadAge',   test: v => v && parseInt(v) >= 10 && parseInt(v) <= 80 },
+            { id: 'leadPhone', errId: 'err-leadPhone',  test: v => /^[\d\s+\-()]{8,}$/.test(v) },
+            { id: 'leadEmail', errId: 'err-leadEmail',  test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+            { id: 'leadCity',  errId: 'err-leadCity',   test: v => v.trim().length > 1 },
+            { id: 'emName',    errId: 'err-emName',     test: v => v.trim().length > 1 },
+            { id: 'emPhone',   errId: 'err-emPhone',    test: v => /^[\d\s+\-()]{8,}$/.test(v) },
+        ];
+        checks.forEach(c => {
+            const val = document.getElementById(c.id).value;
+            const err = document.getElementById(c.errId);
+            if (!c.test(val)) { err.style.display = 'block'; document.getElementById(c.id).classList.add('error'); ok = false; }
+            else { err.style.display = 'none'; document.getElementById(c.id).classList.remove('error'); }
+        });
+        // Validate emRelation
+        const rel = document.getElementById('emRelation').value;
+        const relErr = document.getElementById('err-emRelation');
+        if (!rel) { relErr.style.display = 'block'; ok = false; } else relErr.style.display = 'none';
+
+        return ok;
+    }
+    if (step === 3) {
+        if (!state.fitness) {
+            document.getElementById('err-fitness').style.display = 'block';
+            showToast('Please select your fitness level.');
+            return false;
+        }
+        return true;
+    }
+    if (step === 4) {
+        if (!state.termsAccepted) {
+            document.getElementById('err-terms').style.display = 'block';
+            return false;
+        }
+        return true;
+    }
+    return true;
+}
+
+// ══════════════════════════════════════
+// REVIEW BUILD
+// ══════════════════════════════════════
+function buildReview() {
+    const d = state.selectedDate;
+    const dateStr = d ? `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}` : '—';
+
+    const rows = [
+        ['Trek',        state.trekName],
+        ['Operator',    state.operator],
+        ['Date',        dateStr],
+        ['Trekkers',    `${state.adults} adult(s)` + (state.teens > 0 ? `, ${state.teens} teen(s)` : '') + (state.kids > 0 ? `, ${state.kids} child(ren)` : '')],
+        ['Lead Trekker', document.getElementById('leadName').value],
+        ['Contact',     document.getElementById('leadPhone').value],
+        ['Email',       document.getElementById('leadEmail').value],
+        ['Emergency',   `${document.getElementById('emName').value} (${document.getElementById('emRelation').value})`],
+        ['Fitness',     capitalize(state.fitness)],
+    ];
+
+    const gearKeys = Object.keys(state.gearAddons);
+    if (gearKeys.length > 0) {
+        rows.push(['Gear Rental', gearKeys.map(k => state.gearAddons[k].label).join(', ')]);
+    }
+
+    document.getElementById('reviewContent').innerHTML = rows.map(([k,v]) => `
+        <div class="summary-row">
+            <span class="label">${k}</span>
+            <span class="value text-right max-w-[200px]">${v}</span>
+        </div>
+    `).join('');
+
+    // Sync confirm fields
+    document.getElementById('confirmEmail').textContent = document.getElementById('leadEmail').value;
+}
+
+
+function verifyPayment(response, amount) {
+    // Send to Flask for server-side Razorpay signature verification
+    fetch('/api/verify-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            razorpay_payment_id:  response.razorpay_payment_id,
+            razorpay_order_id:    response.razorpay_order_id,
+            razorpay_signature:   response.razorpay_signature,
+            booking: {
+                trek:      state.trekName,
+                operator:  state.operator,
+                date:      state.selectedDate ? state.selectedDate.toISOString().split('T')[0] : null,
+                adults:    state.adults,
+                teens:     state.teens,
+                kids:      state.kids,
+                lead_name:  document.getElementById('leadName').value,
+                lead_email: document.getElementById('leadEmail').value,
+                lead_phone: document.getElementById('leadPhone').value,
+                em_name:    document.getElementById('emName').value,
+                em_phone:   document.getElementById('emPhone').value,
+                em_relation:document.getElementById('emRelation').value,
+                fitness:    state.fitness,
+                gear:       state.gearAddons,
+                special:    document.getElementById('specialReq').value,
+                amount:     amount
+            }
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) showSuccess(data.booking_id, amount);
+        else showToast('Verification failed. Please contact support.');
+    })
+    .catch(() => {
+        // Even on network error, show success if payment went through
+        showSuccess('TM-' + Math.floor(Math.random() * 90000 + 10000), amount);
+    });
+}
+
+// ══════════════════════════════════════
+// PAYMENT — DEMO
+// ══════════════════════════════════════
+async function initiatePayment() {
+    if (!validateStep(4)) return;
+
+    // Validate demo card fields
+    const card     = document.getElementById('demoCard').value.replace(/\s/g, '');
+    const expiry   = document.getElementById('demoExpiry').value;
+    const cvv      = document.getElementById('demoCvv').value;
+    const cardName = document.getElementById('demoCardName').value;
+
+    if (card.length < 12)  { showToast('Please enter a valid card number.'); return; }
+    if (expiry.length < 5) { showToast('Please enter a valid expiry date.'); return; }
+    if (cvv.length < 3)    { showToast('Please enter a valid CVV.'); return; }
+    if (!cardName.trim())  { showToast('Please enter the name on card.'); return; }
+
+    // Show processing state on button
+    const btn = document.querySelector('.pay-btn');
+    btn.textContent = '⏳ Processing payment...';
+    btn.disabled = true;
+
+    // Simulate 2 second processing delay
+    await new Promise(r => setTimeout(r, 2000));
+
+    const total = parseInt(
+        document.getElementById('sb-total').textContent.replace(/[^\d]/g, '')
+    );
+
+    try {
+        const res = await fetch('/api/demo-payment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                booking: {
+                    trek:        state.trekName,
+                    operator:    state.operator,
+                    date:        state.selectedDate
+                                   ? state.selectedDate.toISOString().split('T')[0]
+                                   : null,
+                    adults:      state.adults,
+                    teens:       state.teens,
+                    kids:        state.kids,
+                    lead_name:   document.getElementById('leadName').value,
+                    lead_email:  document.getElementById('leadEmail').value,
+                    lead_phone:  document.getElementById('leadPhone').value,
+                    em_name:     document.getElementById('emName').value,
+                    em_phone:    document.getElementById('emPhone').value,
+                    em_relation: document.getElementById('emRelation').value,
+                    fitness:     state.fitness,
+                    gear:        state.gearAddons,
+                    special:     document.getElementById('specialReq').value,
+                    amount:      total
+                }
+            })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            showSuccess(data.booking_id, total);
+        } else {
+            showToast('Something went wrong: ' + (data.error || 'Please try again.'));
+            btn.textContent = '✅ Confirm & Complete Booking';
+            btn.disabled = false;
+        }
+
+    } catch (err) {
+        console.error('Payment error:', err);
+        showToast('Network error. Please check your connection and try again.');
+        btn.textContent = '✅ Confirm & Complete Booking';
+        btn.disabled = false;
+    }
+}
+
+function showSuccess(bookingId, amount) {
+    // Hide the main booking form
+    document.getElementById('mainContent').style.display = 'none';
+    // Hide the progress bar
+    document.querySelector('.bg-white.border-b').style.display = 'none';
+
+    // Show the success screen
+    const ss = document.getElementById('successScreen');
+    ss.style.display  = 'flex';
+    ss.style.flexDirection = 'column';
+
+    // Fill in confirmation details
+    const d = state.selectedDate;
+    const dateStr = d
+        ? `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`
+        : '—';
+
+    document.getElementById('confBookingId').textContent = '#' + bookingId;
+    document.getElementById('confTrek').textContent      = state.trekName;
+    document.getElementById('confDate').textContent      = dateStr;
+    document.getElementById('confTrekkers').textContent  = state.adults + state.teens + state.kids;
+    document.getElementById('confAmount').textContent    = '₹' + amount.toLocaleString('en-IN');
+    document.getElementById('confirmEmail').textContent  = document.getElementById('leadEmail').value;
+
+    // Scroll to top so user sees the success screen
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════
+// CARD FORMATTING HELPERS
+// ══════════════════════════════════════
+function formatCard(input) {
+    let v = input.value.replace(/\D/g, '').substring(0, 16);
+    input.value = v.replace(/(.{4})/g, '$1 ').trim();
+}
+
+function formatExpiry(input) {
+    let v = input.value.replace(/\D/g, '').substring(0, 4);
+    if (v.length >= 2) v = v.substring(0, 2) + '/' + v.substring(2);
+    input.value = v;
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+function showToast(msg) {
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1F4D33;color:#fff;padding:12px 24px;border-radius:14px;font-size:0.85rem;font-family:Outfit,sans-serif;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,0.2);transition:opacity 0.3s;';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+}
+</script>
+
+{% endblock %}

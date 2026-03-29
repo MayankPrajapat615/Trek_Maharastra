@@ -19,6 +19,7 @@ mongo_db = mongo_client["trek_maharashtra"]
 treks_collection     = mongo_db["treks"]
 waterfalls_collection = mongo_db["waterfalls"]
 users_collection     = mongo_db["users"]
+bookings_collection = mongo_db["bookings"]
 
 # 🔒 INDEXES
 treks_collection.create_index("slug", unique=True)
@@ -26,6 +27,8 @@ waterfalls_collection.create_index("slug", unique=True)
 treks_collection.create_index("location.district")
 treks_collection.create_index("difficulty")
 users_collection.create_index("email", unique=True)
+bookings_collection.create_index("booked_by")       
+bookings_collection.create_index("booking_id", unique=True)  
 
 # ✅ TEST CONNECTION
 try:
